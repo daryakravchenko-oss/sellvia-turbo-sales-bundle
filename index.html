@@ -807,6 +807,8 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 @media (max-width: 600px) {
   .hero-pills { gap: 14px 18px; margin-top: 36px; }
   .hero-pill { width: 98px; }
+  .hp-label { font-size: 13px; }
+  .hp-badge { width: 40px; height: 40px; }
 }
 
 /* ════ APPLE BUTTONS ════ */
@@ -888,7 +890,6 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   margin: 0 auto;
   padding: 18px 0;
   border-top: 1px solid #ececec;
-  border-bottom: 1px solid #ececec;
 }
 .stat-item {
   text-align: center;
@@ -907,7 +908,10 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   margin-top: 10px;
   display: block;
 }
-@media(max-width:600px){ .stat-row { flex-wrap: wrap; justify-content: center; gap: 18px 30px; } }
+@media(max-width:600px){
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; justify-items: center; gap: 18px 30px; }
+  .stat-item { width: 100%; }
+}
 
 /* ════ SECTIONS ════ */
 section { padding: 120px 24px; }
@@ -2107,7 +2111,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 50%;
-  background: #F9F1E6;
+  background: #10172A;
   z-index: 0;
 }
 .freebasic-section .freebasic-inner { position: relative; z-index: 1; }
@@ -2132,10 +2136,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   width: 100%;
   max-width: 1100px;
   overflow: hidden;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 30px 60px -20px rgba(0,0,0,.45),
-              0 8px 24px -8px rgba(0,0,0,.25);
+  background: transparent;
   position: relative;
   margin: 0 auto;
 }
@@ -2242,7 +2243,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .freebasic-section .freebasic-art-stage {
     position: static;
     width: 100%;
-    background: #F9F1E6;
+    background: #10172A;
     border-radius: 24px;
     padding: 32px;
     margin-bottom: 32px;
@@ -2267,7 +2268,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
     border-radius: 0;
-    padding: 17px;
+    padding: 32px 17px;
     margin-bottom: 28px;
   }
   .freebasic-section .smk-frame {
@@ -2766,7 +2767,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 /* ════ BONUS – Stripe-style modular bento (dark) ════ */
 .bonus-section.is-bento {
-  background: #0e1014;
+  background: #10172A;
   position: relative;
   overflow: hidden;
 }
@@ -3397,6 +3398,110 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   img.panel-2-photo { top: -50px !important; height: calc(100% + 50px) !important; }
 }
 @media(max-width:480px){ .bonus-section{padding:56px 16px} .bullet-item { gap: 10px; } }
+
+/* ════ STEP-2 SPOTIFY-STYLE BENTO ════
+   5 colour benefit cards (brand-icon colours) + a 6th centre-bottom card with
+   a large 5-sector ring. Desktop = staggered masonry (flex columns + grow
+   ratios, mirrors the reference); mobile = single stacked column ordered 1-6
+   via display:contents on the columns. */
+.sbento { display: flex; gap: 16px; align-items: stretch; height: 640px; }
+.sb-col { flex: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+.sb-card {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  padding: 26px;
+  background: var(--col, #0c1124);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  min-width: 0;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.sb-card:hover { transform: translateY(-4px); box-shadow: 0 18px 42px -16px rgba(0,0,0,.55); }
+
+/* staggered heights – reproduce the reference masonry split */
+.sb-tall-top     { flex: 63 1 0; }
+.sb-short-bottom { flex: 37 1 0; }
+.sb-short-top    { flex: 39 1 0; }
+.sb-tall-bottom  { flex: 61 1 0; }
+
+/* top-left tag pill */
+.sb-tag {
+  position: absolute; top: 20px; left: 20px; z-index: 2;
+  display: inline-flex; align-items: center;
+  background: rgba(12,17,36,.78); color: #fff;
+  font: 700 11px/1 var(--font);
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 7px 13px; border-radius: 100px;
+}
+.sb-tag.light { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); }
+
+/* card body (bottom aligned) */
+.sb-body { position: relative; z-index: 1; }
+.sb-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: rgba(255,255,255,.28);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.sb-icon svg { width: 23px; height: 23px; color: #111418; }
+.sb-h {
+  font: 700 21px/1.16 var(--font);
+  letter-spacing: -.02em; color: #111418;
+  margin: 0 0 8px; text-wrap: balance;
+}
+.sb-tall-top .sb-h { font-size: 27px; }
+.sb-p {
+  font: 400 14px/1.5 var(--font);
+  color: rgba(17,20,24,.74); margin: 0; max-width: 34ch; text-wrap: pretty;
+}
+.sb-arrow {
+  margin-top: 18px;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: #111418; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform .2s var(--ease);
+}
+.sb-card:hover .sb-arrow { transform: translateX(3px); }
+.sb-arrow svg { width: 17px; height: 17px; }
+/* short solid cards mirror the reference: eyebrow + heading + arrow, no icon */
+.sb-short-top .sb-icon, .sb-short-bottom .sb-icon { display: none; }
+
+/* centre ring card */
+.sb-ring {
+  background: #0c1124;
+  border: 1px solid rgba(255,255,255,.08);
+  align-items: center; justify-content: center;
+}
+.sb-ring-wrap { position: relative; width: min(80%, 270px); aspect-ratio: 1; }
+.sb-ring-svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.sb-ring-svg circle {
+  fill: none; stroke-width: 20; stroke-linecap: butt;
+  stroke-dasharray: 96 438;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,.35));
+}
+.sb-ring-nums text {
+  font: 800 13px var(--font); fill: #fff;
+  text-anchor: middle; dominant-baseline: central;
+  paint-order: stroke; stroke: rgba(12,17,36,.6); stroke-width: 3px; stroke-linejoin: round;
+}
+.sb-ring-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; pointer-events: none;
+}
+.sb-ring-big { font: 800 30px/1 var(--font); color: #fff; letter-spacing: -.03em; }
+.sb-ring-small { font: 500 12px/1.35 var(--font); color: rgba(255,255,255,.62); margin-top: 7px; max-width: 130px; }
+
+/* tablet / mobile → single stacked column, natural heights, ordered 1..6 */
+@media (max-width: 980px) {
+  .sbento { flex-direction: column; height: auto; }
+  .sb-col { display: contents; }
+  .sb-card { flex: 0 0 auto; min-height: 188px; }
+  .sb-ring { min-height: 360px; }
+  .sb-tall-top .sb-h { font-size: 22px; }
+}
+@media (max-width: 600px) { .sb-card { padding: 22px; } }
 </style>
 
 <section class="bonus-section is-bento" id="bonus">
@@ -3407,69 +3512,89 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="bonus-sub">Five done-for-you tools that bring buyers to your store and turn clicks into sales – including auto-promotion across the world's top 5 platforms.</p>
     </div>
 
-    <div class="bundle-grid">
-      <!-- Card 1 – tall: person photo + bullet -->
-      <div class="bcard tall appear d1">
-        <div class="bg" style="background-image:url('https://sellvia.com/images-for-landings/free-online-store-plus-sales-on-autopilot/bonus/1.webp?v=2')"></div>
-        <div class="body">
-          <span class="stat">7</span>
-          <h3>AI influencers promote you.</h3>
-          <p>Seven AI creators make scroll-stopping promo videos for TikTok and Instagram – you never appear on camera.</p>
-        </div>
-      </div>
-
-      <!-- Card 2 – wide: ad-channels load animation + bullet -->
-      <div class="bcard wide is-dark ads appear d2" id="adsCard">
-        <div class="ads-anim">
-          <div class="ads-logos" id="adsLogos">
-            <span class="ads-logo"><img src="https://sellvia.com/images-for-landings/free-online-store-plus-sales-on-autopilot/bonus/amazon.svg" alt="Amazon" width="60" height="60" loading="lazy"></span>
-            <span class="ads-logo"><img src="https://sellvia.com/images-for-landings/free-online-store-plus-sales-on-autopilot/bonus/google.svg" alt="Google" width="60" height="60" loading="lazy"></span>
-            <span class="ads-logo"><img src="https://sellvia.com/images-for-landings/free-online-store-plus-sales-on-autopilot/bonus/facebook.svg" alt="Facebook" width="60" height="60" loading="lazy"></span>
-            <span class="ads-logo"><img src="https://sellvia.com/images-for-landings/free-online-store-plus-sales-on-autopilot/bonus/tiktok.svg" alt="TikTok" width="60" height="60" loading="lazy"></span>
-            <span class="ads-logo"><img src="https://sellvia.com/images-for-landings/free-online-store-plus-sales-on-autopilot/bonus/insta.svg" alt="Instagram" width="60" height="60" loading="lazy"></span>
-          </div>
-          <div class="ads-calc">
-            <div class="ads-calc-head">
-              <span class="ads-calc-label">Progress</span>
-              <span class="ads-pct" id="adsPct">0%</span>
-            </div>
-            <div class="ads-bar" id="adsBar">
-              <i class="ads-seg"></i><i class="ads-seg"></i><i class="ads-seg"></i><i class="ads-seg"></i><i class="ads-seg"></i>
-            </div>
+    <div class="sbento appear">
+      <!-- ░░ Column 1 ░░ -->
+      <div class="sb-col">
+        <!-- 1 · Turnkey Online Store (tall) -->
+        <div class="sb-card sb-tall-top" style="--col:#f97316; order:1">
+          <span class="sb-tag">1 · Your store</span>
+          <div class="sb-body">
+            <span class="sb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 7.33V6.58C8.5 4.84 9.9 3.13 11.64 2.97C13.71 2.78 15.45 4.41 15.45 6.44V7.5"/><path d="M9 22h6c4.02 0 4.74-1.61 4.95-3.57l.76-6C20.98 9.99 20.28 8 16 8H8c-4.28 0-4.98 1.99-4.71 4.43l.76 6C4.26 20.39 4.98 22 9 22Z"/><path d="M15.495 11.5h.009"/><path d="M8.495 11.5h.009"/></svg></span>
+            <h3 class="sb-h">Turnkey online store</h3>
+            <p class="sb-p">Your own store, ready to sell – custom domain, 100+ products and payments set up from day one.</p>
+            <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
           </div>
         </div>
-        <div class="body">
-          <span class="stat">$40</span>
-          <h3>Ad credit included.</h3>
-          <p>Launch ads across Amazon, Google, Facebook, TikTok and Instagram – your first campaign is on us.</p>
+        <!-- 4 · 7 AI Influencers (short) -->
+        <div class="sb-card sb-short-bottom" style="--col:#8b5cf6; order:4">
+          <span class="sb-tag">4 · AI creators</span>
+          <div class="sb-body">
+            <h3 class="sb-h">7 AI influencers</h3>
+            <p class="sb-p">AI creators make scroll-stopping promo videos – you never appear on camera.</p>
+            <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+          </div>
         </div>
       </div>
 
-      <!-- Card 3 – small: data-viz ray burst, no bullet -->
-      <div class="bcard small s1 is-dark burst appear d3">
-        <div class="rays" id="rayBurst"></div>
+      <!-- ░░ Column 2 ░░ -->
+      <div class="sb-col">
+        <!-- 2 · $40 Ad Credit (short) -->
+        <div class="sb-card sb-short-top" style="--col:#3b82f6; order:2">
+          <span class="sb-tag">2 · Ad credit</span>
+          <div class="sb-body">
+            <h3 class="sb-h">$40 ad credit</h3>
+            <p class="sb-p">Launch ads across Amazon, Google, Facebook, TikTok &amp; Instagram – on us.</p>
+            <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+        <!-- 6 · Centre ring (tall, bottom) -->
+        <div class="sb-card sb-ring sb-tall-bottom" style="order:6">
+          <span class="sb-tag light">5-in-1 bundle</span>
+          <div class="sb-ring-wrap">
+            <svg class="sb-ring-svg" viewBox="0 0 220 220" aria-hidden="true">
+              <g transform="rotate(-90 110 110)">
+                <circle cx="110" cy="110" r="85" stroke="#f97316"/>
+                <circle cx="110" cy="110" r="85" stroke="#3b82f6" transform="rotate(72 110 110)"/>
+                <circle cx="110" cy="110" r="85" stroke="#22c55e" transform="rotate(144 110 110)"/>
+                <circle cx="110" cy="110" r="85" stroke="#8b5cf6" transform="rotate(216 110 110)"/>
+                <circle cx="110" cy="110" r="85" stroke="#ec4899" transform="rotate(288 110 110)"/>
+              </g>
+              <g class="sb-ring-nums">
+                <text x="159.96" y="41.23">1</text>
+                <text x="190.84" y="136.27">2</text>
+                <text x="110" y="195">3</text>
+                <text x="29.16" y="136.27">4</text>
+                <text x="60.04" y="41.23">5</text>
+              </g>
+            </svg>
+            <div class="sb-ring-center">
+              <span class="sb-ring-big">$1,899</span>
+              <span class="sb-ring-small">total value – yours free</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Card 4 – small: neon progress ring + bullet -->
-      <div class="bcard small s2 is-dark ring appear d4">
-        <div class="neon-ring">
-          <svg viewBox="0 0 120 120">
-            <defs>
-              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#1e6fff"/>
-                <stop offset="55%" stop-color="#3ec6ff"/>
-                <stop offset="100%" stop-color="#7af0ff"/>
-              </linearGradient>
-            </defs>
-            <circle class="ring-track" cx="60" cy="60" r="46"/>
-            <circle class="ring-prog" cx="60" cy="60" r="46"/>
-          </svg>
-          <span class="ring-label">Done</span>
+      <!-- ░░ Column 3 ░░ -->
+      <div class="sb-col">
+        <!-- 3 · Free Google Promo (tall) -->
+        <div class="sb-card sb-tall-top" style="--col:#22c55e; order:3">
+          <span class="sb-tag">3 · Google</span>
+          <div class="sb-body">
+            <span class="sb-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg></span>
+            <h3 class="sb-h">Free Google promo</h3>
+            <p class="sb-p">SEO blog articles built to rank on Google bring you organic traffic at no extra cost.</p>
+            <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+          </div>
         </div>
-        <div class="body">
-          <span class="stat">Free</span>
-          <h3>Google promo.</h3>
-          <p>SEO blog articles built to rank on Google bring organic traffic – at no extra cost.</p>
+        <!-- 5 · Personal Manager (short) -->
+        <div class="sb-card sb-short-bottom" style="--col:#ec4899; order:5">
+          <span class="sb-tag">5 · Support</span>
+          <div class="sb-body">
+            <h3 class="sb-h">Personal manager</h3>
+            <p class="sb-p">A dedicated growth manager guides you to your first sales and beyond.</p>
+            <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+          </div>
         </div>
       </div>
     </div>
