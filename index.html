@@ -204,7 +204,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 }
 .hero-vignette::before {
   content: ''; position: absolute; inset: -45%;
-  background: conic-gradient(from 0deg, #f97316, #3b82f6, #22c55e, #8b5cf6, #ec4899, #f97316);
+  background: conic-gradient(from 0deg, #ffc862, #59a0f6, #95c90d, #9691ff, #fe9da7, #ffc862);
   filter: blur(55px);
   opacity: 0.42;
   animation: heroVigSpin 16s linear infinite;
@@ -499,7 +499,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #22c55e;
+  background: #95c90d;
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.85);
   animation: hf-pulse 1.6s ease-in-out infinite;
   flex-shrink: 0;
@@ -551,7 +551,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 .hf-badge {
   font-size: 11px;
   font-weight: 700;
-  color: #22c55e;
+  color: #95c90d;
   background: rgba(34, 197, 94, 0.14);
   padding: 3px 8px;
   border-radius: 8px;
@@ -770,11 +770,11 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 }
 .hero .btn-filled:hover { background: #18181c; transform: scale(1.02); }
 @keyframes heroBtnGlow {
-  0%,100% { box-shadow: 0 0 24px 1px rgba(249,115,22,.55), 0 0 58px 6px rgba(249,115,22,.30); }
-  20%     { box-shadow: 0 0 24px 1px rgba(59,130,246,.55), 0 0 58px 6px rgba(59,130,246,.30); }
-  40%     { box-shadow: 0 0 24px 1px rgba(34,197,94,.55),  0 0 58px 6px rgba(34,197,94,.30); }
-  60%     { box-shadow: 0 0 24px 1px rgba(139,92,246,.55), 0 0 58px 6px rgba(139,92,246,.30); }
-  80%     { box-shadow: 0 0 24px 1px rgba(236,72,153,.55), 0 0 58px 6px rgba(236,72,153,.30); }
+  0%,100% { box-shadow: 0 0 24px 1px rgba(255,200,98,.55), 0 0 58px 6px rgba(255,200,98,.30); }
+  20%     { box-shadow: 0 0 24px 1px rgba(89,160,246,.55), 0 0 58px 6px rgba(89,160,246,.30); }
+  40%     { box-shadow: 0 0 24px 1px rgba(149,201,13,.55),  0 0 58px 6px rgba(149,201,13,.30); }
+  60%     { box-shadow: 0 0 24px 1px rgba(150,145,255,.55), 0 0 58px 6px rgba(150,145,255,.30); }
+  80%     { box-shadow: 0 0 24px 1px rgba(254,157,167,.55), 0 0 58px 6px rgba(254,157,167,.30); }
 }
 
 /* ── HERO tiles → docked numbered strip (5 colour tiles; float-in, dock under CTA on scroll) ── */
@@ -1085,24 +1085,30 @@ section { padding: 120px 24px; }
 .how-steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  margin-top: 72px;
-  background: #fff;
+  gap: 24px;
+  margin-top: 56px;
 }
+/* three white cards on white, lifted by a soft colour glow on hover, all copy centred */
 .how-step {
   background: #fff;
-  padding: 52px 44px 48px;
-  position: relative;
+  border-radius: 20px;
+  padding: 46px 32px 42px;
+  text-align: center;
+  box-shadow: 0 3px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);   /* very light grey shadow, no border */
+  transition: opacity .7s var(--ease-out), transform .45s var(--ease), box-shadow .35s var(--ease);
 }
-.how-step + .how-step { border-left: 1px solid rgba(0,0,0,0.06); }
+.how-step:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px -22px color-mix(in srgb, var(--c) 50%, transparent),
+              0 0 26px -12px color-mix(in srgb, var(--c) 40%, transparent);
+}
 .how-step-num {
-  font-size: 64px;
+  font-size: 56px;
   font-weight: 800;
   letter-spacing: -0.05em;
-  color: var(--c-amber);
-  opacity: 0.25;
+  color: var(--c);
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
 .how-step h3 {
   font-size: 22px;
@@ -1112,19 +1118,15 @@ section { padding: 120px 24px; }
   margin-bottom: 12px;
   line-height: 1.2;
 }
-.how-step p { font-size: 15px; color: var(--c-gray2); line-height: 1.65; }
-.how-step-tag {
-  display: inline-block;
-  margin-top: 18px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--c-amber);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.how-step p { font-size: 15px; color: var(--c-gray2); line-height: 1.65; max-width: 30ch; margin: 0 auto; }
+.how-sec .sec-title-xl em {
+  font-style: normal;
+  background: linear-gradient(95deg, #59a0f6, #95c90d, #fe9da7);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
 }
 @media(max-width:760px) {
-  .how-steps { grid-template-columns: 1fr; margin-top: 18px; }
-  .how-step + .how-step { border-left: none; border-top: 1px solid rgba(0,0,0,0.06); }
+  .how-steps { grid-template-columns: 1fr; gap: 16px; margin-top: 32px; }
 }
 
 /* ════ SECTION 4: WHAT DO I GET (features) ════ */
@@ -1970,7 +1972,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   transition: color 0.25s;
 }
 .topbar:hover .topbar-text {
-  background: linear-gradient(90deg, #f97316, #3b82f6, #22c55e, #8b5cf6, #ec4899, #f97316);
+  background: linear-gradient(90deg, #ffc862, #59a0f6, #95c90d, #9691ff, #fe9da7, #ffc862);
   background-size: 200% auto;
   -webkit-background-clip: text;
           background-clip: text;
@@ -2049,23 +2051,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </button>
     </div>
     <div class="hero-pills" id="heroPills" aria-hidden="true">
-      <div class="hero-pill" style="--col:#f97316">
+      <div class="hero-pill" style="--col:#ffc862">
         <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 7.33V6.58C8.5 4.84 9.9 3.13 11.64 2.97C13.71 2.78 15.45 4.41 15.45 6.44V7.5"/><path d="M9 22h6c4.02 0 4.74-1.61 4.95-3.57l.76-6C20.98 9.99 20.28 8 16 8H8c-4.28 0-4.98 1.99-4.71 4.43l.76 6C4.26 20.39 4.98 22 9 22Z"/><path d="M15.495 11.5h.009"/><path d="M8.495 11.5h.009"/></svg><span class="hp-num">1</span></span>
         <span class="hp-label">Turnkey<br>Online Store</span>
       </div>
-      <div class="hero-pill" style="--col:#3b82f6">
+      <div class="hero-pill" style="--col:#59a0f6">
         <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.3"/><path d="M14.3 9.2a2.4 2.4 0 0 0-2.3-1.4c-1.4 0-2.4.8-2.4 2 0 2.7 4.9 1.4 4.9 4.1 0 1.2-1.1 2-2.5 2a2.5 2.5 0 0 1-2.3-1.4"/><path d="M12 6.3v11.4"/></svg><span class="hp-num">2</span></span>
         <span class="hp-label">$40<br>Ad Credit</span>
       </div>
-      <div class="hero-pill" style="--col:#22c55e">
+      <div class="hero-pill" style="--col:#95c90d">
         <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg><span class="hp-num">3</span></span>
         <span class="hp-label">Free<br>Google Promo</span>
       </div>
-      <div class="hero-pill" style="--col:#8b5cf6">
+      <div class="hero-pill" style="--col:#9691ff">
         <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5c2.21 0 4-1.79 4-4V6c0-2.21-1.79-4-4-4S8 3.79 8 6v5.5c0 2.21 1.79 4 4 4Z"/><path d="M4.35 9.65v1.7C4.35 15.57 7.78 19 12 19s7.65-3.43 7.65-7.65v-1.7"/><path d="M10.61 6.43c.9-.33 1.88-.33 2.78 0"/><path d="M11.2 8.55c.53-.14 1.08-.14 1.61 0"/><path d="M12 19v3"/></svg><span class="hp-num">4</span></span>
         <span class="hp-label">7 AI<br>Influencers</span>
       </div>
-      <div class="hero-pill" style="--col:#ec4899">
+      <div class="hero-pill" style="--col:#fe9da7">
         <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a7 7 0 0 1 14 0"/><rect x="3.4" y="12.3" width="3.4" height="5.2" rx="1.4"/><rect x="17.2" y="12.3" width="3.4" height="5.2" rx="1.4"/><path d="M19 17.5v.4a3 3 0 0 1-3 3h-2.3"/></svg><span class="hp-num">5</span></span>
         <span class="hp-label">Personal<br>Manager</span>
       </div>
@@ -2430,8 +2432,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 .freebasic-section .pv-hero-disc {
   font-size: 8px; font-weight: 700; color: #15803d;
-  background: rgba(34,197,94,.12);
-  border: 1px solid rgba(34,197,94,.22);
+  background: rgba(149,201,13,.12);
+  border: 1px solid rgba(149,201,13,.22);
   border-radius: 4px; padding: 1px 5px;
 }
 .freebasic-section .pv-hero-cta {
@@ -2457,8 +2459,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 .freebasic-section .pv-item-thumb { width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0; }
 .freebasic-section .pv-thumb-1 { background: linear-gradient(135deg, #f59e0b, #b45309); }
-.freebasic-section .pv-thumb-2 { background: linear-gradient(135deg, #22c55e, #15803d); }
-.freebasic-section .pv-thumb-3 { background: linear-gradient(135deg, #3b82f6, #1e40af); }
+.freebasic-section .pv-thumb-2 { background: linear-gradient(135deg, #95c90d, #15803d); }
+.freebasic-section .pv-thumb-3 { background: linear-gradient(135deg, #59a0f6, #1e40af); }
 .freebasic-section .pv-store-item-info { flex: 1; min-width: 0; }
 .freebasic-section .pv-item-name { font-size: 10px; font-weight: 700; color: #111114; }
 .freebasic-section .pv-item-sub  { font-size: 9px; color: rgba(0,0,0,.45); margin-top: 2px; }
@@ -2550,7 +2552,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .freebasic-section .pv-fc-4 .pv-float-card-icon { color: #0d9488; }
 .freebasic-section .pv-float-card-badge {
   font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 50px;
-  color: #15803d; background: rgba(34,197,94,.14); border: 1px solid rgba(34,197,94,.2);
+  color: #15803d; background: rgba(149,201,13,.14); border: 1px solid rgba(149,201,13,.2);
 }
 .freebasic-section .pv-float-card-val {
   font-size: 22px; font-weight: 800; color: #111114; line-height: 1;
@@ -2767,7 +2769,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 /* ════ BONUS – Stripe-style modular bento (dark) ════ */
 .bonus-section.is-bento {
-  background: #10172A;
+  background: #0e1014;
   position: relative;
   overflow: hidden;
 }
@@ -3300,7 +3302,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 .cs-icon {
   width: 34px; height: 34px; border-radius: 9px;
-  background: linear-gradient(135deg,#22c55e,#16a34a);
+  background: linear-gradient(135deg,#95c90d,#16a34a);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .cs-icon svg { width: 17px; height: 17px; }
@@ -3308,8 +3310,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .cs-title { font-size: 12.5px; font-weight: 600; color: #1d1d1f; line-height: 1.3; margin-bottom: 2px; }
 .cs-sub   { font-size: 11px; color: rgba(0,0,0,.45); line-height: 1.3; }
 .cs-prog  { margin-top: 9px; height: 3px; background: rgba(0,0,0,.08); border-radius: 2px; overflow: hidden; }
-.cs-prog-bar { height: 100%; background: linear-gradient(90deg,#22c55e,#16a34a); animation: progressFill 2s ease-in-out infinite; }
-.cs-live { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; flex-shrink: 0; margin-top: 4px; box-shadow: 0 0 6px rgba(34,197,94,.7); animation: livePulse 1.8s ease-in-out infinite; }
+.cs-prog-bar { height: 100%; background: linear-gradient(90deg,#95c90d,#16a34a); animation: progressFill 2s ease-in-out infinite; }
+.cs-live { width: 7px; height: 7px; border-radius: 50%; background: #95c90d; flex-shrink: 0; margin-top: 4px; box-shadow: 0 0 6px rgba(149,201,13,.7); animation: livePulse 1.8s ease-in-out infinite; }
 
 .card-steps {
   bottom: 32px; right: 20px; width: 196px;
@@ -3352,8 +3354,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .rev-chart { display: flex; align-items: flex-end; gap: 4px; height: 44px; margin-bottom: 9px; }
 .rbar { border-radius: 3px 3px 0 0; flex: 1; }
 .rbar.low { background: rgba(0,0,0,.1); }
-.rbar.mid { background: rgba(59,130,246,.35); }
-.rbar.hi  { background: #3b82f6; }
+.rbar.mid { background: rgba(89,160,246,.35); }
+.rbar.hi  { background: #59a0f6; }
 .rbar.top { background: linear-gradient(180deg,#60a5fa,#2563eb); }
 .rev-trend { display: flex; align-items: center; gap: 8px; padding-top: 9px; border-top: 1px solid rgba(0,0,0,.08); }
 .trend-badge { background: rgba(22,163,74,.12); border: 1px solid rgba(22,163,74,.25); color: #15803d; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 6px; }
@@ -3404,7 +3406,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    a large 5-sector ring. Desktop = staggered masonry (flex columns + grow
    ratios, mirrors the reference); mobile = single stacked column ordered 1-6
    via display:contents on the columns. */
-.sbento { display: flex; gap: 16px; align-items: stretch; height: 640px; }
+.sbento { display: flex; gap: 16px; align-items: stretch; height: 920px; }
 .sb-col { flex: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 
 .sb-card {
@@ -3412,23 +3414,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   border-radius: 22px;
   overflow: hidden;
   padding: 26px;
-  background: var(--col, #0c1124);
+  background-color: #0c1124;                 /* dark base → rounded corners blend into the dark section */
+  background-image: var(--photo, none);      /* photo on the card itself = clean rounded corners */
+  background-size: cover; background-position: center;
   display: flex; flex-direction: column; justify-content: flex-end;
   min-width: 0;
   transition: transform .25s var(--ease), box-shadow .25s var(--ease);
 }
 .sb-card:hover { transform: translateY(-4px); box-shadow: 0 18px 42px -16px rgba(0,0,0,.55); }
+/* REST = photo (on the card bg) + bottom darkening so the white copy reads.
+   HOVER / scroll-in demo = the muted colour PLATE (::before) fades in over the photo,
+   darkening fades out, strong colour glow. */
+.sb-card:not(.sb-ring)::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: var(--col);
+  opacity: 0; transition: opacity .5s var(--ease);
+}
+.sb-card:not(.sb-ring)::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.5) 40%, rgba(0,0,0,.16) 64%, transparent 82%);
+  opacity: 1; transition: opacity .5s var(--ease);
+}
+.sb-card:not(.sb-ring):hover::before,
+.sb-card:not(.sb-ring).demo-on::before { opacity: 1; }
+.sb-card:not(.sb-ring):hover::after,
+.sb-card:not(.sb-ring).demo-on::after { opacity: 0; }
+.sb-card:not(.sb-ring):hover,
+.sb-card:not(.sb-ring).demo-on {
+  transform: translateY(-4px);
+  box-shadow: 0 0 42px -2px var(--col);
+}
 
 /* staggered heights – reproduce the reference masonry split */
 .sb-tall-top     { flex: 63 1 0; }
 .sb-short-bottom { flex: 37 1 0; }
-.sb-short-top    { flex: 39 1 0; }
-.sb-tall-bottom  { flex: 61 1 0; }
+.sb-short-top    { flex: 1 1 0; }                 /* $40 card → fills the column above the square ring (vertical) */
+.sb-tall-bottom  { flex: 0 0 auto; aspect-ratio: 1; }   /* ring card → square */
 
 /* top-left tag pill */
 .sb-tag {
   position: absolute; top: 20px; left: 20px; z-index: 2;
-  display: inline-flex; align-items: center;
+  display: none;   /* top pills removed */
+  align-items: center;
   background: rgba(12,17,36,.78); color: #fff;
   font: 700 11px/1 var(--font);
   letter-spacing: .07em; text-transform: uppercase;
@@ -3437,7 +3464,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .sb-tag.light { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); }
 
 /* card body (bottom aligned) */
-.sb-body { position: relative; z-index: 1; }
+.sb-body { position: relative; z-index: 2; }
 .sb-icon {
   width: 42px; height: 42px; border-radius: 12px;
   background: rgba(255,255,255,.28);
@@ -3446,20 +3473,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 .sb-icon svg { width: 23px; height: 23px; color: #111418; }
 .sb-h {
-  font: 700 21px/1.16 var(--font);
-  letter-spacing: -.02em; color: #111418;
+  font: 700 20px/1.22 var(--font);
+  letter-spacing: -.02em; color: #fff;
   margin: 0 0 8px; text-wrap: balance;
 }
-.sb-tall-top .sb-h { font-size: 27px; }
+.sb-tall-top .sb-h { font-size: 20px; }
 .sb-p {
   font: 400 14px/1.5 var(--font);
-  color: rgba(17,20,24,.74); margin: 0; max-width: 34ch; text-wrap: pretty;
+  color: rgba(255,255,255,.88); margin: 0; max-width: 42ch; text-wrap: pretty;
 }
 .sb-arrow {
   margin-top: 18px;
   width: 38px; height: 38px; border-radius: 50%;
   background: #111418; color: #fff;
-  display: inline-flex; align-items: center; justify-content: center;
+  display: none;   /* arrow circles removed */
+  align-items: center; justify-content: center;
   transition: transform .2s var(--ease);
 }
 .sb-card:hover .sb-arrow { transform: translateX(3px); }
@@ -3475,29 +3503,65 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 .sb-ring-wrap { position: relative; width: min(80%, 270px); aspect-ratio: 1; }
 .sb-ring-svg { width: 100%; height: 100%; display: block; overflow: visible; }
-.sb-ring-svg circle {
-  fill: none; stroke-width: 20; stroke-linecap: butt;
-  stroke-dasharray: 96 438;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,.35));
+/* monolithic neon ring: five 72° colour arcs butted edge-to-edge (no gaps),
+   each glowing in its own colour, filling on a loop with a "Done" reveal */
+/* faint track ring at rest; the colour band loads over it on reveal (no inner disc) */
+.sb-ring-svg .seg-track { fill: none; stroke: rgba(255,255,255,.09); stroke-width: 15; }
+.sb-ring-svg .seg {
+  fill: none; stroke-width: 15; stroke-linecap: round;
+  stroke-dasharray: 106.8 427.3;
+  stroke-dashoffset: 106.8;                 /* empty until the section scrolls into view */
+  filter: blur(0.6px) drop-shadow(0 0 7px var(--g)) drop-shadow(0 0 18px var(--g));
 }
-.sb-ring-nums text {
-  font: 800 13px var(--font); fill: #fff;
-  text-anchor: middle; dominant-baseline: central;
-  paint-order: stroke; stroke: rgba(12,17,36,.6); stroke-width: 3px; stroke-linejoin: round;
+/* dynamic, shimmering glow – each sector pulses its glow length on its own clock */
+.sb-ring-svg .seg.s1 { animation: ringGlow 2.3s ease-in-out infinite; }
+.sb-ring-svg .seg.s2 { animation: ringGlow 3.1s ease-in-out -0.6s infinite; }
+.sb-ring-svg .seg.s3 { animation: ringGlow 2.6s ease-in-out -1.3s infinite; }
+.sb-ring-svg .seg.s4 { animation: ringGlow 3.4s ease-in-out -0.9s infinite; }
+.sb-ring-svg .seg.s5 { animation: ringGlow 2.1s ease-in-out -1.7s infinite; }
+@keyframes ringGlow {
+  0%,100% { filter: blur(0.6px) drop-shadow(0 0 5px var(--g)) drop-shadow(0 0 13px var(--g)) drop-shadow(0 0 20px var(--g)); }
+  50%     { filter: blur(0.6px) drop-shadow(0 0 11px var(--g)) drop-shadow(0 0 30px var(--g)) drop-shadow(0 0 46px var(--g)); }
 }
+/* on reveal the colour band ALSO loads round the circle like a progress bar (one sector after another) */
+.bonus-section.is-revealed .seg.s1 { animation: ringGlow 2.3s ease-in-out infinite, sbFill1 6s linear infinite; }
+.bonus-section.is-revealed .seg.s2 { animation: ringGlow 3.1s ease-in-out -0.6s infinite, sbFill2 6s linear infinite; }
+.bonus-section.is-revealed .seg.s3 { animation: ringGlow 2.6s ease-in-out -1.3s infinite, sbFill3 6s linear infinite; }
+.bonus-section.is-revealed .seg.s4 { animation: ringGlow 3.4s ease-in-out -0.9s infinite, sbFill4 6s linear infinite; }
+.bonus-section.is-revealed .seg.s5 { animation: ringGlow 2.1s ease-in-out -1.7s infinite, sbFill5 6s linear infinite; }
+@keyframes sbFill1 { 0%{stroke-dashoffset:106.8} 10%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
+@keyframes sbFill2 { 0%,10%{stroke-dashoffset:106.8} 20%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
+@keyframes sbFill3 { 0%,20%{stroke-dashoffset:106.8} 30%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
+@keyframes sbFill4 { 0%,30%{stroke-dashoffset:106.8} 40%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
+@keyframes sbFill5 { 0%,40%{stroke-dashoffset:106.8} 50%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
 .sb-ring-center {
   position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   text-align: center; pointer-events: none;
 }
-.sb-ring-big { font: 800 30px/1 var(--font); color: #fff; letter-spacing: -.03em; }
-.sb-ring-small { font: 500 12px/1.35 var(--font); color: rgba(255,255,255,.62); margin-top: 7px; max-width: 130px; }
+.sb-ring-done {
+  font: 700 48px var(--font);
+  color: #eaf7ff;
+  text-shadow: 0 0 10px rgba(120,210,255,.9), 0 0 22px rgba(120,210,255,.5);
+  opacity: 0;
+}
+.bonus-section.is-revealed .sb-ring-done { animation: sbRingDone 6s var(--ease) infinite; }
+@keyframes sbRingDone {
+  0%, 46%   { opacity: 0; }
+  54%, 84%  { opacity: 1; }
+  92%, 100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bonus-section.is-revealed .sb-ring-svg .seg { animation: none; stroke-dashoffset: 0; }
+  .bonus-section.is-revealed .sb-ring-done { animation: none; opacity: 1; }
+}
 
 /* tablet / mobile → single stacked column, natural heights, ordered 1..6 */
 @media (max-width: 980px) {
   .sbento { flex-direction: column; height: auto; }
   .sb-col { display: contents; }
   .sb-card { flex: 0 0 auto; min-height: 188px; }
+  .sb-tall-bottom { aspect-ratio: auto; }
   .sb-ring { min-height: 360px; }
   .sb-tall-top .sb-h { font-size: 22px; }
 }
@@ -3509,28 +3573,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="get-head appear">
       <span class="bonus-pill">STEP 2 – YOUR GIFT</span>
       <h2 class="bonus-heading">5-in-1 Turbo Sales Bundle – <em>normally $1,899, yours free.</em></h2>
-      <p class="bonus-sub">Five done-for-you tools that bring buyers to your store and turn clicks into sales – including auto-promotion across the world's top 5 platforms.</p>
+      <p class="bonus-sub">Five done-for-you tools designed to bring customers to your store and turn visits into sales. Our gift to every new store owner.</p>
     </div>
 
     <div class="sbento appear">
       <!-- ░░ Column 1 ░░ -->
       <div class="sb-col">
         <!-- 1 · Turnkey Online Store (tall) -->
-        <div class="sb-card sb-tall-top" style="--col:#f97316; order:1">
+        <div class="sb-card sb-tall-top" style="--col:#ffc862; order:1; --photo:url('img/bonus/1.webp')">
           <span class="sb-tag">1 · Your store</span>
           <div class="sb-body">
-            <span class="sb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 7.33V6.58C8.5 4.84 9.9 3.13 11.64 2.97C13.71 2.78 15.45 4.41 15.45 6.44V7.5"/><path d="M9 22h6c4.02 0 4.74-1.61 4.95-3.57l.76-6C20.98 9.99 20.28 8 16 8H8c-4.28 0-4.98 1.99-4.71 4.43l.76 6C4.26 20.39 4.98 22 9 22Z"/><path d="M15.495 11.5h.009"/><path d="M8.495 11.5h.009"/></svg></span>
-            <h3 class="sb-h">Turnkey online store</h3>
-            <p class="sb-p">Your own store, ready to sell – custom domain, 100+ products and payments set up from day one.</p>
+            <h3 class="sb-h">Turnkey online store, live in 60 seconds</h3>
+            <p class="sb-p">A fully hosted website with your own domain, SSL encryption, professional design, and 100+ products already loaded. You don't build anything – we hand it to you ready.</p>
             <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
           </div>
         </div>
         <!-- 4 · 7 AI Influencers (short) -->
-        <div class="sb-card sb-short-bottom" style="--col:#8b5cf6; order:4">
+        <div class="sb-card sb-short-bottom" style="--col:#9691ff; order:4; --photo:url('img/bonus/4.webp')">
           <span class="sb-tag">4 · AI creators</span>
           <div class="sb-body">
-            <h3 class="sb-h">7 AI influencers</h3>
-            <p class="sb-p">AI creators make scroll-stopping promo videos – you never appear on camera.</p>
+            <h3 class="sb-h">7 AI Influencers working for you – free for 14 days</h3>
+            <p class="sb-p">Seven AI-powered creators produce scroll-stopping promo videos with captions for TikTok and Instagram. Pick your favorites, download the videos, and post. Your products get promoted on social media – without you ever appearing on camera.</p>
             <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
           </div>
         </div>
@@ -3539,11 +3602,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- ░░ Column 2 ░░ -->
       <div class="sb-col">
         <!-- 2 · $40 Ad Credit (short) -->
-        <div class="sb-card sb-short-top" style="--col:#3b82f6; order:2">
+        <div class="sb-card sb-short-top" style="--col:#59a0f6; order:2; --photo:url('img/bonus/2.webp')">
           <span class="sb-tag">2 · Ad credit</span>
           <div class="sb-body">
-            <h3 class="sb-h">$40 ad credit</h3>
-            <p class="sb-p">Launch ads across Amazon, Google, Facebook, TikTok &amp; Instagram – on us.</p>
+            <h3 class="sb-h">$40 ad credit to drive your first customers</h3>
+            <p class="sb-p">Your store comes with $40 in free advertising credit. Turn on ads with one click and start reaching people who are already searching for products like yours. Your first campaign costs you nothing.</p>
             <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
           </div>
         </div>
@@ -3553,23 +3616,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="sb-ring-wrap">
             <svg class="sb-ring-svg" viewBox="0 0 220 220" aria-hidden="true">
               <g transform="rotate(-90 110 110)">
-                <circle cx="110" cy="110" r="85" stroke="#f97316"/>
-                <circle cx="110" cy="110" r="85" stroke="#3b82f6" transform="rotate(72 110 110)"/>
-                <circle cx="110" cy="110" r="85" stroke="#22c55e" transform="rotate(144 110 110)"/>
-                <circle cx="110" cy="110" r="85" stroke="#8b5cf6" transform="rotate(216 110 110)"/>
-                <circle cx="110" cy="110" r="85" stroke="#ec4899" transform="rotate(288 110 110)"/>
-              </g>
-              <g class="sb-ring-nums">
-                <text x="159.96" y="41.23">1</text>
-                <text x="190.84" y="136.27">2</text>
-                <text x="110" y="195">3</text>
-                <text x="29.16" y="136.27">4</text>
-                <text x="60.04" y="41.23">5</text>
+                <circle class="seg-track" cx="110" cy="110" r="85"/>
+                <circle class="seg s1" cx="110" cy="110" r="85" stroke="#ffc862" style="--g:#ffc862"/>
+                <circle class="seg s2" cx="110" cy="110" r="85" stroke="#59a0f6" transform="rotate(72 110 110)" style="--g:#59a0f6"/>
+                <circle class="seg s3" cx="110" cy="110" r="85" stroke="#95c90d" transform="rotate(144 110 110)" style="--g:#95c90d"/>
+                <circle class="seg s4" cx="110" cy="110" r="85" stroke="#9691ff" transform="rotate(216 110 110)" style="--g:#9691ff"/>
+                <circle class="seg s5" cx="110" cy="110" r="85" stroke="#fe9da7" transform="rotate(288 110 110)" style="--g:#fe9da7"/>
               </g>
             </svg>
             <div class="sb-ring-center">
-              <span class="sb-ring-big">$1,899</span>
-              <span class="sb-ring-small">total value – yours free</span>
+              <span class="sb-ring-done">Done</span>
             </div>
           </div>
         </div>
@@ -3578,21 +3634,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- ░░ Column 3 ░░ -->
       <div class="sb-col">
         <!-- 3 · Free Google Promo (tall) -->
-        <div class="sb-card sb-tall-top" style="--col:#22c55e; order:3">
+        <div class="sb-card sb-tall-top" style="--col:#95c90d; order:3; --photo:url('img/bonus/3.webp')">
           <span class="sb-tag">3 · Google</span>
           <div class="sb-body">
-            <span class="sb-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg></span>
-            <h3 class="sb-h">Free Google promo</h3>
-            <p class="sb-p">SEO blog articles built to rank on Google bring you organic traffic at no extra cost.</p>
+            <h3 class="sb-h">Free Google Promo – organic traffic on autopilot</h3>
+            <p class="sb-p">Your store blog launches with professionally written articles built to rank on Google and bring free organic traffic. While ads bring instant visitors, these articles bring long-term customers – at zero cost to you.</p>
             <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
           </div>
         </div>
         <!-- 5 · Personal Manager (short) -->
-        <div class="sb-card sb-short-bottom" style="--col:#ec4899; order:5">
+        <div class="sb-card sb-short-bottom" style="--col:#fe9da7; order:5; --photo:url('img/bonus/5.webp')">
           <span class="sb-tag">5 · Support</span>
           <div class="sb-body">
-            <h3 class="sb-h">Personal manager</h3>
-            <p class="sb-p">A dedicated growth manager guides you to your first sales and beyond.</p>
+            <h3 class="sb-h">Personal growth manager to guide you</h3>
+            <p class="sb-p">A real person dedicated to your success. They help you set up, show you how everything works, review your performance, and give tailored advice on how to grow. Available by chat, email, and scheduled calls.</p>
             <span class="sb-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
           </div>
         </div>
@@ -3600,7 +3655,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div style="text-align:center;margin-top:64px" class="appear">
       <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled">Get my free store + Turbo Pack</a>
-      <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.55)">Get started in less than 60 seconds • Cancel anytime</p>
+      <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.55)">Free 14-day trial · Start in 60 seconds · Cancel anytime</p>
     </div>
   </div>
 </section>
@@ -3653,42 +3708,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 })();
 
-/* ── Bento scroll-in demo: replay the hover state on each card once,
-   in sequence, the first time the section reaches the viewport. ── */
+/* ── Bonus bento scroll-in: reveal the ring (frosted → fills → keeps looping) and play
+   a one-time hover demo across the cards in sequence. Afterwards only the ring animates;
+   cards show their photo again only on a real hover. ── */
 ;(function() {
   const section = document.querySelector('.bonus-section.is-bento');
   if (!section) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cards = Array.from(section.querySelectorAll('.sb-card:not(.sb-ring)'));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const cards = Array.from(section.querySelectorAll('.bcard'));
-  if (!cards.length) return;
+  const HOLD_MS    = 900;  // how long each card holds its "hover" look
+  const STAGGER_MS = 360;  // gap between consecutive cards
 
-  const HOLD_MS    = 700; // how long each card stays in the "hover" state
-  const STAGGER_MS = 320; // delay between starting consecutive cards
-
-  function runDemo() {
+  function reveal() {
+    section.classList.add('is-revealed');          // starts the ring fill + loop (CSS)
+    if (reduce) return;
     cards.forEach(function(card, i) {
       setTimeout(function() {
         card.classList.add('demo-on');
         setTimeout(function() { card.classList.remove('demo-on'); }, HOLD_MS);
-      }, i * STAGGER_MS);
+      }, 250 + i * STAGGER_MS);
     });
   }
 
-  if (!('IntersectionObserver' in window)) {
-    runDemo();
-    return;
-  }
-
+  if (!('IntersectionObserver' in window)) { reveal(); return; }
   const io = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        io.unobserve(section);
-        setTimeout(runDemo, 220);
-      }
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { io.unobserve(section); reveal(); }
     });
-  }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
-
+  }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
   io.observe(section);
 })();
 
@@ -3915,27 +3963,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="sec-in">
     <div class="appear" style="text-align:center">
       <div class="sec-label">How it works</div>
-      <h2 class="sec-title-xl on-light">From zero to sale<br>in 3 simple steps.</h2>
+      <h2 class="sec-title-xl on-light">From zero to sale<br>in <em>3 simple steps.</em></h2>
       <p class="sec-body" style="max-width:540px;margin:0 auto">No experience, no tech skills, no inventory needed.</p>
     </div>
     <div class="how-steps">
-      <div class="how-step appear d1">
+      <div class="how-step appear d1" style="--c:#59a0f6">
         <div class="how-step-num">01</div>
         <h3>We build your store</h3>
-        <p>Sign up free and we immediately set up a complete online store for you – loaded with digital products people actually buy. Your store is live in minutes and your Turbo Pack activates instantly.</p>
-        <span class="how-step-tag">Done for you</span>
+        <p>Sign up free and we set up your store with 100+ products, professional design, and payments. Your Turbo Pack activates instantly.</p>
       </div>
-      <div class="how-step appear d2">
+      <div class="how-step appear d2" style="--c:#95c90d">
         <div class="how-step-num">02</div>
-        <h3>We promote it for you</h3>
-        <p>The world's top 5 ad platforms – Amazon, Google, Facebook, TikTok and Instagram – promote your products automatically. No setup, no analysis, no stress.</p>
-        <span class="how-step-tag">On autopilot</span>
+        <h3>Your promotion starts</h3>
+        <p>Use your $40 ad credit, post AI influencer videos, and let your Google Promo articles bring organic traffic. Multiple channels working at once.</p>
       </div>
-      <div class="how-step appear d3">
+      <div class="how-step appear d3" style="--c:#fe9da7">
         <div class="how-step-num">03</div>
-        <h3>Get paid, keep 50–70%</h3>
-        <p>When a customer buys from your store, you keep 50–70% of every sale as your profit. Products deliver instantly – no shipping, no hassle from your side.</p>
-        <span class="how-step-tag">Your profit</span>
+        <h3>You earn from every sale</h3>
+        <p>Customers buy your products, they deliver instantly, and you keep 50-70% of every sale as profit. Your manager helps you optimize and grow.</p>
       </div>
     </div>
   </div>
