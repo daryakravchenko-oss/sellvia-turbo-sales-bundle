@@ -770,11 +770,11 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 }
 .hero .btn-filled:hover { background: #18181c; transform: scale(1.02); }
 @keyframes heroBtnGlow {
-  0%,100% { box-shadow: 0 0 24px 1px rgba(255,200,98,.55), 0 0 58px 6px rgba(255,200,98,.30); }
-  20%     { box-shadow: 0 0 24px 1px rgba(89,160,246,.55), 0 0 58px 6px rgba(89,160,246,.30); }
-  40%     { box-shadow: 0 0 24px 1px rgba(149,201,13,.55),  0 0 58px 6px rgba(149,201,13,.30); }
-  60%     { box-shadow: 0 0 24px 1px rgba(150,145,255,.55), 0 0 58px 6px rgba(150,145,255,.30); }
-  80%     { box-shadow: 0 0 24px 1px rgba(254,157,167,.55), 0 0 58px 6px rgba(254,157,167,.30); }
+  0%,100% { box-shadow: 0 0 24px 1px rgba(255,200,98,.72), 0 0 58px 6px rgba(255,200,98,.39); }
+  20%     { box-shadow: 0 0 24px 1px rgba(89,160,246,.72), 0 0 58px 6px rgba(89,160,246,.39); }
+  40%     { box-shadow: 0 0 24px 1px rgba(149,201,13,.72),  0 0 58px 6px rgba(149,201,13,.39); }
+  60%     { box-shadow: 0 0 24px 1px rgba(150,145,255,.72), 0 0 58px 6px rgba(150,145,255,.39); }
+  80%     { box-shadow: 0 0 24px 1px rgba(254,157,167,.72), 0 0 58px 6px rgba(254,157,167,.39); }
 }
 
 /* ── HERO tiles → docked numbered strip (5 colour tiles; float-in, dock under CTA on scroll) ── */
@@ -875,6 +875,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 /* Apple-style full-width stat strip between sections */
 .stat-bar {
   background: #ffffff;
+  padding-bottom: clamp(56px, 9vw, 120px);
 }
 .stat-bar-inner {
   max-width: var(--max);
@@ -1314,286 +1315,23 @@ section { padding: 120px 24px; }
   .story-caption { grid-template-columns: 1fr; padding: 40px 24px 32px; }
 }
 
-/* ════ AWARDS ════ */
-.awards-sec { background: var(--c-lightbg); text-align: center; }
-.awards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  max-width: 1280px;
-  margin: 64px auto 0;
-  padding: 0 24px;
-}
-.award-card {
-  display: block;
-  border-radius: 22px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 6px 16px rgba(15, 23, 42, 0.06);
-  transition:
-    transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
-  will-change: transform;
-}
-.award-card:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    0 4px 8px rgba(15, 23, 42, 0.05),
-    0 18px 44px rgba(15, 23, 42, 0.12);
-}
-.award-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-@media (max-width: 1100px) {
-  .awards-grid { grid-template-columns: repeat(2, 1fr); max-width: 820px; }
-  .awards-grid > :last-child { grid-column: 1 / -1; max-width: calc(50% - 14px); justify-self: center; }
-}
-@media (max-width: 640px) {
-  /* Drop grid's own horizontal padding so cards span the full content
-     area of .awards-sec. The section's own padding becomes the gutter
-     (16px each side at ≤480px → 358px card on a 390px viewport). */
-  .awards-grid { grid-template-columns: 1fr; max-width: none; padding: 0; gap: 18px; }
-  .awards-grid > :last-child { grid-column: auto; max-width: none; justify-self: stretch; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .award-card, .award-card:hover { transition: none; transform: none; }
-}
-
-/* Featured logos marquee */
-.featured-marquee {
-  margin-bottom: 83px;
-  overflow: hidden;
-  position: relative;
-  padding: 0 24px;
-}
-.featured-marquee::before,
-.featured-marquee::after {
-  content: '';
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 100px;
-  z-index: 2;
-  pointer-events: none;
-}
-.featured-marquee::before { left: 0; background: linear-gradient(to right, #1d1d1f, transparent); }
-.featured-marquee::after  { right: 0; background: linear-gradient(to left, #1d1d1f, transparent); }
-.featured-strip {
-  display: flex;
-  align-items: center;
-  gap: 80px;
-  width: max-content;
-  animation: featuredScroll 21s linear infinite;
-}
-.featured-strip img {
-  height: 31px;
-  opacity: 0.35;
-  flex-shrink: 0;
-  filter: brightness(0) invert(1);
-  transition: opacity 0.3s;
-}
-.featured-strip img:hover { opacity: 0.6; }
-@keyframes featuredScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-25%); }
-}
-.press-row {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px;
-  margin-top: 60px;
-  padding-top: 56px;
-  border-top: 1px solid var(--c-gray4);
-}
-.press-item {
-  font-size: 14px;
-  color: var(--c-gray2);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.press-item strong { color: var(--c-near); }
-@media(max-width:700px) {
-  @keyframes featuredScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-}
-
-/* ════ RATINGS ════ */
-.ratings-sec { background: var(--c-near); padding: 120px 24px; }
-@media(max-width:1200px) { .ratings-sec { padding: 100px 24px; } }
-@media(max-width:860px)  { .ratings-sec { padding: 72px 24px; } }
-@media(max-width:480px)  { .ratings-sec { padding: 56px 16px; } }
-.ratings-inner {
-  max-width: var(--max);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 0;
-  border-radius: 20px;
-  overflow: hidden;
-}
-.rat-card {
-  background: transparent;
-  padding: 44px 32px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.rat-card + .rat-card { border-left: 1px solid rgba(255,255,255,0.08); }
-.rat-plat { font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: 11px; letter-spacing:0.01em; }
-.rat-logo { height: 31px; margin-bottom: 11px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.85; }
-.rat-stars { color: #ffcc00; font-size: 21px; letter-spacing: 2px; margin-bottom: 11px; }
-.rat-score { font-size: 56px; font-weight: 700; color: #fff; letter-spacing: -0.03em; }
-.rat-count { font-size: 17px; color: rgba(255,255,255,0.4); margin-top: 8px; }
-@media(max-width:680px) {
-  .ratings-inner { grid-template-columns: 1fr; }
-  .rat-card + .rat-card { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); }
-}
-
-/* ════ TESTIMONIALS ════ */
-.test-sec { background: var(--c-lightbg); }
-.test-sec .sec-label { text-align: center; }
-.test-sec .sec-title-lg { color: var(--c-near); text-align: center; }
-.test-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 64px;
-}
-.test-card {
-  background: var(--c-white);
-  border-radius: 18px;
-  overflow: hidden;
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-.test-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 48px rgba(0,0,0,0.1);
-}
-.test-thumb {
-  position: relative;
-  aspect-ratio: 16/9;
-  background: var(--c-near);
-  overflow: hidden;
-  cursor: pointer;
-}
-.test-thumb img { width:100%;height:100%;object-fit:cover;transition:transform 0.5s; }
-.test-card:hover .test-thumb img { transform:scale(1.05); }
-.test-play {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.25);
-  transition: background 0.2s;
-}
-.test-play:hover { background: rgba(0,0,0,0.4); }
-.play-ring {
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-  transition: transform 0.2s var(--ease-spring);
-}
-.test-play:hover .play-ring { transform: scale(1.1); }
-.play-tri { width:0; border-top:8px solid transparent; border-bottom:8px solid transparent; border-left:14px solid #1d1d1f; margin-left:3px; }
-.test-body { padding: 20px 20px 22px; }
-.test-stars { color: #FA8221; font-size: 13px; letter-spacing: 2px; margin-bottom: 10px; }
-.test-quote {
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--c-near);
-  font-style: italic;
-  margin-bottom: 12px;
-  letter-spacing: -0.005em;
-}
-.test-author { font-size: 13px; font-weight: 600; color: var(--c-gray2); }
-.test-ctx { font-size: 12px; color: var(--c-amber); font-weight: 500; margin-top: 10px; }
-@media(max-width:820px) { .test-grid { grid-template-columns: 1fr 1fr; } }
-@media(max-width:520px) { .test-grid { grid-template-columns: 1fr; } }
 
 /* ════ FAQ ════ */
-.faq-sec { background: #000; }
-.faq-sec .sec-title-lg { color: #fff; }
-/* Widen the FAQ inner container to 1280px with asymmetric padding so the
-   left edge sits at the hero H1 left (hp-shell padding-left 60) and the
-   right edge sits at the nav "Start for free" button right
-   (nav-inner padding-right 28). Same visual axes as the hero & nav. */
-.faq-sec .sec-in {
-  max-width: 1280px;
-  padding: 0 28px 0 60px;
-  box-sizing: border-box;
-}
-.faq-layout { display: grid; grid-template-columns: minmax(0, 65fr) minmax(0, 35fr); gap: 64px; margin-top: 64px; }
-/* 3 expandable category accordions – General / Money / Technical.
-   Click a category header to expand its questions; the other two
-   categories collapse automatically. By default the first one (General)
-   is open. */
-.faq-categories { display: flex; flex-direction: column; }
-.faq-category { border-bottom: 1px solid rgba(255,255,255,0.1); }
-.faq-category:first-child { border-top: 1px solid rgba(255,255,255,0.1); }
-.faq-cat-q {
-  width: 100%;
-  padding: 18px 0;
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--c-amber);
-  background: transparent;
-  border: none;
-  text-align: left;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.faq-cat-q:hover { color: #ffb84d; }
-.faq-cat-chev {
-  width: 14px;
-  height: auto;
-  flex-shrink: 0;
-  color: var(--c-amber);
-  transition: transform 0.3s ease;
-}
-.faq-category.open .faq-cat-chev { transform: rotate(180deg); }
-.faq-cat-body {
-  display: none;
-  padding-bottom: 16px;
-  animation: faqCatFade 0.3s ease;
-}
-.faq-category.open .faq-cat-body { display: block; }
-@keyframes faqCatFade {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Two side-by-side static columns inside each category body. */
-.faq-list { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 36px; }
-.faq-col { display: flex; flex-direction: column; min-width: 0; }
-.faq-item { border-bottom: 1px solid rgba(255,255,255,0.1); }
-.faq-col > .faq-item:last-child { border-bottom: none; }
+/* Single centred accordion (ref architecture); our sizes, font colours and
+   the plus-in-a-circle icon kept, recoloured for a white background. */
+.faq-sec { background: #fff; }
+.faq-sec .sec-in { max-width: 680px; }
+.faq-sec .sec-title-lg { color: #1d1d1f; text-align: center; }
+.faq-sec .sec-title-lg em { font-style: normal; color: var(--c-amber); }
+.faq-list { margin-top: 40px; }
+.faq-item { border-bottom: 1px solid rgba(0,0,0,0.1); }
+.faq-item:first-child { border-top: 1px solid rgba(0,0,0,0.1); }
 .faq-q {
   width: 100%;
   padding: 14px 0;
   font-size: 15px;
   font-weight: 400;
-  color: rgba(255,255,255,0.85);
+  color: rgba(0,0,0,0.85);
   background: transparent;
   border: none;
   text-align: left;
@@ -1606,19 +1344,18 @@ section { padding: 120px 24px; }
   line-height: 1.35;
   transition: color 0.2s;
 }
-.faq-q:hover { color: #fff; }
+.faq-q:hover { color: #000; }
 .faq-q.open { color: var(--c-amber); }
 .faq-chevron {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.25);
+  border: 1.5px solid rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   font-size: 0;
-  color: rgba(255,255,255,0.5);
   transition: all 0.3s;
   position: relative;
 }
@@ -1627,7 +1364,7 @@ section { padding: 120px 24px; }
   content: '';
   position: absolute;
   top: 50%; left: 50%;
-  background: rgba(255,255,255,0.5);
+  background: rgba(0,0,0,0.45);
   border-radius: 1px;
 }
 .faq-chevron::before { width: 8px;  height: 1.5px; transform: translate(-50%, -50%); }
@@ -1639,159 +1376,123 @@ section { padding: 120px 24px; }
 .faq-q.open .faq-chevron::before,
 .faq-q.open .faq-chevron::after { background: var(--c-amber); }
 .faq-a {
-  display: none;
-  padding: 0 0 14px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.faq-a-inner {
+  padding: 0 0 16px;
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(255,255,255,0.5);
+  color: rgba(0,0,0,0.6);
   letter-spacing: -0.005em;
 }
-.faq-a.open { display: block; }
-.faq-a strong { color: rgba(255,255,255,0.8); font-weight: 500; }
-/* FAQ sticky CTA card */
-.faq-cta {
-  background: #1d1d1f;
-  border-radius: 20px;
-  padding: 40px 32px;
-  align-self: flex-start;
-  position: sticky;
-  top: 72px;
-}
-.faq-cta h3 {
-  font-size: 26px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.02em;
-  margin-bottom: 14px;
-  line-height: 1.2;
-}
-.faq-cta p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 28px; }
-.faq-cta .btn { width: 100%; }
-.faq-cta .faq-cta-fine { font-size: 13px; color: rgba(255,255,255,0.3); text-align: center; margin-top: 14px; margin-bottom: 0; }
-@media(max-width:820px) {
-  /* Drop the hero-aligned asymmetric padding below tablet – just use the
-     section's own 24px gutter so the FAQ block centres normally. */
-  .faq-sec .sec-in { padding: 0; }
-  .faq-layout { grid-template-columns: minmax(0, 1fr); gap: 48px; }
-  .faq-cta { position: static; }
-  .faq-cta h3, .faq-cta p { text-align: center; }
-}
-@media(max-width:720px) { .faq-list { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+.faq-a-inner strong { color: #1d1d1f; font-weight: 600; }
 
 /* ════ FINAL CTA ════ */
 .final-sec {
-  background: #0b0b0d;
+  background: #fff;
   padding: 120px 24px clamp(70px, 9vw, 130px);
   text-align: center;
   position: relative;
   overflow: hidden;
 }
-/* gradient equalizer bars – tall at the edges, dipping into a valley under the text */
-.final-bars {
+/* Breathing mesh vignette behind the text: a soft cloud of our brand colours
+   that slowly breathes and shimmers. A radial mask dissolves every edge (incl.
+   the top) so there are no hard borders anywhere – only soft transitions. */
+.final-aurora {
   position: absolute;
-  /* drop a few px below the section so .final-sec overflow:hidden clips every bar to one straight baseline */
-  left: 0; right: 0; bottom: -4px;
+  inset: 0;
   z-index: 0;
-  height: calc(clamp(150px, 46vw, 620px) + 4px);
-  display: flex;
-  align-items: flex-end;
-  gap: 0;
-  padding: 0;
   pointer-events: none;
+  overflow: hidden;
+  -webkit-mask-image: radial-gradient(120% 112% at 50% 50%, #000 20%, rgba(0,0,0,0.5) 50%, transparent 78%);
+          mask-image: radial-gradient(120% 112% at 50% 50%, #000 20%, rgba(0,0,0,0.5) 50%, transparent 78%);
 }
-.final-bars::before {
+/* mesh layer A – brand colours arranged around the text */
+.final-aurora::before,
+.final-aurora::after {
   content: "";
-  position: absolute;
-  left: -4%; right: -4%; bottom: 0;
-  height: 40%;
-  background: linear-gradient(to top, rgba(150,138,235,0.28), rgba(150,138,235,0));
-  filter: blur(28px);
+  position: absolute; inset: -15%;
+  background:
+    radial-gradient(38% 50% at 22% 32%, rgba(255,200,98,0.55), transparent 60%),
+    radial-gradient(40% 52% at 78% 28%, rgba(89,160,246,0.50), transparent 60%),
+    radial-gradient(44% 56% at 30% 76%, rgba(149,201,13,0.42), transparent 62%),
+    radial-gradient(40% 50% at 72% 74%, rgba(150,145,255,0.50), transparent 62%),
+    radial-gradient(46% 44% at 52% 54%, rgba(254,157,167,0.45), transparent 60%);
+  filter: blur(60px);
+  will-change: transform, opacity;
+  animation: meshBreathe 15s ease-in-out infinite alternate;
 }
-.final-bar {
-  flex: 1;
-  height: var(--h, 30%);
-  transform-origin: bottom;
-  background-color: #7c93f2;
-  /* opacity fades up the bar: opaque at the base, transparent at the top */
-  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 100%);
-          mask-image: linear-gradient(to top, #000 0%, transparent 100%);
-  will-change: transform;
-  animation:
-    final-bar-rise var(--bd, 5s) ease-in-out infinite,
-    final-bar-cycle 20s linear infinite;
-  animation-delay: var(--bdelay, 0s), var(--cdelay, 0s);
+/* mesh layer B – same palette, re-shuffled; crossfades with A so the cloud
+   shimmers through our colours ("переливается градиентом из наших цветов") */
+.final-aurora::after {
+  background:
+    radial-gradient(42% 54% at 70% 30%, rgba(255,200,98,0.48), transparent 60%),
+    radial-gradient(40% 50% at 26% 30%, rgba(150,145,255,0.50), transparent 60%),
+    radial-gradient(46% 56% at 72% 74%, rgba(89,160,246,0.46), transparent 62%),
+    radial-gradient(44% 54% at 28% 72%, rgba(254,157,167,0.46), transparent 62%),
+    radial-gradient(48% 46% at 50% 50%, rgba(149,201,13,0.40), transparent 60%);
+  filter: blur(72px);
+  animation: meshBreathe 19s ease-in-out -7s infinite alternate, meshShimmer 13s ease-in-out infinite;
 }
-/* flush bars – kill any sub-pixel gap between neighbours */
-.final-bar + .final-bar { margin-left: -1px; }
-/* gentle rise/fall – each bar bobs between its own --s1 and --s2 */
-@keyframes final-bar-rise {
-  0%, 100% { transform: scaleY(var(--s1, 0.86)); }
-  50%      { transform: scaleY(var(--s2, 1.06)); }
+@keyframes meshBreathe {
+  0%   { transform: scale(1)    translate(0, 0); }
+  50%  { transform: scale(1.12) translate(1.5%, -1.2%); }
+  100% { transform: scale(1.04) translate(-1.5%, 1%); }
 }
-/* soft hues drift left → right (bars phase-staggered along the row via --cdelay) */
-@keyframes final-bar-cycle {
-  0%   { background-color: #5db4ef; }
-  25%  { background-color: #7c93f2; }
-  50%  { background-color: #9d7af0; }
-  75%  { background-color: #e588c6; }
-  100% { background-color: #5db4ef; }
+@keyframes meshShimmer {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 0.95; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .final-bar { animation: none; }
+  .final-aurora::before, .final-aurora::after { animation: none; }
 }
 .final-in { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
 .final-h2 {
   font-size: clamp(44px, 7vw, 80px);
   font-weight: 700;
-  color: #fff;
+  color: #1d1d1f;
   letter-spacing: -0.04em;
   line-height: 1.02;
   margin-bottom: 20px;
 }
+.final-h2 em { font-style: normal; color: var(--c-amber); }
 .final-sub {
   font-size: clamp(19px, 2.5vw, 24px);
-  color: rgba(255,255,255,0.65);
+  color: #424245;
   line-height: 1.5;
   margin-bottom: 44px;
   letter-spacing: -0.01em;
 }
 .final-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.final-fine { font-size: 13px; color: rgba(255,255,255,0.25); margin-top: 24px; }
+.final-sec .hero-link-cta { color: #1d1d1f; }
 @media(max-width:480px) { .final-sec { padding: 56px 16px clamp(56px, 13vw, 92px); } }
 
 /* ════ FOOTER ════ */
-footer { background: #000; border-top: 1px solid rgba(255,255,255,0.08); }
-.footer-top {
-  max-width: var(--max-wide);
+.site-footer {
+  background: #fff;
+  border-top: 1px solid var(--c-gray4);
+  padding: 32px 24px;
+  text-align: center;
+}
+.site-footer p {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--c-gray3);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  max-width: var(--max);
   margin: 0 auto;
-  padding: 52px 24px 40px;
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 80px;
 }
-.footer-brand-name { font-size: 19px; font-weight: 600; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
-.footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.6; max-width: 220px; }
-.footer-cols { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
-.footer-col h4 { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.4); margin-bottom: 12px; letter-spacing: 0.01em; }
-.footer-col a { display: block; font-size: 13px; color: rgba(255,255,255,0.25); margin-bottom: 8px; transition: color 0.2s; }
-.footer-col a:hover { color: rgba(255,255,255,0.7); }
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 20px 24px;
-  max-width: var(--max-wide);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
+.site-footer a {
+  color: var(--c-gray3);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
 }
-.footer-copy { font-size: 12px; color: rgba(255,255,255,0.45); text-align: center; }
-.footer-disc { font-size: 11px; color: rgba(255,255,255,0.15); max-width: 560px; line-height: 1.5; }
-@media(max-width:740px) {
-  .footer-top { grid-template-columns: 1fr; gap: 40px; }
-  .footer-cols { grid-template-columns: 1fr 1fr; }
-}
+.site-footer a:hover { color: var(--c-near); }
 
 /* ════ STICKY CTA (all screens) ════ */
 .sticky-cta {
@@ -1916,28 +1617,6 @@ footer { background: #000; border-top: 1px solid rgba(255,255,255,0.08); }
       padding-right: 15px;
   }
 
-  /* Ratings section: compact for narrow screens */
-  .ratings-sec {
-    padding: 40px 10px;
-  }
-  .featured-marquee {
-    margin-bottom: 40px;
-  }
-  .rat-card {
-    padding: 24px 14px;
-  }
-  .rat-score {
-    font-size: 40px;
-  }
-  .rat-count {
-    font-size: 14px;
-  }
-  .rat-stars {
-    font-size: 17px;
-  }
-  .rat-logo {
-    height: 24px;
-  }
 }
 </style>
 </head>
@@ -3452,6 +3131,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   box-shadow: 0 0 42px -2px var(--col);
 }
 
+/* Scroll-in entrance: each card rises & fades; JS adds .in in row order
+   (top row 1-2-3 L→R, then bottom row 4-ring-5 L→R). Uses the `translate`
+   property so the hover/demo `transform` still composes cleanly. */
+.bonus-section.is-bento .sb-card {
+  opacity: 0;
+  translate: 0 34px;
+  transition: opacity .6s var(--ease-out), translate .6s var(--ease-out),
+              transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.bonus-section.is-bento .sb-card.in { opacity: 1; translate: 0 0; }
+@media (prefers-reduced-motion: reduce) {
+  .bonus-section.is-bento .sb-card { opacity: 1; translate: 0 0; transition: none; }
+}
+
 /* staggered heights – reproduce the reference masonry split */
 .sb-tall-top     { flex: 63 1 0; }
 .sb-short-bottom { flex: 37 1 0; }
@@ -3583,7 +3276,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="bonus-sub">Five done-for-you tools designed to bring customers to your store and turn visits into sales. Our gift to every new store owner.</p>
     </div>
 
-    <div class="sbento appear">
+    <div class="sbento">
       <!-- ░░ Column 1 ░░ -->
       <div class="sb-col">
         <!-- 1 · Turnkey Online Store (tall) -->
@@ -3680,22 +3373,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .autopromo .ap-bolt { width:10px; height:13px; color:#9691ff; filter:drop-shadow(0 0 4px rgba(150,145,255,0.95)) drop-shadow(0 0 9px rgba(150,145,255,0.6)); }
 .autopromo .ap-fine { font-size:15px; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:4px; max-width:48ch; }
 .autopromo .ap-logos { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-top:34px; }
-.autopromo .ap-logos img { width:51px; height:51px; padding:2px; background:#fff; box-sizing:border-box; border-radius:50%; box-shadow:0 4px 14px rgba(0,0,0,0.3); opacity:0; transform:translateY(10px) scale(.55); transition:opacity .5s ease, transform .55s cubic-bezier(.34,1.56,.64,1); }
+.autopromo .ap-logos img { width:51px; height:51px; border-radius:50%; box-shadow:0 4px 14px rgba(0,0,0,0.3); opacity:0; transform:translateY(10px) scale(.55); transition:opacity .5s ease, transform .55s cubic-bezier(.34,1.56,.64,1); }
 .autopromo .ap-logos img.in { opacity:1; transform:none; }
 .autopromo .ap-logos img.in:hover { transform:translateY(-4px) scale(1.1); }
-.autopromo .ap-card { position:relative; width:100%; max-width:360px; margin:0 auto; display:flex; flex-direction:column; overflow:hidden; background:linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)); border:1px solid rgba(150,145,255,0.22); border-radius:24px; padding:30px 28px; box-shadow:0 30px 60px -42px rgba(0,0,0,0.85); }
+.autopromo .ap-card { position:relative; cursor:ew-resize; touch-action:pan-y; width:100%; max-width:360px; margin:0 auto; display:flex; flex-direction:column; overflow:hidden; background:linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)); border:1px solid rgba(150,145,255,0.22); border-radius:24px; padding:30px 28px; box-shadow:0 30px 60px -42px rgba(0,0,0,0.85); }
 .autopromo.is-live .ap-card { animation:apGlow 3.6s ease-in-out infinite; }
 @keyframes apGlow {
   0%,100% { box-shadow:0 0 32px -8px rgba(150,145,255,0.28), 0 30px 60px -42px rgba(0,0,0,0.85); border-color:rgba(150,145,255,0.22); }
   50%     { box-shadow:0 0 54px -4px rgba(150,145,255,0.5),  0 30px 60px -42px rgba(0,0,0,0.85); border-color:rgba(150,145,255,0.46); }
 }
 .autopromo .ap-card-head { color:#fff; font-size:19px; font-weight:600; margin-bottom:22px; letter-spacing:-0.01em; }
-.autopromo .ap-rows { display:flex; flex-direction:column; gap:22px; }
-.autopromo .ap-row { display:flex; align-items:center; cursor:ew-resize; touch-action:none; user-select:none; -webkit-user-select:none; }
+.autopromo .ap-rows { display:flex; flex-direction:column; gap:28px; margin-top:15px; }
+.autopromo .ap-row { display:flex; align-items:center; cursor:ew-resize; touch-action:pan-y; user-select:none; -webkit-user-select:none; }
 .autopromo .ap-plat { flex-shrink:0; width:78px; color:rgba(255,255,255,0.86); font-size:15px; font-weight:500; }
-.autopromo .ap-bar { flex:1; height:6px; margin:0 14px; border-radius:4px; background:rgba(255,255,255,0.10); }
-.autopromo .ap-bar-fill { position:relative; display:block; width:0; height:100%; border-radius:4px; background:linear-gradient(90deg,#6f6bff,#9691ff); }
-.autopromo .ap-bar-fill::after { content:''; position:absolute; right:0; top:50%; width:13px; height:13px; border-radius:50%; background:#fff; transform:translate(50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,0.4), 0 0 0 3px rgba(150,145,255,0.25); }
+.autopromo .ap-bar { flex:1; height:11px; margin:0 23px 0 14px; border-radius:6px; background:rgba(255,255,255,0.10); }
+.autopromo .ap-bar-fill { position:relative; display:block; width:0; height:100%; border-radius:6px; background:linear-gradient(90deg,#6f6bff,#9691ff); }
+.autopromo .ap-bar-fill::after { content:''; position:absolute; right:0; top:50%; width:16px; height:16px; border-radius:50%; background:#fff; transform:translate(50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,0.4), 0 0 0 3px rgba(150,145,255,0.25); }
 .autopromo .ap-active { flex-shrink:0; display:inline-flex; align-items:center; gap:7px; color:rgba(255,255,255,0.38); font-size:13px; font-weight:600; transition:color .25s ease; }
 .autopromo .ap-active::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; box-shadow:0 0 8px currentColor; }
 .autopromo .ap-active.on { color:#9691ff; }
@@ -3813,27 +3506,65 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     requestAnimationFrame(frame);
   }
 
-  var dragIdx = -1;
-  function valFromX(i, clientX){
-    var r = bars[i].getBoundingClientRect();
-    return Math.max(0, Math.min(1, (clientX - r.left) / r.width));
+  /* ── Whole-table scrub ──
+     Hover (mouse) or finger-press (touch) makes every bar crawl left unevenly
+     to signal "you can drag these"; moving the pointer right refills them to
+     full and the revenue graph grows, moving left empties them. Leaving or
+     releasing settles everything back to full. */
+  var teaser = [0.60, 0.46, 0.70, 0.52, 0.64];   // uneven crawl-left targets
+  var state  = 'full';                            // full | teasing | live | gone
+  var lastX  = null, animRAF = null;
+
+  function cancelAnim(){ if(animRAF){ cancelAnimationFrame(animRAF); animRAF = null; } }
+  function animateTo(targets, dur, after){
+    cancelAnim();
+    var start = vals.slice(), t0 = null;
+    function step(ts){
+      if(t0 === null) t0 = ts;
+      var p = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      for(var i=0;i<vals.length;i++) vals[i] = start[i] + (targets[i] - start[i]) * e;
+      render();
+      if(p < 1) animRAF = requestAnimationFrame(step);
+      else { animRAF = null; if(after) after(); }
+    }
+    animRAF = requestAnimationFrame(step);
   }
-  function enableDrag(){
-    rows.forEach(function(row, i){
-      row.addEventListener('pointerdown', function(e){
-        dragIdx = i;
-        try { row.setPointerCapture(e.pointerId); } catch(_){}
-        if(hint) hint.classList.remove('show');
-        vals[i] = valFromX(i, e.clientX); render();
-        e.preventDefault();
-      });
-      row.addEventListener('pointermove', function(e){
-        if(dragIdx === i){ vals[i] = valFromX(i, e.clientX); render(); }
-      });
-      function end(){ if(dragIdx === i) dragIdx = -1; }
-      row.addEventListener('pointerup', end);
-      row.addEventListener('pointercancel', end);
+  function startTeaser(){
+    if(state === 'teasing') return;
+    state = 'teasing';
+    animateTo(teaser, 440, function(){ if(state === 'teasing') state = 'live'; });
+  }
+  function settleFull(){
+    state = 'gone';
+    animateTo([1,1,1,1,1], 520, function(){ if(state === 'gone') state = 'full'; });
+  }
+  function scrubBy(dx){
+    cancelAnim();
+    var sweep = (card.getBoundingClientRect().width || 320) * 0.8;
+    var k = dx / sweep;
+    for(var i=0;i<vals.length;i++) vals[i] = Math.max(0, Math.min(1, vals[i] + k));
+    render();
+  }
+  function endInteract(){ lastX = null; settleFull(); }
+
+  function enableScrub(){
+    card.addEventListener('pointerenter', function(e){
+      if(e.pointerType === 'mouse'){ lastX = e.clientX; if(state === 'full' || state === 'gone') startTeaser(); }
     });
+    card.addEventListener('pointerdown', function(e){
+      lastX = e.clientX;
+      if(state === 'full' || state === 'gone') startTeaser();
+      if(e.pointerType !== 'mouse'){ try { card.setPointerCapture(e.pointerId); } catch(_){} }
+    });
+    card.addEventListener('pointermove', function(e){
+      if(lastX === null){ lastX = e.clientX; return; }
+      var dx = e.clientX - lastX; lastX = e.clientX;
+      if(state === 'teasing') return;             // let the crawl-left finish first
+      if(dx){ state = 'live'; scrubBy(dx); }
+    });
+    card.addEventListener('pointerleave', function(e){ if(e.pointerType === 'mouse') endInteract(); });
+    card.addEventListener('pointerup',    function(e){ if(e.pointerType !== 'mouse') endInteract(); });
+    card.addEventListener('pointercancel', endInteract);
   }
 
   if(hint){
@@ -3841,22 +3572,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var r = card.getBoundingClientRect();
       hint.style.left = (e.clientX - r.left) + 'px';
       hint.style.top  = (e.clientY - r.top)  + 'px';
-      if(dragIdx < 0) hint.classList.add('show');
+      if(e.pointerType === 'mouse') hint.classList.add('show');
     });
-    card.addEventListener('pointerenter', function(){ if(dragIdx < 0) hint.classList.add('show'); });
+    card.addEventListener('pointerenter', function(e){ if(e.pointerType === 'mouse') hint.classList.add('show'); });
     card.addEventListener('pointerleave', function(){ hint.classList.remove('show'); });
-    card.addEventListener('pointerdown', function(){ hint.classList.remove('show'); });
-    card.addEventListener('pointerup', function(e){
-      var r = card.getBoundingClientRect();
-      if(e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom) hint.classList.add('show');
-    });
+    card.addEventListener('pointerdown',  function(){ hint.classList.remove('show'); });
   }
 
   function play(){
     sec.classList.add('is-live');
     logos.forEach(function(l, i){ setTimeout(function(){ l.classList.add('in'); }, 70 + i*115); });
-    if(reduce){ for(var i=0;i<vals.length;i++) vals[i]=1; render(); enableDrag(); }
-    else intro(enableDrag);
+    if(reduce){ for(var i=0;i<vals.length;i++) vals[i]=1; render(); enableScrub(); }
+    else intro(enableScrub);
   }
   if(reduce || !('IntersectionObserver' in window)){ play(); return; }
   var io = new IntersectionObserver(function(entries){
@@ -3914,26 +3641,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 })();
 
-/* ── Bonus bento scroll-in: reveal the ring (frosted → fills → keeps looping) and play
-   a one-time hover demo across the cards in sequence. Afterwards only the ring animates;
-   cards show their photo again only on a real hover. ── */
+/* ── Bonus bento scroll-in: cards rise & fade in, in reading order – top row
+   1-2-3 left→right, then bottom row 4-ring-5 left→right. Each benefit card also
+   flashes its colour identity as it lands; the ring starts its fill loop. ── */
 ;(function() {
   const section = document.querySelector('.bonus-section.is-bento');
   if (!section) return;
-  const cards = Array.from(section.querySelectorAll('.sb-card:not(.sb-ring)'));
+  const sbento = section.querySelector('.sbento');
+  const allCards = sbento ? Array.from(sbento.querySelectorAll('.sb-card')) : [];
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const HOLD_MS    = 900;  // how long each card holds its "hover" look
-  const STAGGER_MS = 360;  // gap between consecutive cards
+  // map flex order (1..6) → element, then reveal in spatial row order
+  const byOrder = {};
+  allCards.forEach(function(c){ byOrder[parseInt(c.style.order, 10)] = c; });
+  const SEQ = [1, 2, 3, 4, 6, 5];   // top row L→R, then bottom row L→R (4, ring, 5)
+
+  const HOLD_MS    = 900;  // colour-plate flash hold per benefit card
+  const STAGGER_MS = 150;  // gap between consecutive cards
 
   function reveal() {
     section.classList.add('is-revealed');          // starts the ring fill + loop (CSS)
-    if (reduce) return;
-    cards.forEach(function(card, i) {
+    if (reduce) { allCards.forEach(function(c){ c.classList.add('in'); }); return; }
+    SEQ.forEach(function(ord, idx) {
+      var card = byOrder[ord];
+      if (!card) return;
       setTimeout(function() {
-        card.classList.add('demo-on');
-        setTimeout(function() { card.classList.remove('demo-on'); }, HOLD_MS);
-      }, 250 + i * STAGGER_MS);
+        card.classList.add('in');                  // entrance: rise + fade
+        if (!card.classList.contains('sb-ring')) { // benefit cards flash their colour
+          card.classList.add('demo-on');
+          setTimeout(function() { card.classList.remove('demo-on'); }, HOLD_MS);
+        }
+      }, 200 + idx * STAGGER_MS);
     });
   }
 
@@ -4284,291 +4022,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 
-<!-- ═══ AWARDS ═══ -->
-<section class="awards-sec">
-  <div class="sec-in">
-    <div class="appear">
-      <div class="sec-label">Recognition</div>
-      <h2 class="sec-title-xl on-light">Award-winning quality.</h2>
-      <p class="sec-body" style="max-width:520px;margin:0 auto">Here's just a part of the industry rewards our turnkey stores and ecommerce platform have achieved.</p>
-    </div>
-    <div class="awards-grid">
-      <article class="award-card appear d1">
-        <img src="https://sellvia.com/images-for-landings/free-online-store-plus-instagram-and-tiktok-store/Awards/1.webp" alt="Hermes Creative Awards – Gold Winner, Best IT Product 2025-2026" loading="lazy" width="586" height="399">
-      </article>
-      <article class="award-card appear d2">
-        <img src="https://sellvia.com/images-for-landings/free-online-store-plus-instagram-and-tiktok-store/Awards/2.webp" alt="Titan Business Awards – Platinum Winner, Best Ecommerce Platform" loading="lazy" width="586" height="399">
-      </article>
-      <article class="award-card appear d3">
-        <img src="https://sellvia.com/images-for-landings/free-online-store-plus-instagram-and-tiktok-store/Awards/3.webp" alt="dotCOMM Awards – Gold Winner, Best Ecommerce Ecosystem" loading="lazy" width="586" height="399">
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ RATINGS ═══ -->
-<div class="ratings-sec">
-  <div class="sec-label" style="color:rgba(255,255,255,0.35);text-align:center;margin-bottom:24px">FEATURED ON:</div>
-  <div class="featured-marquee">
-    <div class="featured-strip">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/forbes.svg" alt="Forbes">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/entrepreneur.svg" alt="Entrepreneur">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/inc.svg" alt="Inc.">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/nbc.svg" alt="NBC">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/business-com.svg" alt="Business.com">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/fox-news.svg" alt="Fox News">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/forbes.svg" alt="Forbes">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/entrepreneur.svg" alt="Entrepreneur">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/inc.svg" alt="Inc.">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/nbc.svg" alt="NBC">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/business-com.svg" alt="Business.com">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/fox-news.svg" alt="Fox News">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/forbes.svg" alt="Forbes">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/entrepreneur.svg" alt="Entrepreneur">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/inc.svg" alt="Inc.">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/nbc.svg" alt="NBC">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/business-com.svg" alt="Business.com">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/fox-news.svg" alt="Fox News">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/forbes.svg" alt="Forbes">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/entrepreneur.svg" alt="Entrepreneur">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/inc.svg" alt="Inc.">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/nbc.svg" alt="NBC">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/business-com.svg" alt="Business.com">
-      <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/featured/fox-news.svg" alt="Fox News">
-    </div>
-  </div>
-  <div class="ratings-inner">
-    <div class="rat-card appear d1"><img class="rat-logo" src="https://sellvia.com/images-for-landings/free-online-store-plus-instagram-and-tiktok-store/ratings/sitejabber.svg" alt="Sitejabber" loading="lazy"><div class="rat-stars">★★★★★</div><div class="rat-score">4.8</div><div class="rat-count">924 reviews</div></div>
-    <div class="rat-card appear d2"><img class="rat-logo" src="https://sellvia.com/images-for-landings/free-online-store-plus-instagram-and-tiktok-store/ratings/facebook.svg" alt="Facebook" loading="lazy"><div class="rat-stars">★★★★★</div><div class="rat-score">96%</div><div class="rat-count">516 reviews</div></div>
-    <div class="rat-card appear d3"><img class="rat-logo" src="https://sellvia.com/images-for-landings/free-online-store-plus-instagram-and-tiktok-store/ratings/g2.svg" alt="G2" loading="lazy"><div class="rat-stars">★★★★★</div><div class="rat-score">4.8</div><div class="rat-count">249 reviews</div></div>
-  </div>
-</div>
-
-
-<!-- ═══ TESTIMONIALS ═══ -->
-<section class="test-sec">
-  <div class="sec-in">
-    <div class="appear">
-      <div class="sec-label">Real stories</div>
-      <h2 class="sec-title-lg on-light">1,500,000+ store owners can't be wrong.</h2>
-    </div>
-    <div class="test-grid">
-      <div class="test-card appear d1">
-        <div class="test-thumb" data-video="https://sellvia.com/wp-content/uploads/reviews/ruby_review%20(1080p).mp4" data-poster="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/ruby.webp">
-          <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/ruby.webp" alt="Ruby" loading="lazy" width="394" height="393">
-          <div class="test-play"><div class="play-ring"><div class="play-tri"></div></div></div>
-        </div>
-        <div class="test-body">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-quote">"You guys literally do everything. It's like having somebody hold your hand."</p>
-          <div class="test-author">Ruby, USA</div>
-          <div class="test-ctx">First sale within 2 weeks</div>
-        </div>
-      </div>
-      <div class="test-card appear d2">
-        <div class="test-thumb" data-video="https://sellvia.com/wp-content/uploads/reviews/christina_review%20(1080p).mp4" data-poster="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/christina.webp">
-          <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/christina.webp" alt="Christina" loading="lazy" width="394" height="393">
-          <div class="test-play"><div class="play-ring"><div class="play-tri"></div></div></div>
-        </div>
-        <div class="test-body">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-quote">"I thought it was such an innovative idea because it was just so easy."</p>
-          <div class="test-author">Christina, USA</div>
-          <div class="test-ctx">Turned $500 into a 6-figure business</div>
-        </div>
-      </div>
-      <div class="test-card appear d3">
-        <div class="test-thumb" data-video="https://sellvia.com/wp-content/uploads/reviews/rodney_review_2_(1080p).mp4" data-poster="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/rodney.webp">
-          <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/rodney.webp" alt="Rodney" loading="lazy" width="394" height="393">
-          <div class="test-play"><div class="play-ring"><div class="play-tri"></div></div></div>
-        </div>
-        <div class="test-body">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-quote">"I don't have to work for 'the man'. I have much more freedom."</p>
-          <div class="test-author">Rodney, USA</div>
-          <div class="test-ctx">$10K in 28 days with 2 stores</div>
-        </div>
-      </div>
-      <div class="test-card appear d1">
-        <div class="test-thumb" data-video="https://sellvia.com/wp-content/uploads/reviews/jack_review%20(1080p).mp4" data-poster="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/jack.webp">
-          <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/jack.webp" alt="Jack" loading="lazy" width="394" height="393">
-          <div class="test-play"><div class="play-ring"><div class="play-tri"></div></div></div>
-        </div>
-        <div class="test-body">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-quote">"It's really exciting and keeps me going on a daily basis."</p>
-          <div class="test-author">Jack, Australia</div>
-          <div class="test-ctx">Single dad turned ecommerce entrepreneur</div>
-        </div>
-      </div>
-      <div class="test-card appear d2">
-        <div class="test-thumb" data-video="https://sellvia.com/wp-content/uploads/reviews/ksenia_review%20(1080p).mp4" data-poster="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/ksenia.webp">
-          <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/ksenia.webp" alt="Ksenia" loading="lazy" width="394" height="393">
-          <div class="test-play"><div class="play-ring"><div class="play-tri"></div></div></div>
-        </div>
-        <div class="test-body">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-quote">"What's my rate from 1 to 10? I'd rate 11."</p>
-          <div class="test-author">Ksenia, USA</div>
-          <div class="test-ctx">$2,700 in 3 months as a new mom</div>
-        </div>
-      </div>
-      <div class="test-card appear d3">
-        <div class="test-thumb" data-video="https://sellvia.com/wp-content/uploads/reviews/miandra_review%20(1080p).mp4" data-poster="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/miandra.webp">
-          <img src="https://sellvia.com/images-for-landings/free-ecommerce-store-plus-amazon-package/reviews/miandra.webp" alt="Miandra" loading="lazy" width="394" height="393">
-          <div class="test-play"><div class="play-ring"><div class="play-tri"></div></div></div>
-        </div>
-        <div class="test-body">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-quote">"It's not just about the money. It feels like I bought a lifestyle."</p>
-          <div class="test-author">Miandra, New Zealand</div>
-          <div class="test-ctx">From burnout to freedom in 6 weeks</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ═══ FAQ ═══ -->
 <section class="faq-sec" id="faq">
   <div class="sec-in">
     <div class="appear">
-      <h2 class="sec-title-lg" style="color:#fff">Frequently asked<br>questions.</h2>
+      <h2 class="sec-title-lg">Frequently asked <em>questions</em></h2>
     </div>
-    <div class="faq-layout">
-      <div class="faq-categories">
-
-        <!-- ── GENERAL ── -->
-        <div class="faq-category open">
-          <button class="faq-cat-q" aria-expanded="true">General questions
-            <svg class="faq-cat-chev" viewBox="0 0 14 8" aria-hidden="true">
-              <path d="M1 1l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div class="faq-cat-body">
-            <div class="faq-list">
-              <div class="faq-col">
-                <div class="faq-item">
-                  <button class="faq-q">What exactly do I get with this offer?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">A free turnkey online store plus a 5-in-1 Turbo Sales Bundle (normally $1,899): a $40 ad credit, Free Google Promo, 7 AI Influencers, and a personal growth manager. Everything you need to start selling from day one – no experience required.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">What is Sellvia?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Sellvia is an all-in-one ecommerce platform built for independent entrepreneurs to start, run and grow their own online businesses. An active Sellvia subscription keeps your store running with full functionality.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">How do I get my free store?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Complete your order at checkout and fill out a short survey about your niche, design and domain-name preferences.</div>
-                </div>
-              </div>
-              <div class="faq-col">
-                <div class="faq-item">
-                  <button class="faq-q">How soon will I get my store?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Your store is ready immediately after you finish the survey. Access details arrive in your inbox right away, and you can book a free training session with our team to launch your website.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">To (and from) which countries can I sell?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">You can live anywhere with stable internet, and your products can ship worldwide to nearly every country.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">How do the 7 AI Influencers work?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Open the AI Influencers tab in your dashboard and pick from seven AI-powered creators. They produce vertical promo videos with captions for TikTok and Instagram, featuring the products already in your store. Just download and post – free for your first 14 days.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── MONEY ── -->
-        <div class="faq-category">
-          <button class="faq-cat-q" aria-expanded="false">Money questions
-            <svg class="faq-cat-chev" viewBox="0 0 14 8" aria-hidden="true">
-              <path d="M1 1l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div class="faq-cat-body">
-            <div class="faq-list">
-              <div class="faq-col">
-                <div class="faq-item">
-                  <button class="faq-q">How much does Sellvia cost?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Try free for 14 days with full functionality. After the trial, a $39 monthly subscription applies automatically.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">Can I cancel my subscription at any time?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Yes – cancel anytime with no strings attached if Sellvia isn't the right fit for your business.</div>
-                </div>
-              </div>
-              <div class="faq-col">
-                <div class="faq-item">
-                  <button class="faq-q">Is there a store setup fee?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">No setup fees on any plan. You get a fully operating store that requires zero setup.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">Why do you need my credit card info?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Your subscription fee is charged automatically after the free trial ends, so a valid card is needed for future charges.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── TECHNICAL ── -->
-        <div class="faq-category">
-          <button class="faq-cat-q" aria-expanded="false">Technical questions
-            <svg class="faq-cat-chev" viewBox="0 0 14 8" aria-hidden="true">
-              <path d="M1 1l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div class="faq-cat-body">
-            <div class="faq-list">
-              <div class="faq-col">
-                <div class="faq-item">
-                  <button class="faq-q">Do I need IT experience?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">No. The software and dashboard are user-friendly enough for complete newcomers.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">Do I need any special equipment?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">No. You can operate from any place and device – PC, laptop, tablet or smartphone.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">Do I have to install anything?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">No. You get a 100% ready ecommerce website with all the necessary software pre-installed.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">Do I have to set up payment gateways?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">No. Every store includes Sellvia Payments, pre-installed and active – accepting Visa, Mastercard, American Express, Discover, Apple Pay, Google Pay and Klarna.</div>
-                </div>
-              </div>
-              <div class="faq-col">
-                <div class="faq-item">
-                  <button class="faq-q">Can I use my own domain name?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Yes. You can purchase a domain within Sellvia or use an existing one you already own.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">Do I get free web hosting?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Yes – Sellvia includes secure, unlimited ecommerce hosting on every plan.</div>
-                </div>
-                <div class="faq-item">
-                  <button class="faq-q">Will you help with technical issues?<span class="faq-chevron">+</span></button>
-                  <div class="faq-a">Yes. Our first-class tech-support team answers questions and solves issues 24/7.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+    <div class="faq-list appear d1">
+      <div class="faq-item">
+        <button class="faq-q">Is the Turbo Sales Bundle really free?<span class="faq-chevron">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Your website, its full functionality, lifetime technical support, your personal manager, $40 ad credit, and Free Google Promo are completely free – not just for 14 days, but for as long as you're with us. The only things that cost money: the Sellvia Pro subscription ($39/month after your 14-day free trial) that keeps your store running, and the 7 AI Influencers feature after the free 14-day period. You can cancel anytime with one click.</div></div>
       </div>
-      <div>
-        <div class="faq-cta appear d2">
-          <h3>Ready to start your online business?</h3>
-          <p>Take the best option to achieve financial independence and move your life forward!</p>
-          <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled" style="height:60px;font-size:17px">Get my free store + Turbo Pack</a>
-          <p class="faq-cta-fine">Get started in less than 60 seconds • Cancel anytime</p>
-          <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;gap:8px">
-            <span style="width:8px;height:8px;border-radius:50%;background:#30d158;flex-shrink:0;animation:pulse 2s infinite"></span>
-            <span style="font-size:13px;color:rgba(255,255,255,0.45)" id="faqProof">847 people started their store today</span>
-          </div>
-        </div>
+      <div class="faq-item">
+        <button class="faq-q">How do the 7 AI Influencers work?<span class="faq-chevron">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Go to the AI Influencers tab in your dashboard. Choose from seven AI-powered creators – each has their own look and style. They produce vertical promo videos with captions, ready to post on TikTok and Instagram. The videos promote the products already in your store. You just download and post.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How does Free Google Promo work?<span class="faq-chevron">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Your store blog comes pre-loaded with professionally written articles optimized for Google search. They help your store appear in search results when people look for topics related to your products – bringing free organic traffic without any ad spending.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Does auto-promotion cost money?<span class="faq-chevron">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes, running ads costs money – but we give you a $40 ad coupon, so your first days of advertising are completely free. And it's more affordable than you think: many store owners start with just $10 a day and scale up as sales come in. You get access to automated ads across Amazon, Google, Facebook, TikTok, and Instagram the moment your store goes live.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do I need any experience?<span class="faq-chevron">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">None. We build everything for you. Your personal growth manager walks you through each step – from activating your ads to growing your revenue. If you can use a phone, you can do this.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How quickly can I start earning?<span class="faq-chevron">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Your store is live in under 60 seconds. With the $40 ad credit, you can start driving customers on your first day. Google Promo brings organic traffic in the background. AI influencer videos can be posted immediately. Many store owners see their first sale within the first days. Individual results vary.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I cancel?<span class="faq-chevron">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Anytime. Cancel with one click from your dashboard – during the free trial or after. No questions, no penalties, no hidden fees.</div></div>
       </div>
     </div>
   </div>
@@ -4576,60 +4064,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ═══ FINAL CTA ═══ -->
 <section class="final-sec">
+  <div class="final-aurora" aria-hidden="true"></div>
   <div class="final-in">
-    <h2 class="final-h2 appear">Free store +<br>Turbo Sales Bundle.</h2>
+    <h2 class="final-h2 appear">Free store + Turbo Sales Bundle.<br><em>Our gift to you.</em></h2>
     <p class="final-sub appear d1">Everything to start earning fast – ads, traffic, social media, and a personal guide. All free with your store.</p>
     <div class="final-btns appear d2">
       <a href="https://sellvia.com/checkout/?product=custom&type_custom=free_basic_hosting" class="btn btn-filled">Get my free store + Turbo Pack</a>
     </div>
-    <p class="final-fine appear d3">Get started in less than 60 seconds • Cancel anytime</p>
-          <button type="button" onclick="SellviaChat.open()" class="hero-link-cta" style="margin-top: 15px;">
-        Get free consultation
-        <svg class="hero-link-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M8.91 19.92l6.52-6.52c.77-.77.77-2.03 0-2.8L8.91 4.08" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+    <p class="hero-fine appear d3" style="margin-top:14px">Free 14-day trial · Start in 60 seconds · Cancel anytime</p>
+    <button type="button" onclick="SellviaChat.open()" class="hero-link-cta" style="margin-top: 15px;">
+      Get free consultation
+      <svg class="hero-link-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8.91 19.92l6.52-6.52c.77-.77.77-2.03 0-2.8L8.91 4.08" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </div>
-  <div class="final-bars" id="finalBars" aria-hidden="true"></div>
 </section>
 
-<script>
-// ── FINAL CTA – equalizer bars (valley shape; rise/fall + hues drifting left→right) ──
-;(function(){
-  var box = document.getElementById('finalBars');
-  if (!box) return;
-  var mq = window.matchMedia('(max-width: 768px)');
-  var SPREAD = 0.6, CD = 20;   // colour: fraction of the cycle spread across the row; cycle seconds (keep CD = CSS duration)
-  function build(){
-    var N = mq.matches ? 8 : 15;                           // ~half as many bars on mobile
-    var html = '';
-    for (var i = 0; i < N; i++){
-      var d = Math.abs(i - (N - 1) / 2) / ((N - 1) / 2);   // 0 at the center → 1 at the edges
-      var base = 12 + Math.pow(d, 2.2) * 88;               // valley: ~12% center, edges climb to the headline
-      var jag  = Math.sin(i * 2.3) * 2.5 + Math.sin(i * 0.9 + 1.3) * 2 + Math.sin(i * 5.1);
-      var h    = Math.max(8, Math.min(100, base + jag));
-      var s1   = (0.86 + 0.05 * Math.sin(i * 1.7)).toFixed(3);       // low point of the bob
-      var s2   = (1.04 + 0.04 * Math.sin(i * 2.1 + 1)).toFixed(3);   // high point of the bob
-      var dur  = (4.2 + (i % 4) * 0.9).toFixed(2);                   // bob speed, varied per bar
-      var dly  = (-((i * 1.37) % 5)).toFixed(2);                     // bob phase, out of sync
-      var cdly = (-(SPREAD * CD) * ((N - i) / N)).toFixed(2);        // colour phase → drift left→right
-      html += '<span class="final-bar" style="--h:' + h.toFixed(1) +
-              '%;--s1:' + s1 + ';--s2:' + s2 + ';--bd:' + dur + 's;--bdelay:' + dly + 's;--cdelay:' + cdly + 's"></span>';
-    }
-    box.innerHTML = html;
-  }
-  build();
-  if (mq.addEventListener) mq.addEventListener('change', build);
-  else if (mq.addListener) mq.addListener(build);
-})();
-</script>
 
 <!-- ═══ FOOTER ═══ -->
-<footer>
-  <div class="footer-bottom" style="flex-direction:column;align-items:center;gap:6px;padding:28px 24px">
-    <div class="footer-copy">© 2026 sellvia.com · 2 Park Plaza Ste 680, Irvine, CA 92614</div>
-    <a href="https://sellvia.com/privacy-policy/" style="font-size:12px;color:rgba(255,255,255,0.45);transition:color 0.2s" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Privacy Policy</a>
-  </div>
+<footer class="site-footer">
+  <p>© 2026 Sellvia · 2 Park Plaza Ste 680, Irvine, CA 92614 · <a href="https://sellvia.com/terms-of-use/">Terms</a> · <a href="https://sellvia.com/privacy-policy/">Privacy</a> · <a href="https://sellvia.com/refund-policy/">Refund Policy</a></p>
 </footer>
 
 <!-- ═══ STICKY CTA (all screens) ═══ -->
@@ -4764,35 +4219,21 @@ document.querySelectorAll('.appear, .appear-l, .appear-r, .appear-scale').forEac
 // ── HERO PARALLAX (removed – now using slideshow) ──
 
 
-// ── FAQ ──
-// Category accordion (3 groups: General / Money / Technical). Only one
-// category open at a time; clicking the open one closes it.
-document.querySelectorAll('.faq-cat-q').forEach(catBtn => {
-  catBtn.addEventListener('click', () => {
-    const cat = catBtn.closest('.faq-category');
-    const wasOpen = cat.classList.contains('open');
-    // Close every category + any open question
-    document.querySelectorAll('.faq-category.open').forEach(c => {
-      c.classList.remove('open');
-      const cq = c.querySelector('.faq-cat-q');
-      if (cq) cq.setAttribute('aria-expanded', 'false');
+// ── FAQ ── single-column accordion: one question open at a time, smooth max-height
+document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var item = btn.closest('.faq-item');
+    var ans  = item.querySelector('.faq-a');
+    var wasOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-sec .faq-q.open').forEach(function(b){
+      b.classList.remove('open');
+      var a = b.closest('.faq-item').querySelector('.faq-a');
+      if (a) a.style.maxHeight = '0';
     });
-    document.querySelectorAll('.faq-q.open, .faq-a.open').forEach(el => el.classList.remove('open'));
     if (!wasOpen) {
-      cat.classList.add('open');
-      catBtn.setAttribute('aria-expanded', 'true');
+      btn.classList.add('open');
+      ans.style.maxHeight = ans.scrollHeight + 'px';
     }
-  });
-});
-
-// Per-question accordion inside the currently open category (one Q open at a time globally).
-document.querySelectorAll('.faq-q').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
-    const ans = item.querySelector('.faq-a');
-    const wasOpen = btn.classList.contains('open');
-    document.querySelectorAll('.faq-q.open, .faq-a.open').forEach(el => el.classList.remove('open'));
-    if (!wasOpen) { btn.classList.add('open'); ans.classList.add('open'); }
   });
 });
 
@@ -4835,7 +4276,7 @@ document.querySelectorAll('.faq-q').forEach(btn => {
   function frame(now){
     if (!t0) t0 = now;
     // ease-in: gentle at the start, accelerating so the tiles settle decisively by the end (no late crawl)
-    var s = enabled ? clamp((-hero.getBoundingClientRect().top) / (window.innerHeight * 0.85)) : 1;
+    var s = enabled ? clamp((-hero.getBoundingClientRect().top) / (window.innerHeight * 0.5)) : 1;
     var sm = s * s;
     var inv = 1 - sm;
     P.forEach(function(o, i){
@@ -4941,84 +4382,6 @@ document.querySelectorAll('.faq-q').forEach(btn => {
   });
 })();
 
-// ── VIDEO TESTIMONIALS ──
-;(function() {
-  const thumbs = document.querySelectorAll('.test-thumb[data-video]');
-  let activeCard = null;
-  let activeOriginal = null;
-
-  function resetActive() {
-    if (!activeCard) return;
-    const thumb = activeCard.querySelector('.test-thumb');
-    const video = thumb.querySelector('video');
-    if (video) { video.pause(); video.remove(); }
-    // Restore original content
-    thumb.innerHTML = activeOriginal.thumbHTML;
-    thumb.style.cssText = '';
-    activeCard.style.height = '';
-    activeCard.style.position = '';
-    activeCard.style.overflow = '';
-    // Show test-body
-    const body = activeCard.querySelector('.test-body');
-    if (body) body.style.display = '';
-    activeCard = null;
-    activeOriginal = null;
-  }
-
-  thumbs.forEach(function(thumb) {
-    thumb.addEventListener('click', function() {
-      const card = this.closest('.test-card');
-
-      // If clicking same card, just reset
-      if (card === activeCard) {
-        resetActive();
-        return;
-      }
-
-      // Reset previous
-      resetActive();
-
-      // Save original state
-      activeCard = card;
-      activeOriginal = { thumbHTML: this.innerHTML, cardHeight: card.offsetHeight };
-
-      // Lock card height before hiding body
-      card.style.height = card.offsetHeight + 'px';
-      card.style.position = 'relative';
-      card.style.overflow = 'hidden';
-
-      // Hide test-body
-      const body = card.querySelector('.test-body');
-      if (body) body.style.display = 'none';
-
-      // Expand thumb to fill card
-      this.style.cssText = 'position:absolute;inset:0;aspect-ratio:auto;width:100%;height:100%;z-index:1';
-
-      // Replace with video
-      const src = this.dataset.video;
-      const poster = this.dataset.poster;
-      const thumbEl = this;
-      thumbEl.innerHTML = '';
-      const video = document.createElement('video');
-      video.src = src;
-      video.poster = poster;
-      video.autoplay = true;
-      video.playsInline = true;
-      video.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center;display:block;cursor:pointer';
-      thumbEl.appendChild(video);
-
-      // Click anywhere on video to toggle play/pause
-      video.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (video.paused) {
-          video.play();
-        } else {
-          video.pause();
-        }
-      });
-    });
-  });
-})();
 
 // ── GLOW ORB (Included section) ──
 ;(function() {
