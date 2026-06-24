@@ -668,17 +668,43 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   animation: fadeUp 0.8s var(--ease-out) 0.2s forwards;
 }
 .hero-badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: rgba(20,20,25,0.05);
-  border: 1px solid rgba(20,20,25,0.18);
   border-radius: 50px;
+  background: rgba(20,20,25,0.05);
   padding: 7px 16px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #1d1d1f;
+}
+/* gradient ring only on the 1px border, interior stays translucent */
+.hero-badge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, #ffc862, #59a0f6, #95c90d, #9691ff, #fe9da7, #ffc862);
+  background-size: 220% 100%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  animation: eyebrowBorder 4.5s linear infinite;
+  pointer-events: none;
+}
+@keyframes eyebrowBorder { to { background-position: -220% 0; } }
+.eb-star {
+  display: inline-block;
+  animation: ebStar 3.2s ease-in-out infinite;
+}
+@keyframes ebStar {
+  0%, 100% { color: #ffc862; }
+  25%      { color: #59a0f6; }
+  50%      { color: #9691ff; }
+  75%      { color: #fe9da7; }
 }
 .hero-h1 {
   font-size: clamp(52px, 8vw, 96px);
@@ -789,7 +815,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   display: flex; flex-direction: column; align-items: center;
   flex: 0 0 auto; width: 110px;
   transform-origin: center center;
-  opacity: 0; will-change: transform, opacity;
+  opacity: 0;
 }
 .hp-badge {
   position: relative; width: 30px; height: 30px; border-radius: 9px;
@@ -1397,56 +1423,46 @@ section { padding: 120px 24px; }
   position: relative;
   overflow: hidden;
 }
-/* Breathing mesh vignette behind the text: a soft cloud of our brand colours
-   that slowly breathes and shimmers. A radial mask dissolves every edge (incl.
-   the top) so there are no hard borders anywhere – only soft transitions. */
+/* Five brand-colour blobs spaced on a ring (distinct, only lightly touching –
+   no muddy pile-up). The whole ring slowly orbits the centre so the colours
+   float in a circle around the text, while a pure-white oval sits on top of the
+   middle so the heading/sub always rest on clean white. */
 .final-aurora {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  -webkit-mask-image: radial-gradient(120% 112% at 50% 50%, #000 20%, rgba(0,0,0,0.5) 50%, transparent 78%);
-          mask-image: radial-gradient(120% 112% at 50% 50%, #000 20%, rgba(0,0,0,0.5) 50%, transparent 78%);
+  -webkit-mask-image: radial-gradient(135% 130% at 50% 50%, #000 58%, transparent 92%);
+          mask-image: radial-gradient(135% 130% at 50% 50%, #000 58%, transparent 92%);
 }
-/* mesh layer A – brand colours arranged around the text */
-.final-aurora::before,
+/* the colour ring – one blob per brand colour, evenly spaced; the layer rotates */
+.final-aurora::before {
+  content: "";
+  position: absolute; inset: -30%;
+  background:
+    radial-gradient(circle at 50%   26%,   rgba(255,200,98,0.82), transparent 15%),   /* yellow – top     */
+    radial-gradient(circle at 72.8% 42.6%, rgba(89,160,246,0.74), transparent 15%),   /* blue   – right   */
+    radial-gradient(circle at 64.1% 69.4%, rgba(150,145,255,0.76), transparent 15%),  /* purple – b-right */
+    radial-gradient(circle at 35.9% 69.4%, rgba(149,201,13,0.64), transparent 15%),   /* green  – b-left  */
+    radial-gradient(circle at 27.2% 42.6%, rgba(254,157,167,0.74), transparent 15%);  /* pink   – left    */
+  filter: blur(44px);
+  will-change: transform;
+  animation: meshOrbit 46s linear infinite;
+}
+/* pure-white oval in the centre – text never lands on a coloured/muddy mix */
 .final-aurora::after {
   content: "";
-  position: absolute; inset: -15%;
-  background:
-    radial-gradient(38% 50% at 22% 32%, rgba(255,200,98,0.55), transparent 60%),
-    radial-gradient(40% 52% at 78% 28%, rgba(89,160,246,0.50), transparent 60%),
-    radial-gradient(44% 56% at 30% 76%, rgba(149,201,13,0.42), transparent 62%),
-    radial-gradient(40% 50% at 72% 74%, rgba(150,145,255,0.50), transparent 62%),
-    radial-gradient(46% 44% at 52% 54%, rgba(254,157,167,0.45), transparent 60%);
-  filter: blur(60px);
-  will-change: transform, opacity;
-  animation: meshBreathe 15s ease-in-out infinite alternate;
+  position: absolute; inset: 0;
+  background: radial-gradient(44% 49% at 50% 50%, #fff 0%, #fff 34%, rgba(255,255,255,0.64) 56%, rgba(255,255,255,0.3) 74%, rgba(255,255,255,0.1) 87%, rgba(255,255,255,0) 97%);
 }
-/* mesh layer B – same palette, re-shuffled; crossfades with A so the cloud
-   shimmers through our colours ("переливается градиентом из наших цветов") */
-.final-aurora::after {
-  background:
-    radial-gradient(42% 54% at 70% 30%, rgba(255,200,98,0.48), transparent 60%),
-    radial-gradient(40% 50% at 26% 30%, rgba(150,145,255,0.50), transparent 60%),
-    radial-gradient(46% 56% at 72% 74%, rgba(89,160,246,0.46), transparent 62%),
-    radial-gradient(44% 54% at 28% 72%, rgba(254,157,167,0.46), transparent 62%),
-    radial-gradient(48% 46% at 50% 50%, rgba(149,201,13,0.40), transparent 60%);
-  filter: blur(72px);
-  animation: meshBreathe 19s ease-in-out -7s infinite alternate, meshShimmer 13s ease-in-out infinite;
-}
-@keyframes meshBreathe {
-  0%   { transform: scale(1)    translate(0, 0); }
-  50%  { transform: scale(1.12) translate(1.5%, -1.2%); }
-  100% { transform: scale(1.04) translate(-1.5%, 1%); }
-}
-@keyframes meshShimmer {
-  0%, 100% { opacity: 0.45; }
-  50%      { opacity: 0.95; }
+@keyframes meshOrbit {
+  0%   { transform: rotate(0deg)   scale(1);    }
+  50%  { transform: rotate(180deg) scale(1.07); }
+  100% { transform: rotate(360deg) scale(1);    }
 }
 @media (prefers-reduced-motion: reduce) {
-  .final-aurora::before, .final-aurora::after { animation: none; }
+  .final-aurora::before { animation: none; }
 }
 .final-in { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
 .final-h2 {
@@ -1654,10 +1670,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   flex-shrink: 0;
 }
 .topbar-text {
-  color: #fff;
-  transition: color 0.25s;
-}
-.topbar:hover .topbar-text {
   background: linear-gradient(90deg, #ffc862, #59a0f6, #95c90d, #9691ff, #fe9da7, #ffc862);
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -1665,13 +1677,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   -webkit-text-fill-color: transparent;
   color: transparent;
   animation: topbarShimmer 2.2s linear infinite;
+  transition: -webkit-text-fill-color 0.25s, color 0.25s;
+}
+.topbar:hover .topbar-text {
+  background: none;
+  -webkit-text-fill-color: #fff;
+  color: #fff;
+  animation: none;
 }
 @keyframes topbarShimmer { to { background-position: -200% center; } }
-.topbar-arrow {
-  display: inline-block;
-  margin-left: 4px;
-  animation: arrowPulse 4s ease-in-out infinite;
-}
+/* plain inline so it shares one continuous gradient with the text (clip flows through it) */
+.topbar-arrow { margin-left: 4px; }
 @keyframes arrowPulse {
   0%   { transform: translateX(0); }
   10%  { transform: translateX(6px); }
@@ -1723,7 +1739,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="hero" id="hero">
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-inner">
-    <p class="hero-eyebrow"><span class="hero-badge">✦ FAST SALES PACK · Free with your store</span></p>
+    <p class="hero-eyebrow"><span class="hero-badge"><span class="eb-star">✦</span> FAST SALES PACK · Free with your store</span></p>
     <h1 class="hero-h1">Get a free store<br>with a <em>Turbo Sales<br>Bundle</em> on top.</h1>
     <p class="hero-sub">Start selling in days, not months. Your free store comes with a <strong>Turbo Pack</strong> that drives traffic, attracts customers, and helps you earn – so you don't waste time figuring it out alone.</p>
     <div class="hero-actions">
@@ -1924,21 +1940,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 
 @media(max-width:1200px){ .freebasic-section{padding:100px 24px} }
-@media(max-width:860px){
-  .freebasic-section{padding:72px 24px}
-  /* Stack vertically; disable navy half-bleed and give the image its own dark card */
+@media(max-width:900px){
+  .freebasic-section{padding:0 24px 72px}
+  /* Stack vertically; navy art-stage spans the full viewport width and sits flush at the top (no card look) */
   .freebasic-section::before { display: none; }
   .freebasic-section .freebasic-art-stage {
     position: static;
-    width: 100%;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
     background: #10172A;
-    border-radius: 24px;
-    padding: 32px;
+    border-radius: 0;
+    padding: 56px 24px;
     margin-bottom: 32px;
     pointer-events: auto;
   }
-  .freebasic-inner{grid-template-columns:1fr;gap:48px}
-  .freebasic-section .bonus-inner > .bonus-left { grid-column: 1 / -1; }
+  .bonus-inner.freebasic-inner{grid-template-columns:1fr;gap:48px}
+  .freebasic-section .bonus-inner > .bonus-left { grid-column: 1 / -1; padding-left: 0; }
 }
 @media(max-width:480px){
   /* No top padding so the art-stage sits flush at section top (no grey strip
@@ -3074,7 +3092,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .bonus-right{height:360px}
   .bonus-heading{font-size:32px}
 }
-@media(max-width:760px){
+@media(max-width:900px){
   .bonus-left { align-items: center; text-align: center; }
   .bonus-pill { margin-left: auto; margin-right: auto; }
   .bonus-heading { text-align: center; }
@@ -3265,7 +3283,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .sb-ring { min-height: 360px; }
   .sb-tall-top .sb-h { font-size: 22px; }
 }
-@media (max-width: 600px) { .sb-card { padding: 22px; } }
+@media (max-width: 600px) {
+  /* equal-height square cards on mobile */
+  .sb-card { padding: 22px; aspect-ratio: 1 / 1; min-height: 0; }
+  .sb-tall-bottom { aspect-ratio: 1 / 1; }
+  .sb-ring { min-height: 0; }
+}
+/* 768–900: taller non-ring bento cards so the faces in the photos aren't cropped */
+@media (min-width: 768px) and (max-width: 900px) {
+  .bonus-section.is-bento .sb-card:not(.sb-ring) { min-height: 580px; }
+}
+/* centre the bento header (pill + heading + sub) once the grid is stacked */
+@media (max-width: 980px) {
+  .bonus-section.is-bento .get-head { text-align: center; }
+  .bonus-section.is-bento .get-head .bonus-sub { margin-left: auto; margin-right: auto; }
+}
 </style>
 
 <section class="bonus-section is-bento" id="bonus">
@@ -3405,7 +3437,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .autopromo .ap-col { transition:none; }
   .autopromo.is-live .ap-card { animation:none; }
 }
-@media(max-width:920px){ .autopromo .ap-grid { grid-template-columns:1fr; gap:40px; } }
+@media(max-width:920px){
+  .autopromo .ap-grid { grid-template-columns:1fr; gap:40px; }
+  .autopromo .ap-left { align-items:center; text-align:center; }
+  .autopromo .ap-logos { justify-content:center; }
+}
 @media(max-width:1200px){ .autopromo{ padding:100px 24px } }
 @media(max-width:860px){ .autopromo{ padding:72px 24px } }
 @media(max-width:480px){ .autopromo{ padding:56px 16px } }
@@ -4238,14 +4274,14 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
 });
 
 
-// ── HERO PILLS: float in from the top corners, then dock into a numbered strip under the CTA on scroll ──
+// ── HERO PILLS: desktop = float in from the top corners then dock on scroll; mobile = fly in from the sides/bottom and settle on load ──
 ;(function(){
   var nodes = Array.prototype.slice.call(document.querySelectorAll('.hero-pill'));
   var hero = document.getElementById('hero');
   if (!nodes.length || !hero) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // scatter home (fraction of hero box) + entrance offset (px, off-screen top corners) + scale
+  // desktop scatter home (fraction of hero box) + entrance offset (px, off-screen top corners) + scale
   var SCAT = [
     { x:0.10, y:0.30, s:2.4, ex:-130, ey:-120 },
     { x:0.90, y:0.24, s:3.1, ex: 130, ey:-135 },
@@ -4253,16 +4289,25 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
     { x:0.93, y:0.60, s:2.8, ex: 150, ey:-110 },
     { x:0.85, y:0.42, s:2.0, ex: 120, ey:-150 }
   ];
+  // mobile entrance offsets – sweep in from left → bottom → right
+  var MOFF = [
+    { ex:-180, ey:  12 },
+    { ex:-140, ey: 132 },
+    { ex:   0, ey: 152 },
+    { ex: 140, ey: 132 },
+    { ex: 180, ey:  12 }
+  ];
   var P = nodes.map(function(p){
     return { el:p, icon:p.querySelector('.hp-icon'), num:p.querySelector('.hp-num'), lab:p.querySelector('.hp-label'),
              g:{ dx:0, dy:0, s:1, ex:0, ey:0 } };
   });
-  var enabled = false, t0 = 0;
+  var enabled = false, mobile = false, t0 = 0, mStarted = false, mt0 = 0;
   function clamp(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
 
   function measure(){
     enabled = window.innerWidth >= 1024 && !reduce;
-    P.forEach(function(o){ o.el.style.transform = 'none'; });   // read each pill's natural slot, never its animated position (prevents jumps on load/resize)
+    mobile  = window.innerWidth < 1024 && !reduce;
+    P.forEach(function(o){ o.el.style.transform = 'none'; });   // read each pill's natural slot, never its animated position
     var hr = hero.getBoundingClientRect();
     P.forEach(function(o, i){
       var r = o.el.getBoundingClientRect();
@@ -4275,23 +4320,54 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
 
   function frame(now){
     if (!t0) t0 = now;
-    // ease-in: gentle at the start, accelerating so the tiles settle decisively by the end (no late crawl)
-    var s = enabled ? clamp((-hero.getBoundingClientRect().top) / (window.innerHeight * 0.5)) : 1;
-    var sm = s * s;
-    var inv = 1 - sm;
-    P.forEach(function(o, i){
-      var g = o.g;
-      var e = enabled ? clamp((now - t0 - i * 180) / 1300) : 1;
-      e = 1 - Math.pow(1 - e, 3);                       // easeOutCubic – gentler entrance
-      var tx = (g.dx + g.ex * (1 - e)) * inv;
-      var ty = (g.dy + g.ey * (1 - e)) * inv;
-      var sc = 1 + (g.s - 1) * inv;
-      o.el.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + sc.toFixed(3) + ')';
-      o.el.style.opacity = enabled ? e.toFixed(3) : '1';
-      o.icon.style.opacity = clamp((0.65 - sm) / 0.30);            // icon fades out mid-dock
-      o.num.style.opacity  = clamp((sm - 0.60) / 0.30);            // number fades in as it settles
-      o.lab.style.opacity  = clamp((sm - 0.90) / 0.10);            // label only once docked in the row
-    });
+    if (enabled) {
+      // ease-in: gentle at the start, accelerating so the tiles settle decisively by the end
+      var s = clamp((-hero.getBoundingClientRect().top) / (window.innerHeight * 0.5));
+      var sm = s * s, inv = 1 - sm;
+      P.forEach(function(o, i){
+        var g = o.g;
+        var e = clamp((now - t0 - i * 180) / 1300);
+        e = 1 - Math.pow(1 - e, 3);                       // easeOutCubic – gentler entrance
+        var tx = (g.dx + g.ex * (1 - e)) * inv;
+        var ty = (g.dy + g.ey * (1 - e)) * inv;
+        var sc = 1 + (g.s - 1) * inv;
+        o.el.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + sc.toFixed(3) + ')';
+        o.el.style.opacity = e.toFixed(3);
+        o.icon.style.opacity = clamp((0.65 - sm) / 0.30);            // icon fades out mid-dock
+        o.num.style.opacity  = clamp((sm - 0.60) / 0.30);            // number fades in as it settles
+        o.lab.style.opacity  = clamp((sm - 0.90) / 0.10);            // label only once docked in the row
+      });
+    } else if (mobile) {
+      var hr = hero.getBoundingClientRect();
+      if (!mStarted) {
+        if (hr.top < window.innerHeight * 0.92 && hr.bottom > 0) { mStarted = true; mt0 = now; }
+        else {
+          P.forEach(function(o, i){
+            var off = MOFF[i];
+            o.el.style.transform = 'translate(' + off.ex + 'px,' + off.ey + 'px)';
+            o.el.style.opacity = '0';
+            o.icon.style.opacity = '1'; o.num.style.opacity = '0'; o.lab.style.opacity = '0';
+          });
+          requestAnimationFrame(frame); return;
+        }
+      }
+      P.forEach(function(o, i){
+        var off = MOFF[i];
+        var mp = clamp((now - mt0 - i * 150) / 900);
+        var e = 1 - Math.pow(1 - mp, 3);                  // easeOutCubic
+        o.el.style.transform = 'translate(' + (off.ex * (1 - e)).toFixed(1) + 'px,' + (off.ey * (1 - e)).toFixed(1) + 'px)';
+        o.el.style.opacity = clamp(mp / 0.18).toFixed(3);
+        o.icon.style.opacity = clamp((0.55 - e) / 0.26);            // icon visible while flying in
+        o.num.style.opacity  = clamp((e - 0.50) / 0.26);            // morphs to the number as it settles
+        o.lab.style.opacity  = clamp((e - 0.82) / 0.18);            // label appears last
+      });
+    } else {
+      // reduced motion / fallback – static docked, number + label
+      P.forEach(function(o){
+        o.el.style.transform = 'none'; o.el.style.opacity = '1';
+        o.icon.style.opacity = '0'; o.num.style.opacity = '1'; o.lab.style.opacity = '1';
+      });
+    }
     requestAnimationFrame(frame);
   }
 
