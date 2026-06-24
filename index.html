@@ -837,7 +837,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   .hp-badge { width: 40px; height: 40px; }
 }
 /* decorative colour squares – scatter + breathe like the icons, but dissolve on scroll instead of docking; desktop only */
-.hp-deco { position: absolute; }
+.hp-deco { position: absolute; filter: blur(3.6px); }
 @media (max-width: 1023px) { .hp-deco { display: none; } }
 
 /* ════ APPLE BUTTONS ════ */
@@ -4291,16 +4291,16 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
 
   // desktop scatter home (fraction of hero box) + entrance offset (px, off-screen top corners) + scale
   var SCAT = [
-    { x:0.10, y:0.30, s:2.4, ex:-130, ey:-120 },
-    { x:0.90, y:0.24, s:3.1, ex: 130, ey:-135 },
-    { x:0.07, y:0.64, s:3.2, ex:-140, ey: -80 },
-    { x:0.93, y:0.60, s:2.8, ex: 150, ey:-110 },
-    { x:0.85, y:0.42, s:2.0, ex: 120, ey:-150 },
-    { x:0.13, y:0.14, s:2.3, ex:-120, ey:-140 },
-    { x:0.04, y:0.47, s:2.7, ex:-150, ey: -90 },
-    { x:0.14, y:0.82, s:2.1, ex:-130, ey: -70 },
-    { x:0.96, y:0.37, s:2.5, ex: 140, ey:-130 },
-    { x:0.88, y:0.80, s:2.3, ex: 130, ey: -90 }
+    { x:0.216, y:0.251, s:2.4,  ex:-130, ey:-120 },  // 0 yellow (real) – up & right 30px
+    { x:0.90,  y:0.24,  s:3.1,  ex: 130, ey:-135 },  // 1 blue   (real)
+    { x:0.182, y:0.62,  s:3.2,  ex:-140, ey: -80 },  // 2 green  (real) – 40px closer to text
+    { x:0.93,  y:0.60,  s:2.8,  ex: 150, ey:-110 },  // 3 purple (real)
+    { x:0.85,  y:0.42,  s:2.0,  ex: 120, ey:-150 },  // 4 pink   (real)
+    { x:0.06,  y:0.421, s:1.84, ex:-120, ey: -90 },  // 5 blue   (deco) – up 30px, 20% smaller
+    { x:0.122, y:0.111, s:2.7,  ex:-150, ey:-130 },  // 6 pink   (deco) – up 20px
+    { x:0.722, y:0.611, s:2.1,  ex: 140, ey: -90 },  // 7 green  (deco)
+    { x:0.96,  y:0.37,  s:2.5,  ex: 140, ey:-130 },  // 8 yellow (deco)
+    { x:0.107, y:0.72,  s:2.3,  ex:-130, ey: -70 }   // 9 purple (deco) – 60px right
   ];
   // mobile entrance offsets – sweep in from left → bottom → right
   var MOFF = [
@@ -4312,16 +4312,16 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
   ];
   // idle "breathing" once settled: gentle drift (px) + scale pulse (current size = min), per-pill phases for organic, non-synced motion
   var IDLE = [
-    { ax:16, ay:24, ap:0.30, fx:0.55, fy:0.75, fs:0.50, phx:0.0, phy:1.3, phs:2.1 },
-    { ax:21, ay:15, ap:0.29, fx:0.70, fy:0.50, fs:0.62, phx:1.1, phy:0.4, phs:0.7 },
-    { ax:18, ay:22, ap:0.33, fx:0.50, fy:0.70, fs:0.46, phx:2.0, phy:2.6, phs:1.5 },
-    { ax:21, ay:15, ap:0.28, fx:0.78, fy:0.58, fs:0.55, phx:0.6, phy:1.9, phs:3.0 },
-    { ax:19, ay:14, ap:0.31, fx:0.52, fy:0.82, fs:0.50, phx:1.7, phy:0.9, phs:0.3 },
-    { ax:17, ay:22, ap:0.30, fx:0.60, fy:0.70, fs:0.50, phx:0.4, phy:1.8, phs:1.0 },
-    { ax:16, ay:20, ap:0.28, fx:0.55, fy:0.80, fs:0.55, phx:2.3, phy:0.6, phs:2.4 },
-    { ax:18, ay:20, ap:0.32, fx:0.70, fy:0.50, fs:0.48, phx:1.5, phy:2.2, phs:0.5 },
-    { ax:20, ay:15, ap:0.29, fx:0.50, fy:0.75, fs:0.60, phx:0.9, phy:1.1, phs:2.8 },
-    { ax:20, ay:16, ap:0.31, fx:0.65, fy:0.60, fs:0.50, phx:2.7, phy:0.3, phs:1.6 }
+    { ax:16, ay:24, ap:0.30, fx:0.53, fy:0.71, fs:0.47, phx:0.0, phy:1.3, phs:2.1 },   // 0 left  – desynced freqs
+    { ax:21, ay:15, ap:0.29, fx:0.70, fy:0.50, fs:0.62, phx:1.1, phy:0.4, phs:0.7 },   // 1 right
+    { ax:18, ay:22, ap:0.33, fx:0.44, fy:0.66, fs:0.53, phx:2.0, phy:2.6, phs:1.5 },   // 2 left  – desynced freqs
+    { ax:21, ay:15, ap:0.28, fx:0.78, fy:0.58, fs:0.55, phx:0.6, phy:1.9, phs:3.0 },   // 3 right
+    { ax:19, ay:14, ap:0.31, fx:0.52, fy:0.82, fs:0.50, phx:1.7, phy:0.9, phs:0.3 },   // 4 right
+    { ax:17, ay:22, ap:0.30, fx:0.62, fy:0.73, fs:0.41, phx:0.4, phy:1.8, phs:1.0 },   // 5 left  – desynced freqs
+    { ax:16, ay:20, ap:0.28, fx:0.57, fy:0.79, fs:0.66, phx:2.3, phy:0.6, phs:2.4 },   // 6 left  – desynced freqs
+    { ax:18, ay:20, ap:0.32, fx:0.70, fy:0.50, fs:0.48, phx:1.5, phy:2.2, phs:0.5 },   // 7 right-centre
+    { ax:20, ay:15, ap:0.29, fx:0.50, fy:0.75, fs:0.60, phx:0.9, phy:1.1, phs:2.8 },   // 8 right
+    { ax:20, ay:16, ap:0.31, fx:0.64, fy:0.55, fs:0.36, phx:2.7, phy:0.3, phs:1.6 }    // 9 left  – desynced freqs
   ];
   var P = nodes.map(function(p){
     return { el:p, deco:p.classList.contains('hp-deco'), icon:p.querySelector('.hp-icon'), num:p.querySelector('.hp-num'), lab:p.querySelector('.hp-label'),
@@ -4360,7 +4360,7 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
           var dty = (g.dy + g.ey * (1 - e)) + Math.sin(T * d.fy + d.phy) * d.ay * idD;
           var dsc = g.s * (1 + (0.5 + 0.5 * Math.sin(T * d.fs + d.phs)) * d.ap * idD);
           o.el.style.transform = 'translate(' + dtx.toFixed(1) + 'px,' + dty.toFixed(1) + 'px) scale(' + dsc.toFixed(3) + ')';
-          o.el.style.opacity = (e * inv).toFixed(3);      // dissolve as you scroll away, fade back in on scroll up
+          o.el.style.opacity = (e * inv * 0.5).toFixed(3); // 50% max opacity; dissolve as you scroll away, fade back in on scroll up
           return;
         }
         var idle = inv * e;
