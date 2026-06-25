@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero · scatter-pills animation (Sellvia) — reusable</title>
+<!--
+  Standalone snapshot of the "scatter icons → dock into a numbered strip" hero.
+  Self-contained: only dependency is the local SF Pro webfont (fonts/sfpro/).
+  Drop the whole <section class="hero"> + the <script> at the bottom into any offer.
+  Desktop (≥1024): icons float in from the top corners, breathe, then dock under the
+  CTA on scroll, morphing icon → number → label.  Mobile: fly in from sides/bottom.
+-->
+<link rel="stylesheet" href="fonts/sfpro/style.min.css">
+<style>
+:root{
+  --c-near:#1d1d1f; --c-gray1:#424245; --c-gray3:#86868b;
+  --c-amber:#f5a623; --c-amber-d:#d4891a;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ease: cubic-bezier(0.25,0.1,0.25,1);
+  --ease-out: cubic-bezier(0.0,0,0.2,1);
+}
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ font-size:17px; scroll-behavior:smooth; }
+body{ font-family:var(--font); background:#fff; color:var(--c-near);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; line-height:1; }
+/* extra scroll room so the desktop dock-on-scroll is demoable on its own */
+body::after{ content:""; display:block; height:120vh; }
+
+/* ════ HERO ════ */
+.hero{ background:#fff; min-height:80svh; display:flex; flex-direction:column;
+       align-items:center; justify-content:center; position:relative; overflow:hidden;
+       text-align:center; padding:120px 24px; }
+@media(max-width:1200px){ .hero{ padding:100px 24px; } }
+@media(max-width:860px){ .hero{ padding:72px 24px; } }
+
+/* rotating 5-colour vignette, dissolving into the white floor */
+.hero-vignette{ position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  -webkit-mask-image:radial-gradient(82% 74% at 50% 40%, transparent 36%, #000 80%);
+          mask-image:radial-gradient(82% 74% at 50% 40%, transparent 36%, #000 80%); }
+.hero-vignette::before{ content:''; position:absolute; inset:-45%;
+  background:conic-gradient(from 0deg,#ffc862,#59a0f6,#95c90d,#9691ff,#fe9da7,#ffc862);
+  filter:blur(55px); opacity:.42; animation:heroVigSpin 16s linear infinite; }
+.hero-vignette::after{ content:''; position:absolute; inset:0;
+  background:linear-gradient(to bottom, transparent 52%, #fff 94%); }
+@keyframes heroVigSpin{ to{ transform:rotate(360deg); } }
+
+.hero-inner{ position:relative; z-index:3; max-width:840px; margin:0 auto; text-align:center;
+             display:flex; flex-direction:column; align-items:center; }
+
+.hero-eyebrow{ font-size:14px; font-weight:600; color:var(--c-amber); letter-spacing:.06em;
+               text-transform:uppercase; margin-bottom:34px; opacity:0;
+               animation:fadeUp .8s var(--ease-out) .2s forwards; }
+.hero-badge{ position:relative; display:inline-flex; align-items:center; gap:7px; border-radius:50px;
+             background:rgba(20,20,25,.05); padding:7px 16px; font-size:12px; font-weight:700;
+             letter-spacing:.08em; color:#1d1d1f; }
+.hero-badge::before{ content:""; position:absolute; inset:0; border-radius:inherit; padding:1px;
+  background:linear-gradient(90deg,#ffc862,#59a0f6,#95c90d,#9691ff,#fe9da7,#ffc862);
+  background-size:220% 100%;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  animation:eyebrowBorder 4.5s linear infinite; pointer-events:none; }
+@keyframes eyebrowBorder{ to{ background-position:-220% 0; } }
+.eb-star{ display:inline-block; animation:ebStar 3.2s ease-in-out infinite; }
+@keyframes ebStar{ 0%,100%{ color:#ffc862; } 25%{ color:#59a0f6; } 50%{ color:#9691ff; } 75%{ color:#fe9da7; } }
+
+.hero-h1{ font-size:clamp(52px,8vw,96px); font-weight:700; color:#1d1d1f; letter-spacing:-.04em;
+          line-height:1.035; margin-bottom:24px; opacity:0; animation:fadeUp .9s var(--ease-out) .35s forwards; }
+.hero-h1 em{ font-style:normal; color:var(--c-amber); }
+.hero-sub{ font-size:clamp(19px,2.5vw,24px); font-weight:400; color:#424245; line-height:1.5;
+           max-width:620px; margin:0 auto 50px; letter-spacing:-.01em; opacity:0;
+           animation:fadeUp .9s var(--ease-out) .5s forwards; }
+.hero-actions{ display:flex; flex-direction:column; align-items:center; gap:18px; opacity:0;
+               animation:fadeUp .9s var(--ease-out) .65s forwards; width:100%; }
+.hero-fine{ font-size:13px; color:#86868b; margin:0; line-height:1.5; }
+@media(max-width:600px){
+  .hero{ padding:56px 16px; } .hero-h1{ font-size:clamp(40px,11vw,58px); }
+  .hero-inner{ width:100%; align-items:center; text-align:center; } .hero-actions{ padding:0 8px; }
+}
+
+/* CTA: near-black with a glow that cycles the 5 tile colours */
+.btn{ display:inline-flex; align-items:center; justify-content:center; font-family:var(--font);
+      font-size:19px; font-weight:600; border-radius:980px; padding:0 22px; height:44px;
+      transition:all .2s var(--ease); cursor:pointer; border:none; letter-spacing:-.01em; white-space:nowrap; }
+.btn-filled{ background:var(--c-amber); color:#000; width:358px; max-width:100%; height:60px; font-size:19px;
+             backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+.hero .btn-filled{ background:#0b0b0d; color:#fff; animation:heroBtnGlow 7s linear infinite; }
+.hero .btn-filled:hover{ background:#18181c; transform:scale(1.02); }
+@keyframes heroBtnGlow{
+  0%,100%{ box-shadow:0 0 24px 1px rgba(255,200,98,.72), 0 0 58px 6px rgba(255,200,98,.39); }
+  20%    { box-shadow:0 0 24px 1px rgba(89,160,246,.72), 0 0 58px 6px rgba(89,160,246,.39); }
+  40%    { box-shadow:0 0 24px 1px rgba(149,201,13,.72), 0 0 58px 6px rgba(149,201,13,.39); }
+  60%    { box-shadow:0 0 24px 1px rgba(150,145,255,.72), 0 0 58px 6px rgba(150,145,255,.39); }
+  80%    { box-shadow:0 0 24px 1px rgba(254,157,167,.72), 0 0 58px 6px rgba(254,157,167,.39); }
+}
+.hero-link-cta{ display:inline-flex; align-items:center; gap:6px; padding:0; background:none; border:none;
+                color:#1d1d1f; font-family:var(--font); font-size:17px; font-weight:500; letter-spacing:-.01em;
+                text-decoration:underline; text-underline-offset:4px; cursor:pointer; transition:color .2s var(--ease); }
+.hero-link-arrow{ width:16px; height:16px; flex-shrink:0; transition:transform .2s var(--ease); }
+.hero-link-cta:hover{ color:#f5a623; }
+.hero-link-cta:hover .hero-link-arrow{ transform:translateX(3px); }
+
+/* ── scatter-pills → docked numbered strip ── */
+.hero-pills{ display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-start;
+             gap:clamp(14px,4vw,46px); margin-top:48px; width:100%; pointer-events:none; }
+.hero-pill{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center;
+            flex:0 0 auto; width:110px; transform-origin:center center; opacity:0; }
+.hp-badge{ position:relative; width:30px; height:30px; border-radius:9px; background:var(--col);
+           display:flex; align-items:center; justify-content:center; flex-shrink:0;
+           box-shadow:0 4px 10px -5px rgba(0,0,0,.25); }
+.hp-icon{ position:absolute; width:18px; height:18px; color:#fff; }
+.hp-num{ position:absolute; font-size:14px; font-weight:800; color:#fff; line-height:1; opacity:0; }
+.hp-label{ margin-top:10px; font-size:14px; font-weight:600; color:#424245; text-align:center;
+           line-height:1.25; letter-spacing:-.01em; opacity:0; }
+@media(max-width:600px){
+  .hero-pills{ gap:14px 18px; margin-top:36px; } .hero-pill{ width:98px; }
+  .hp-label{ font-size:13px; } .hp-badge{ width:40px; height:40px; }
+}
+/* decorative colour squares – scatter + breathe, dissolve on scroll; desktop only */
+.hp-deco{ position:absolute; filter:blur(3.6px); }
+@media(max-width:1023px){ .hp-deco{ display:none; } }
+
+@keyframes fadeUp{ from{ opacity:0; transform:translateY(30px); } to{ opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-vignette" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow"><span class="hero-badge"><span class="eb-star">✦</span> FAST SALES PACK · Free with your store</span></p>
+    <h1 class="hero-h1">Get a free store<br>with a <em>Turbo Sales<br>Bundle</em> on top.</h1>
+    <p class="hero-sub">Start selling in days, not months. Your free store comes with a <strong>Turbo Pack</strong> that drives traffic, attracts customers, and helps you earn – so you don't waste time figuring it out alone.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-filled">Get my free store + Turbo Pack</a>
+      <p class="hero-fine">Free 14-day trial · Start in 60 seconds · Cancel anytime</p>
+      <button type="button" class="hero-link-cta">
+        Get free consultation
+        <svg class="hero-link-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M8.91 19.92l6.52-6.52c.77-.77.77-2.03 0-2.8L8.91 4.08" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="hero-pills" id="heroPills" aria-hidden="true">
+      <div class="hero-pill" style="--col:#ffc862">
+        <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 7.33V6.58C8.5 4.84 9.9 3.13 11.64 2.97C13.71 2.78 15.45 4.41 15.45 6.44V7.5"/><path d="M9 22h6c4.02 0 4.74-1.61 4.95-3.57l.76-6C20.98 9.99 20.28 8 16 8H8c-4.28 0-4.98 1.99-4.71 4.43l.76 6C4.26 20.39 4.98 22 9 22Z"/><path d="M15.495 11.5h.009"/><path d="M8.495 11.5h.009"/></svg><span class="hp-num">1</span></span>
+        <span class="hp-label">Turnkey<br>Online Store</span>
+      </div>
+      <div class="hero-pill" style="--col:#59a0f6">
+        <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.3"/><path d="M14.3 9.2a2.4 2.4 0 0 0-2.3-1.4c-1.4 0-2.4.8-2.4 2 0 2.7 4.9 1.4 4.9 4.1 0 1.2-1.1 2-2.5 2a2.5 2.5 0 0 1-2.3-1.4"/><path d="M12 6.3v11.4"/></svg><span class="hp-num">2</span></span>
+        <span class="hp-label">$40<br>Ad Credit</span>
+      </div>
+      <div class="hero-pill" style="--col:#95c90d">
+        <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg><span class="hp-num">3</span></span>
+        <span class="hp-label">Free<br>Google Promo</span>
+      </div>
+      <div class="hero-pill" style="--col:#9691ff">
+        <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15.5c2.21 0 4-1.79 4-4V6c0-2.21-1.79-4-4-4S8 3.79 8 6v5.5c0 2.21 1.79 4 4 4Z"/><path d="M4.35 9.65v1.7C4.35 15.57 7.78 19 12 19s7.65-3.43 7.65-7.65v-1.7"/><path d="M10.61 6.43c.9-.33 1.88-.33 2.78 0"/><path d="M11.2 8.55c.53-.14 1.08-.14 1.61 0"/><path d="M12 19v3"/></svg><span class="hp-num">4</span></span>
+        <span class="hp-label">7 AI<br>Influencers</span>
+      </div>
+      <div class="hero-pill" style="--col:#fe9da7">
+        <span class="hp-badge"><svg class="hp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a7 7 0 0 1 14 0"/><rect x="3.4" y="12.3" width="3.4" height="5.2" rx="1.4"/><rect x="17.2" y="12.3" width="3.4" height="5.2" rx="1.4"/><path d="M19 17.5v.4a3 3 0 0 1-3 3h-2.3"/></svg><span class="hp-num">5</span></span>
+        <span class="hp-label">Personal<br>Manager</span>
+      </div>
+      <div class="hero-pill hp-deco" style="--col:#59a0f6"><span class="hp-badge"></span></div>
+      <div class="hero-pill hp-deco" style="--col:#fe9da7"><span class="hp-badge"></span></div>
+      <div class="hero-pill hp-deco" style="--col:#95c90d"><span class="hp-badge"></span></div>
+      <div class="hero-pill hp-deco" style="--col:#ffc862"><span class="hp-badge"></span></div>
+      <div class="hero-pill hp-deco" style="--col:#9691ff"><span class="hp-badge"></span></div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ── HERO PILLS: desktop = float in from the top corners then dock on scroll; mobile = fly in from the sides/bottom and settle on load ──
+;(function(){
+  var nodes = Array.prototype.slice.call(document.querySelectorAll('.hero-pill'));
+  var hero = document.getElementById('hero');
+  if (!nodes.length || !hero) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var SCAT = [
+    { x:0.216, y:0.251, s:2.4,  ex:-130, ey:-120 },  // 0 yellow (real)
+    { x:0.90,  y:0.24,  s:3.1,  ex: 130, ey:-135 },  // 1 blue   (real)
+    { x:0.182, y:0.62,  s:3.2,  ex:-140, ey: -80 },  // 2 green  (real)
+    { x:0.93,  y:0.60,  s:2.8,  ex: 150, ey:-110 },  // 3 purple (real)
+    { x:0.85,  y:0.42,  s:2.0,  ex: 120, ey:-150 },  // 4 pink   (real)
+    { x:0.06,  y:0.421, s:1.84, ex:-120, ey: -90 },  // 5 blue   (deco)
+    { x:0.122, y:0.111, s:2.7,  ex:-150, ey:-130 },  // 6 pink   (deco)
+    { x:0.722, y:0.611, s:2.1,  ex: 140, ey: -90 },  // 7 green  (deco)
+    { x:0.96,  y:0.37,  s:2.5,  ex: 140, ey:-130 },  // 8 yellow (deco)
+    { x:0.107, y:0.72,  s:2.3,  ex:-130, ey: -70 }   // 9 purple (deco)
+  ];
+  var MOFF = [
+    { ex:-180, ey:  12 }, { ex:-140, ey: 132 }, { ex:   0, ey: 152 },
+    { ex: 140, ey: 132 }, { ex: 180, ey:  12 }
+  ];
+  var IDLE = [
+    { ax:16, ay:24, ap:0.30, fx:0.53, fy:0.71, fs:0.47, phx:0.0, phy:1.3, phs:2.1 },
+    { ax:21, ay:15, ap:0.29, fx:0.70, fy:0.50, fs:0.62, phx:1.1, phy:0.4, phs:0.7 },
+    { ax:18, ay:22, ap:0.33, fx:0.44, fy:0.66, fs:0.53, phx:2.0, phy:2.6, phs:1.5 },
+    { ax:21, ay:15, ap:0.28, fx:0.78, fy:0.58, fs:0.55, phx:0.6, phy:1.9, phs:3.0 },
+    { ax:19, ay:14, ap:0.31, fx:0.52, fy:0.82, fs:0.50, phx:1.7, phy:0.9, phs:0.3 },
+    { ax:17, ay:22, ap:0.30, fx:0.62, fy:0.73, fs:0.41, phx:0.4, phy:1.8, phs:1.0 },
+    { ax:16, ay:20, ap:0.28, fx:0.57, fy:0.79, fs:0.66, phx:2.3, phy:0.6, phs:2.4 },
+    { ax:18, ay:20, ap:0.32, fx:0.70, fy:0.50, fs:0.48, phx:1.5, phy:2.2, phs:0.5 },
+    { ax:20, ay:15, ap:0.29, fx:0.50, fy:0.75, fs:0.60, phx:0.9, phy:1.1, phs:2.8 },
+    { ax:20, ay:16, ap:0.31, fx:0.64, fy:0.55, fs:0.36, phx:2.7, phy:0.3, phs:1.6 }
+  ];
+  var P = nodes.map(function(p){
+    return { el:p, deco:p.classList.contains('hp-deco'), icon:p.querySelector('.hp-icon'), num:p.querySelector('.hp-num'), lab:p.querySelector('.hp-label'),
+             g:{ dx:0, dy:0, s:1, ex:0, ey:0 } };
+  });
+  var enabled = false, mobile = false, t0 = 0, mStarted = false, mt0 = 0;
+  function clamp(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
+
+  function measure(){
+    enabled = window.innerWidth >= 1024 && !reduce;
+    mobile  = window.innerWidth < 1024 && !reduce;
+    P.forEach(function(o){ o.el.style.transform = 'none'; });
+    var hr = hero.getBoundingClientRect();
+    P.forEach(function(o, i){
+      var r = o.el.getBoundingClientRect();
+      var cx = r.left + r.width / 2 - hr.left;
+      var cy = r.top + r.height / 2 - hr.top;
+      var c = SCAT[i];
+      o.g = { dx: c.x * hr.width - cx, dy: c.y * hr.height - cy, s: c.s, ex: c.ex, ey: c.ey };
+    });
+  }
+
+  function frame(now){
+    if (!t0) t0 = now;
+    if (enabled) {
+      var s = clamp((-hero.getBoundingClientRect().top) / (window.innerHeight * 0.5));
+      var sm = s * s, inv = 1 - sm;
+      P.forEach(function(o, i){
+        var g = o.g, d = IDLE[i], T = now / 1000;
+        var e = clamp((now - t0 - i * 180) / 1300);
+        e = 1 - Math.pow(1 - e, 3);
+        if (o.deco) {
+          var idD = e;
+          var dtx = (g.dx + g.ex * (1 - e)) + Math.sin(T * d.fx + d.phx) * d.ax * idD;
+          var dty = (g.dy + g.ey * (1 - e)) + Math.sin(T * d.fy + d.phy) * d.ay * idD;
+          var dsc = g.s * (1 + (0.5 + 0.5 * Math.sin(T * d.fs + d.phs)) * d.ap * idD);
+          o.el.style.transform = 'translate(' + dtx.toFixed(1) + 'px,' + dty.toFixed(1) + 'px) scale(' + dsc.toFixed(3) + ')';
+          o.el.style.opacity = (e * inv * 0.5).toFixed(3);
+          return;
+        }
+        var idle = inv * e;
+        var tx = (g.dx + g.ex * (1 - e)) * inv + Math.sin(T * d.fx + d.phx) * d.ax * idle;
+        var ty = (g.dy + g.ey * (1 - e)) * inv + Math.sin(T * d.fy + d.phy) * d.ay * idle;
+        var sc = (1 + (g.s - 1) * inv) * (1 + (0.5 + 0.5 * Math.sin(T * d.fs + d.phs)) * d.ap * idle);
+        o.el.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + sc.toFixed(3) + ')';
+        o.el.style.opacity = e.toFixed(3);
+        o.icon.style.opacity = clamp((0.65 - sm) / 0.30);
+        o.num.style.opacity  = clamp((sm - 0.60) / 0.30);
+        o.lab.style.opacity  = clamp((sm - 0.90) / 0.10);
+      });
+    } else if (mobile) {
+      var hr = hero.getBoundingClientRect();
+      if (!mStarted) {
+        if (hr.top < window.innerHeight * 0.92 && hr.bottom > 0) { mStarted = true; mt0 = now; }
+        else {
+          P.forEach(function(o, i){
+            if (o.deco) { o.el.style.opacity = '0'; return; }
+            var off = MOFF[i];
+            o.el.style.transform = 'translate(' + off.ex + 'px,' + off.ey + 'px)';
+            o.el.style.opacity = '0';
+            o.icon.style.opacity = '1'; o.num.style.opacity = '0'; o.lab.style.opacity = '0';
+          });
+          requestAnimationFrame(frame); return;
+        }
+      }
+      P.forEach(function(o, i){
+        if (o.deco) { o.el.style.opacity = '0'; return; }
+        var off = MOFF[i];
+        var mp = clamp((now - mt0 - i * 150) / 900);
+        var e = 1 - Math.pow(1 - mp, 3);
+        o.el.style.transform = 'translate(' + (off.ex * (1 - e)).toFixed(1) + 'px,' + (off.ey * (1 - e)).toFixed(1) + 'px)';
+        o.el.style.opacity = clamp(mp / 0.18).toFixed(3);
+        o.icon.style.opacity = clamp((0.55 - e) / 0.26);
+        o.num.style.opacity  = clamp((e - 0.50) / 0.26);
+        o.lab.style.opacity  = clamp((e - 0.82) / 0.18);
+      });
+    } else {
+      P.forEach(function(o){
+        if (o.deco) { o.el.style.transform = 'none'; o.el.style.opacity = '0'; return; }
+        o.el.style.transform = 'none'; o.el.style.opacity = '1';
+        o.icon.style.opacity = '0'; o.num.style.opacity = '1'; o.lab.style.opacity = '1';
+      });
+    }
+    requestAnimationFrame(frame);
+  }
+
+  measure();
+  window.addEventListener('load', measure);
+  var rt;
+  window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(measure, 200); });
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
