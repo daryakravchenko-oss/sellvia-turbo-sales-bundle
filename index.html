@@ -691,7 +691,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(90deg, #ffc862, #59a0f6, #95c90d, #9691ff, #fe9da7, #ffc862);
+  background: linear-gradient(90deg, #ffc862, #ff9d10, #ff6a00, #ff9d10, #ffc862);
   background-size: 220% 100%;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -706,9 +706,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 }
 @keyframes ebStar {
   0%, 100% { color: #ffc862; }
-  25%      { color: #59a0f6; }
-  50%      { color: #9691ff; }
-  75%      { color: #fe9da7; }
+  50%      { color: #ff6a00; }
 }
 .hero-h1 {
   font-size: clamp(52px, 8vw, 96px);
@@ -848,19 +846,40 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
    HERO · SPLIT DARK  (copy left · speedometer right · inverted stats)
    ════════════════════════════════════════ */
 .hero.is-split{
-  background:#0c1124;
+  background:#0a0b16 url('img/hero/hero_img.webp') right center / cover no-repeat;
   text-align:center;
   min-height:86vh;
   justify-content:center;
   padding:clamp(90px,11vh,140px) 24px clamp(56px,7vh,90px);
 }
-/* big orange spot top-left + big purple spot bottom-right across the whole hero background */
+/* scrim over the turbo-dial photo: darkens the left/centre for the copy + list, fades right to reveal the dial */
 .hero.is-split::before{
   content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
   background:
-    radial-gradient(62% 74% at 12% 16%, rgba(255,122,24,.34), transparent 68%),
-    radial-gradient(66% 80% at 88% 86%, rgba(150,145,255,.36), transparent 70%);
+    linear-gradient(to right, rgba(8,9,20,0.95) 0%, rgba(8,9,20,0.86) 36%, rgba(8,9,20,0.6) 56%, rgba(8,9,20,0.18) 72%, rgba(8,9,20,0) 88%),
+    linear-gradient(to bottom, rgba(8,9,20,0.4) 0%, rgba(8,9,20,0) 26%, rgba(8,9,20,0) 72%, rgba(8,9,20,0.42) 100%);
+  animation: heroScrimPulse 9s ease-in-out infinite;
 }
+/* the darkening breathes: fades fully out, then back up to the current level */
+@keyframes heroScrimPulse{ 0%,100%{ opacity:1; } 50%{ opacity:0; } }
+@media (prefers-reduced-motion: reduce){ .hero.is-split::before{ animation:none; opacity:1; } }
+/* single campfire / turbo embers drifting up across the hero (randomised in JS) */
+.hero-sparks{ position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+.hero-spark{
+  position:absolute; bottom:-12px; width:var(--s,3px); height:var(--s,3px); border-radius:50%;
+  background:radial-gradient(circle, #fff2c8 0%, #ff9d10 42%, rgba(255,80,8,0) 76%);
+  filter:drop-shadow(0 0 4px #ff8a1e);
+  opacity:0; animation:sparkFly var(--dur,6s) ease-in var(--delay,0s) infinite;
+}
+@keyframes sparkFly{
+  0%  { transform:translate(0,0) scale(0.5); opacity:0; }
+  8%  { opacity:1; }
+  72% { opacity:0.9; }
+  100%{ transform:translate(var(--dx,30px), var(--dy,-440px)) scale(1.15); opacity:0; }
+}
+@media (prefers-reduced-motion: reduce){ .hero-sparks{ display:none; } }
+/* ~1440: nudge the dial photo ~40px right so $50K stays clear of the centred copy */
+@media (min-width:1360px) and (max-width:1560px){ .hero.is-split{ background-position: calc(100% + 40px) center; } }
 /* gauge (left) · centred copy (middle) · list panel (right) */
 .hero.is-split .hero-inner{
   max-width:1340px; width:100%;
@@ -879,11 +898,13 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 .hero.is-split .hero-h1{
   color:#fff; text-align:center;
   font-size:clamp(32px,3.7vw,50px); line-height:1.06; margin-bottom:20px;
+  text-shadow:0 2px 24px rgba(0,0,0,0.62), 0 1px 5px rgba(0,0,0,0.45);
 }
 .hero.is-split .hero-h1 em{ color:var(--c-amber); }
 .hero.is-split .hero-sub{
-  color:rgba(255,255,255,.72); text-align:center; font-size:20px;
+  color:rgba(255,255,255,.82); text-align:center; font-size:20px;
   max-width:520px; margin:0 auto 34px;
+  text-shadow:0 1px 16px rgba(0,0,0,0.6);
 }
 .hero.is-split .hero-sub strong{ color:#fff; font-weight:600; }
 .hero.is-split .hero-actions{ align-items:center; width:auto; }
@@ -892,11 +913,56 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 .hero.is-split .hero-link-cta:hover{ color:var(--c-amber); }
 
 /* CTA: solid brand-yellow fill + the multicolour cycling glow around it */
+@property --btnA{ syntax:'<angle>'; initial-value:0deg; inherits:false; }
+/* CTA: a light flash sweeps inside L→R, then a comet runs clockwise round the outside; glow swells like the 4th list plate */
 .hero.is-split .btn-filled{
+  position:relative; overflow:visible;
   background: var(--c-amber); color:#000;
-  animation: heroBtnGlow 7s linear infinite;
+  box-shadow: 0 0 32px -2px #ff7e00, 0 0 14px -1px #ff7e00, inset 0 0 22px -11px #ff7e00;
+  animation: btnFire 4.6s ease-in-out infinite;
 }
 .hero.is-split .btn-filled:hover{ transform:scale(1.02); }
+/* inside flash — soft light appears at the left and flies right */
+.hero.is-split .btn-filled::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(100deg, transparent 0%, rgba(255,248,224,0) 32%, rgba(255,248,224,0.95) 50%, rgba(255,248,224,0) 68%, transparent 100%);
+  background-size:55% 100%; background-repeat:no-repeat; mix-blend-mode:screen;
+  animation:btnInFlash 4.6s linear infinite;
+}
+@keyframes btnInFlash{
+  0%{ opacity:0; background-position:-30% 0; }
+  4%{ opacity:1; }
+  19%{ opacity:1; background-position:130% 0; }
+  21%,100%{ opacity:0; background-position:130% 0; }
+}
+/* perimeter orbit — light continues outside, clockwise round the border (the conic gradient rotates, not the box) */
+.hero.is-split .btn-filled::after{
+  content:""; position:absolute; inset:-3px; border-radius:inherit; pointer-events:none;
+  background:conic-gradient(from var(--btnA), transparent 0deg 46deg, rgba(255,180,80,0.5) 64deg, #fff7e0 90deg, rgba(255,180,80,0.5) 116deg, transparent 134deg 360deg);
+  padding:3px;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  filter:drop-shadow(0 0 6px #ff9d10) drop-shadow(0 0 14px rgba(255,140,30,0.65));
+  animation:btnOrbit 4.6s linear infinite;
+}
+@keyframes btnOrbit{
+  0%{ opacity:0; --btnA:0deg; }
+  20%{ opacity:0; --btnA:0deg; }
+  23%{ opacity:1; }
+  96%{ opacity:1; }
+  100%{ opacity:0; --btnA:360deg; }
+}
+/* fiery flashing fill + a swelling glow like the sp-list plates */
+@keyframes btnFire{
+  0%, 34%, 100%{ background-color:#f5a623;
+    box-shadow:0 0 32px -2px #ff7e00, 0 0 14px -1px #ff7e00, inset 0 0 22px -11px #ff7e00; }
+  48%{ background-color:#ff8f1a;
+    box-shadow:0 0 52px 1px #ff7e00, 0 0 20px -1px #ff9d10, inset 0 0 34px -7px #ffc24a; }
+  57%{ background-color:#ffa831;
+    box-shadow:0 0 40px 0 #ff7e00, 0 0 16px -1px #ff9d10, inset 0 0 26px -8px #ffb338; }
+  66%{ background-color:#ff8f1a;
+    box-shadow:0 0 52px 1px #ff7e00, 0 0 20px -1px #ff9d10, inset 0 0 34px -7px #ffc24a; }
+}
 
 /* speedometer split across the hero: gauge (left) + list panel (right), copy centred between.
    .hero-inner doubles as the JS root (.spdo). The fixed 440px dial scales to its square column. */
@@ -914,7 +980,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 .spdo .sp-labels span{ position:absolute; transform:translate(-50%,-50%); font-family:'Rajdhani'; font-weight:700; font-size:22px; letter-spacing:.5px; color:#ffc862; text-shadow:0 0 14px rgba(255,200,98,0.9), 0 0 4px rgba(255,200,98,0.7); white-space:nowrap; }
 .spdo .sp-center{ position:absolute; left:50%; top:50%; transform:translate(-50%, calc(-50% - 40px)); text-align:center; pointer-events:none; width:240px; }
 .spdo .sp-center .sp-num{ font-family:'Rajdhani'; font-weight:700; font-size:68px; line-height:.9; color:#fff; text-shadow:0 0 24px rgba(150,145,255,0.6), 0 0 10px rgba(255,255,255,0.5); font-variant-numeric:tabular-nums; letter-spacing:-1px; }
-.spdo .sp-panel{ position:relative; z-index:1; order:3; width:100%; max-width:290px; justify-self:end; transform:translateX(-20px); }
+.spdo .sp-panel{ position:relative; z-index:1; order:1; width:100%; max-width:320px; justify-self:start; }
 .spdo .sp-eyebrow{ font-family:'Rajdhani'; font-weight:700; font-size:22px; letter-spacing:.5px; text-transform:none; color:#ffc862; text-shadow:0 0 14px rgba(255,200,98,0.9), 0 0 4px rgba(255,200,98,0.7); margin-bottom:18px; line-height:1.05; }
 .spdo .sp-list{ display:flex; flex-direction:column; gap:11px; }
 .spdo .sp-row{ display:flex; align-items:center; gap:15px; padding:13px 16px; border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); transition:all 260ms cubic-bezier(0.25,0.1,0.25,1); }
@@ -922,6 +988,20 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 .spdo .sp-row .sp-txt{ font-family:'Inter'; font-weight:600; font-size:15px; color:rgba(255,255,255,0.6); transition:color 260ms ease; white-space:nowrap; }
 .spdo .sp-row .sp-bar{ margin-top:8px; height:2px; border-radius:2px; background:rgba(255,255,255,0.08); overflow:hidden; }
 .spdo .sp-row .sp-fill{ height:100%; width:0%; border-radius:2px; transition:width 360ms cubic-bezier(0.25,0.1,0.25,1); }
+/* phase 1 — each row lights up in turn (glow only; no bar, no flash) */
+.spdo .sp-row{ position:relative; }
+.spdo .sp-row.sp-lit{ background:rgba(255,90,20,0.08); border-color:var(--c);
+  box-shadow:0 0 36px -2px var(--c), 0 0 15px -1px var(--c), inset 0 0 24px -10px var(--c);
+  transform:translateX(6px); }
+.spdo .sp-row.sp-lit .sp-badge{ background:var(--c); color:#1a0a00; box-shadow:0 0 22px var(--c), 0 0 9px #ffd9a8; }
+.spdo .sp-row.sp-lit .sp-txt{ color:#fff; }
+/* phase 2 — bars load while the rows give a subtle turbo vibration */
+.spdo .sp-row.sp-load .sp-fill{ width:100%; background:linear-gradient(90deg,#ff3b00,#ffc83a); box-shadow:0 0 13px var(--c); transition:width 1750ms cubic-bezier(0.3,0.05,0.25,1); }
+.spdo .sp-row.sp-load{ animation:turboVibrate 0.11s linear infinite; }
+@keyframes turboVibrate{
+  0%{ transform:translateX(6px); } 20%{ transform:translate(6.7px,-0.6px); } 40%{ transform:translate(5.4px,0.5px); }
+  60%{ transform:translate(6.6px,0.4px); } 80%{ transform:translate(5.5px,-0.5px); } 100%{ transform:translateX(6px); }
+}
 
 /* inverted stat-bar embedded into the hero */
 .hero.is-split .hero-stats{ position:relative; z-index:1; width:100%; max-width:760px; margin:clamp(40px,6vh,76px) auto 0; }
@@ -935,9 +1015,10 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 
 @media(max-width:900px){
   .hero.is-split .hero-inner{ grid-template-columns:1fr; gap:32px; }
+  .hero.is-split{ background-position:72% center; }
+  .hero.is-split::before{ background:linear-gradient(to bottom, rgba(8,9,20,0.72) 0%, rgba(8,9,20,0.56) 42%, rgba(8,9,20,0.82) 100%); }
   .hero-copy{ order:1; max-width:none; }
-  .sp-gside{ order:2; width:100%; max-width:360px; transform:none; justify-self:center; }
-  .spdo .sp-panel{ order:3; max-width:340px; justify-self:center; transform:none; }
+  .spdo .sp-panel{ order:2; max-width:340px; justify-self:center; transform:none; }
 }
 @media(max-width:600px){
   .hero.is-split{ min-height:auto; padding:64px 16px 48px; }
@@ -1758,7 +1839,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   align-items: center;
   justify-content: center;
   gap: 14px;
-  background: linear-gradient(90deg, #3665AA, #0C1124, #252668, #3665AA);
+  background: linear-gradient(90deg, #020611, #701100, #020611);
   background-size: 200% auto;
   animation: topbarBg 7s linear infinite;
   padding: 10px 24px;
@@ -1854,59 +1935,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </button>
     </div>
     </div><!-- /hero-copy -->
-    <div class="sp-gside" aria-hidden="true">
-      <div class="sp-gauge">
-              <svg viewBox="0 0 400 400" width="440" height="440">
-                <defs>
-                  <linearGradient id="spGrad" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0" stop-color="#59a0f6"></stop>
-                    <stop offset="0.28" stop-color="#9691ff"></stop>
-                    <stop offset="0.55" stop-color="#fe9da7"></stop>
-                    <stop offset="0.8" stop-color="#f5a623"></stop>
-                    <stop offset="1" stop-color="#95c90d"></stop>
-                  </linearGradient>
-                  <radialGradient id="spCometGrad">
-                    <stop offset="0" stop-color="#fff1dd"></stop>
-                    <stop offset="0.35" stop-color="#ff8a1e"></stop>
-                    <stop offset="1" stop-color="#ff7a18" stop-opacity="0"></stop>
-                  </radialGradient>
-                  <linearGradient id="spTailGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="0">
-                    <stop offset="0" stop-color="#ff7a18" stop-opacity="0"></stop>
-                    <stop offset="0.7" stop-color="#ff8a1e" stop-opacity="0.55"></stop>
-                    <stop offset="1" stop-color="#ffd9a8" stop-opacity="0.95"></stop>
-                  </linearGradient>
-                  <filter id="spGlow" x="-80%" y="-80%" width="260%" height="260%">
-                    <feGaussianBlur stdDeviation="6.5" result="b"></feGaussianBlur>
-                    <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-                  </filter>
-                  <filter id="spNglow" x="-120%" y="-120%" width="340%" height="340%">
-                    <feGaussianBlur stdDeviation="2.6" result="nb"></feGaussianBlur>
-                    <feMerge><feMergeNode in="nb"></feMergeNode><feMergeNode in="nb"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-                  </filter>
-                  <filter id="spComet" x="-250%" y="-250%" width="600%" height="600%">
-                    <feGaussianBlur stdDeviation="4.5" result="cb"></feGaussianBlur>
-                    <feMerge><feMergeNode in="cb"></feMergeNode><feMergeNode in="cb"></feMergeNode><feMergeNode in="cb"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-                  </filter>
-                </defs>
-                <path class="sp-gtrack" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14" stroke-linecap="round"></path>
-                <g class="sp-ticks" filter="url(#spGlow)"></g>
-                <g class="sp-pglow"><path class="sp-progress" d="" fill="none" stroke="url(#spGrad)" stroke-width="11" stroke-linecap="round" filter="url(#spGlow)"></path></g>
-                <g class="sp-needle" filter="url(#spNglow)">
-                  <polygon points="200,198.6 200,201.4 168,201 168,199" fill="#f5a623" opacity="0.6"></polygon>
-                  <polygon points="200,194.6 200,205.4 348,200.7 348,199.3" fill="#ffc862"></polygon>
-                  <polygon points="200,196.3 200,203.7 312,200" fill="#fffaf0"></polygon>
-                </g>
-                <circle cx="200" cy="200" r="13" fill="#0c0814" stroke="rgba(255,255,255,0.25)" stroke-width="2"></circle>
-                <circle cx="200" cy="200" r="4.5" fill="#f5a623"></circle>
-                <g class="sp-comet" filter="url(#spComet)" opacity="0">
-                  <path class="sp-comet-tail" fill="none" stroke="url(#spTailGrad)" stroke-width="9" stroke-linecap="round"></path>
-                  <ellipse class="sp-comet-head" cx="0" cy="0" rx="22" ry="9" fill="url(#spCometGrad)"></ellipse>
-                </g>
-              </svg>
-              <div class="sp-labels"></div>
-              <div class="sp-center"><div class="sp-num">$0</div></div>
-            </div>
-    </div><!-- /sp-gside -->
     <div class="sp-panel" aria-hidden="true">
       <div class="sp-list"></div>
     </div>
@@ -1936,7 +1964,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 50%;
-  background: #BAD3F3;
+  background: #DECCBA;
   z-index: 0;
 }
 .freebasic-section .freebasic-inner { position: relative; z-index: 1; }
@@ -2070,7 +2098,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    background: #BAD3F3;
+    background: #DECCBA;
     border-radius: 0;
     padding: 56px 24px;
     margin-bottom: 32px;
@@ -3252,7 +3280,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    darkening fades out, strong colour glow. */
 .sb-card:not(.sb-ring)::before {
   content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: var(--col);
+  background: linear-gradient(to bottom, var(--col) 0%, #0c1124 35%);
   opacity: 0; transition: opacity .5s var(--ease);
 }
 .sb-card:not(.sb-ring)::after {
@@ -3345,34 +3373,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 /* monolithic neon ring: five 72° colour arcs butted edge-to-edge (no gaps),
    each glowing in its own colour, filling on a loop with a "Done" reveal */
 /* faint track ring at rest; the colour band loads over it on reveal (no inner disc) */
-.sb-ring-svg .seg-track { fill: none; stroke: rgba(255,255,255,.09); stroke-width: 15; }
-.sb-ring-svg .seg {
-  fill: none; stroke-width: 15; stroke-linecap: round;
-  stroke-dasharray: 106.8 427.3;
-  stroke-dashoffset: 106.8;                 /* empty until the section scrolls into view */
-  filter: blur(0.6px) drop-shadow(0 0 7px var(--g)) drop-shadow(0 0 18px var(--g));
+.sb-ring-svg .seg-track { fill: none; stroke: rgba(255,255,255,.08); stroke-width: 13; }
+/* a single comet runs round the dim track (replaces the always-on 5-sector glow) */
+.sb-comet-orbit{ transform-box: view-box; transform-origin: 110px 110px; opacity: 0; }
+.sb-comet-tail{ filter: drop-shadow(0 0 8px #ff7e00) drop-shadow(0 0 18px #ff5e00) drop-shadow(0 0 30px rgba(255,94,0,.55)); }
+.sb-comet-head{ filter: drop-shadow(0 0 10px #ffc24a) drop-shadow(0 0 22px #ff7e00) drop-shadow(0 0 38px rgba(255,94,0,.6)); }
+.sb-ring-flash{ fill: none; stroke: #ff8a1e; stroke-width: 14; opacity: 0; filter: drop-shadow(0 0 14px #ff7e00) drop-shadow(0 0 32px #ff5e00) drop-shadow(0 0 54px rgba(255,94,0,.5)); }
+/* animate only when the section scrolls into view */
+.bonus-section.is-revealed .sb-comet-orbit{ animation: sbCometOrbit 6s linear infinite; }
+.bonus-section.is-revealed .sb-ring-flash{ animation: sbRingFlash 6s ease-in-out infinite; }
+@keyframes sbCometOrbit{
+  0%   { transform: rotate(0deg); opacity: 0; }
+  4%   { opacity: 1; }
+  60%  { transform: rotate(360deg); opacity: 1; }
+  67%  { transform: rotate(360deg); opacity: 0; }
+  100% { transform: rotate(360deg); opacity: 0; }
 }
-/* dynamic, shimmering glow – each sector pulses its glow length on its own clock */
-.sb-ring-svg .seg.s1 { animation: ringGlow 2.3s ease-in-out infinite; }
-.sb-ring-svg .seg.s2 { animation: ringGlow 3.1s ease-in-out -0.6s infinite; }
-.sb-ring-svg .seg.s3 { animation: ringGlow 2.6s ease-in-out -1.3s infinite; }
-.sb-ring-svg .seg.s4 { animation: ringGlow 3.4s ease-in-out -0.9s infinite; }
-.sb-ring-svg .seg.s5 { animation: ringGlow 2.1s ease-in-out -1.7s infinite; }
-@keyframes ringGlow {
-  0%,100% { filter: blur(0.6px) drop-shadow(0 0 5px var(--g)) drop-shadow(0 0 13px var(--g)) drop-shadow(0 0 20px var(--g)); }
-  50%     { filter: blur(0.6px) drop-shadow(0 0 11px var(--g)) drop-shadow(0 0 30px var(--g)) drop-shadow(0 0 46px var(--g)); }
+@keyframes sbRingFlash{
+  0%,56% { opacity: 0; }
+  63%    { opacity: 1; }
+  82%    { opacity: 0.65; }
+  90%,100%{ opacity: 0; }
 }
-/* on reveal the colour band ALSO loads round the circle like a progress bar (one sector after another) */
-.bonus-section.is-revealed .seg.s1 { animation: ringGlow 2.3s ease-in-out infinite, sbFill1 6s linear infinite; }
-.bonus-section.is-revealed .seg.s2 { animation: ringGlow 3.1s ease-in-out -0.6s infinite, sbFill2 6s linear infinite; }
-.bonus-section.is-revealed .seg.s3 { animation: ringGlow 2.6s ease-in-out -1.3s infinite, sbFill3 6s linear infinite; }
-.bonus-section.is-revealed .seg.s4 { animation: ringGlow 3.4s ease-in-out -0.9s infinite, sbFill4 6s linear infinite; }
-.bonus-section.is-revealed .seg.s5 { animation: ringGlow 2.1s ease-in-out -1.7s infinite, sbFill5 6s linear infinite; }
-@keyframes sbFill1 { 0%{stroke-dashoffset:106.8} 10%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
-@keyframes sbFill2 { 0%,10%{stroke-dashoffset:106.8} 20%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
-@keyframes sbFill3 { 0%,20%{stroke-dashoffset:106.8} 30%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
-@keyframes sbFill4 { 0%,30%{stroke-dashoffset:106.8} 40%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
-@keyframes sbFill5 { 0%,40%{stroke-dashoffset:106.8} 50%{stroke-dashoffset:0} 86%{stroke-dashoffset:0} 100%{stroke-dashoffset:106.8} }
 .sb-ring-center {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -3380,8 +3402,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 .sb-ring-done {
   font: 700 48px var(--font);
-  color: #eaf7ff;
-  text-shadow: 0 0 10px rgba(120,210,255,.9), 0 0 22px rgba(120,210,255,.5);
+  color: #fff4e6;
+  text-shadow: 0 0 10px rgba(255,140,30,.95), 0 0 24px rgba(255,90,0,.55);
   opacity: 0;
 }
 .bonus-section.is-revealed .sb-ring-done { animation: sbRingDone 6s var(--ease) infinite; }
@@ -3391,7 +3413,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   92%, 100% { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bonus-section.is-revealed .sb-ring-svg .seg { animation: none; stroke-dashoffset: 0; }
+  .bonus-section.is-revealed .sb-comet-orbit { animation: none; opacity: 1; }
+  .bonus-section.is-revealed .sb-ring-flash { animation: none; opacity: .45; }
   .bonus-section.is-revealed .sb-ring-done { animation: none; opacity: 1; }
 }
 
@@ -3433,7 +3456,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- ░░ Column 1 ░░ -->
       <div class="sb-col">
         <!-- 1 · Turnkey Online Store (tall) -->
-        <div class="sb-card sb-tall-top" style="--col:#ffc862; order:1; --photo:url('img/bonus/1.webp')">
+        <div class="sb-card sb-tall-top" style="--col:#ffc23a; order:1; --photo:url('img/bonus/1.webp')">
           <span class="sb-tag">1 · Your store</span>
           <div class="sb-body">
             <h3 class="sb-h">Turnkey online store, live in 60 seconds</h3>
@@ -3442,7 +3465,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </div>
         <!-- 4 · 7 AI Influencers (short) -->
-        <div class="sb-card sb-short-bottom" style="--col:#9691ff; order:4; --photo:url('img/bonus/4.webp')">
+        <div class="sb-card sb-short-bottom" style="--col:#ff5e00; order:4; --photo:url('img/bonus/4.webp')">
           <span class="sb-tag">4 · AI creators</span>
           <div class="sb-body">
             <h3 class="sb-h">7 AI Influencers working for you – free for 14 days</h3>
@@ -3455,7 +3478,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- ░░ Column 2 ░░ -->
       <div class="sb-col">
         <!-- 2 · $40 Ad Credit (short) -->
-        <div class="sb-card sb-short-top" style="--col:#59a0f6; order:2; --photo:url('img/bonus/2.webp')">
+        <div class="sb-card sb-short-top" style="--col:#ff9d10; order:2; --photo:url('img/bonus/2.webp')">
           <span class="sb-tag">2 · Ad credit</span>
           <div class="sb-body">
             <h3 class="sb-h">$40 ad credit to drive your first customers</h3>
@@ -3468,13 +3491,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="sb-tag light">5-in-1 bundle</span>
           <div class="sb-ring-wrap">
             <svg class="sb-ring-svg" viewBox="0 0 220 220" aria-hidden="true">
-              <g transform="rotate(-90 110 110)">
-                <circle class="seg-track" cx="110" cy="110" r="85"/>
-                <circle class="seg s1" cx="110" cy="110" r="85" stroke="#ffc862" style="--g:#ffc862"/>
-                <circle class="seg s2" cx="110" cy="110" r="85" stroke="#59a0f6" transform="rotate(72 110 110)" style="--g:#59a0f6"/>
-                <circle class="seg s3" cx="110" cy="110" r="85" stroke="#95c90d" transform="rotate(144 110 110)" style="--g:#95c90d"/>
-                <circle class="seg s4" cx="110" cy="110" r="85" stroke="#9691ff" transform="rotate(216 110 110)" style="--g:#9691ff"/>
-                <circle class="seg s5" cx="110" cy="110" r="85" stroke="#fe9da7" transform="rotate(288 110 110)" style="--g:#fe9da7"/>
+              <defs>
+                <linearGradient id="sbCometTail" gradientUnits="userSpaceOnUse" x1="25.3" y1="117.4" x2="110" y2="25">
+                  <stop offset="0" stop-color="#ff5e00" stop-opacity="0"/>
+                  <stop offset="0.55" stop-color="#ff8a1e" stop-opacity="0.6"/>
+                  <stop offset="1" stop-color="#fff0cc" stop-opacity="1"/>
+                </linearGradient>
+                <radialGradient id="sbCometHead">
+                  <stop offset="0" stop-color="#fff4d8"/>
+                  <stop offset="0.4" stop-color="#ff9d10"/>
+                  <stop offset="1" stop-color="#ff5e00" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <circle class="seg-track" cx="110" cy="110" r="85"/>
+              <circle class="sb-ring-flash" cx="110" cy="110" r="85"/>
+              <g class="sb-comet-orbit">
+                <path class="sb-comet-tail" d="M 25.3 117.4 A 85 85 0 0 1 110 25" fill="none" stroke="url(#sbCometTail)" stroke-width="12" stroke-linecap="round"/>
+                <ellipse class="sb-comet-head" cx="110" cy="25" rx="17" ry="8.5" fill="url(#sbCometHead)"/>
               </g>
             </svg>
             <div class="sb-ring-center">
@@ -3487,7 +3520,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- ░░ Column 3 ░░ -->
       <div class="sb-col">
         <!-- 3 · Free Google Promo (tall) -->
-        <div class="sb-card sb-tall-top" style="--col:#95c90d; order:3; --photo:url('img/bonus/3.webp')">
+        <div class="sb-card sb-tall-top" style="--col:#ff7e00; order:3; --photo:url('img/bonus/3.webp')">
           <span class="sb-tag">3 · Google</span>
           <div class="sb-body">
             <h3 class="sb-h">Free Google Promo – organic traffic on autopilot</h3>
@@ -3496,7 +3529,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </div>
         <!-- 5 · Personal Manager (short) -->
-        <div class="sb-card sb-short-bottom" style="--col:#fe9da7; order:5; --photo:url('img/bonus/5.webp')">
+        <div class="sb-card sb-short-bottom" style="--col:#ff3b00; order:5; --photo:url('img/bonus/5.webp')">
           <span class="sb-tag">5 · Support</span>
           <div class="sb-body">
             <h3 class="sb-h">Personal growth manager to guide you</h3>
@@ -3523,35 +3556,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .autopromo .bonus-heading em { font-style:normal; color:#f5a623; }
 .autopromo .bonus-sub { color:rgba(255,255,255,0.72); line-height:1.54; }
 .autopromo .bonus-pill { background:rgba(255,255,255,0.10); color:#fff; border:1px solid rgba(255,255,255,0.18); margin-bottom:24px; gap:6px; }
-.autopromo .ap-bolt { width:10px; height:13px; color:#9691ff; filter:drop-shadow(0 0 4px rgba(150,145,255,0.95)) drop-shadow(0 0 9px rgba(150,145,255,0.6)); }
+.autopromo .ap-bolt { width:10px; height:13px; color:#ff5e00; filter:drop-shadow(0 0 4px rgba(255,94,0,0.95)) drop-shadow(0 0 9px rgba(255,94,0,0.6)); }
 .autopromo .ap-fine { font-size:15px; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:4px; max-width:48ch; }
 .autopromo .ap-logos { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-top:34px; }
 .autopromo .ap-logos img { width:51px; height:51px; border-radius:50%; box-shadow:0 4px 14px rgba(0,0,0,0.3); opacity:0; transform:translateY(10px) scale(.55); transition:opacity .5s ease, transform .55s cubic-bezier(.34,1.56,.64,1); }
 .autopromo .ap-logos img.in { opacity:1; transform:none; }
 .autopromo .ap-logos img.in:hover { transform:translateY(-4px) scale(1.1); }
-.autopromo .ap-card { position:relative; cursor:ew-resize; touch-action:pan-y; width:100%; max-width:360px; margin:0 auto; display:flex; flex-direction:column; overflow:hidden; background:linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)); border:1px solid rgba(150,145,255,0.22); border-radius:24px; padding:30px 28px; box-shadow:0 30px 60px -42px rgba(0,0,0,0.85); }
+.autopromo .ap-card { position:relative; cursor:ew-resize; touch-action:pan-y; width:100%; max-width:360px; margin:0 auto; display:flex; flex-direction:column; overflow:hidden; background:linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)); border:1px solid rgba(255,94,0,0.22); border-radius:24px; padding:30px 28px; box-shadow:0 30px 60px -42px rgba(0,0,0,0.85); }
 .autopromo.is-live .ap-card { animation:apGlow 3.6s ease-in-out infinite; }
 @keyframes apGlow {
-  0%,100% { box-shadow:0 0 32px -8px rgba(150,145,255,0.28), 0 30px 60px -42px rgba(0,0,0,0.85); border-color:rgba(150,145,255,0.22); }
-  50%     { box-shadow:0 0 54px -4px rgba(150,145,255,0.5),  0 30px 60px -42px rgba(0,0,0,0.85); border-color:rgba(150,145,255,0.46); }
+  0%,100% { box-shadow:0 0 32px -8px rgba(255,94,0,0.28), 0 30px 60px -42px rgba(0,0,0,0.85); border-color:rgba(255,94,0,0.22); }
+  50%     { box-shadow:0 0 54px -4px rgba(255,94,0,0.5),  0 30px 60px -42px rgba(0,0,0,0.85); border-color:rgba(255,94,0,0.46); }
 }
 .autopromo .ap-card-head { color:#fff; font-size:19px; font-weight:600; margin-bottom:22px; letter-spacing:-0.01em; }
 .autopromo .ap-rows { display:flex; flex-direction:column; gap:28px; margin-top:15px; }
 .autopromo .ap-row { display:flex; align-items:center; cursor:ew-resize; touch-action:pan-y; user-select:none; -webkit-user-select:none; }
 .autopromo .ap-plat { flex-shrink:0; width:78px; color:rgba(255,255,255,0.86); font-size:15px; font-weight:500; }
 .autopromo .ap-bar { flex:1; height:11px; margin:0 23px 0 14px; border-radius:6px; background:rgba(255,255,255,0.10); }
-.autopromo .ap-bar-fill { position:relative; display:block; width:0; height:100%; border-radius:6px; background:linear-gradient(90deg,#6f6bff,#9691ff); }
-.autopromo .ap-bar-fill::after { content:''; position:absolute; right:0; top:50%; width:16px; height:16px; border-radius:50%; background:#fff; transform:translate(50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,0.4), 0 0 0 3px rgba(150,145,255,0.25); }
+.autopromo .ap-bar-fill { position:relative; display:block; width:0; height:100%; border-radius:6px; background:linear-gradient(90deg,#ff3b00,#ff5e00); }
+.autopromo .ap-bar-fill::after { content:''; position:absolute; right:0; top:50%; width:16px; height:16px; border-radius:50%; background:#fff; transform:translate(50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,0.4), 0 0 0 3px rgba(255,94,0,0.25); }
 .autopromo .ap-active { flex-shrink:0; display:inline-flex; align-items:center; gap:7px; color:rgba(255,255,255,0.38); font-size:13px; font-weight:600; transition:color .25s ease; }
 .autopromo .ap-active::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; box-shadow:0 0 8px currentColor; }
-.autopromo .ap-active.on { color:#9691ff; }
+.autopromo .ap-active.on { color:#ff5e00; }
 .autopromo .ap-graph { margin-top:auto; padding-top:26px; }
 .autopromo .ap-graph-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; }
 .autopromo .ap-graph-label { color:rgba(255,255,255,0.5); font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
 .autopromo .ap-graph-val { color:#fff; font-size:22px; font-weight:700; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
 .autopromo .ap-bars { display:flex; align-items:flex-end; gap:5px; height:84px; }
-.autopromo .ap-col { flex:1; height:0; border-radius:3px 3px 0 0; background:linear-gradient(to top,#59a0f6,#9691ff,#fe9da7,#f5a623,#95c90d); background-size:100% 84px; background-position:bottom; transition:height .18s ease-out; }
-.autopromo .ap-hint { position:absolute; left:0; top:0; width:46px; height:46px; margin:-23px 0 0 -23px; border-radius:50%; pointer-events:none; opacity:0; background:radial-gradient(circle, rgba(150,145,255,0.30), rgba(150,145,255,0.05) 70%); border:1.5px solid rgba(150,145,255,0.6); box-shadow:0 0 18px rgba(150,145,255,0.45); transition:opacity .2s ease; z-index:5; }
+.autopromo .ap-col { flex:1; height:0; border-radius:3px 3px 0 0; background:linear-gradient(to top,#ff5e00,#ffc23a); background-size:100% 84px; background-position:bottom; transition:height .18s ease-out; }
+.autopromo .ap-hint { position:absolute; left:0; top:0; width:46px; height:46px; margin:-23px 0 0 -23px; border-radius:50%; pointer-events:none; opacity:0; background:radial-gradient(circle, rgba(255,94,0,0.30), rgba(255,94,0,0.05) 70%); border:1.5px solid rgba(255,94,0,0.6); box-shadow:0 0 18px rgba(255,94,0,0.45); transition:opacity .2s ease; z-index:5; }
 .autopromo .ap-hint.show { opacity:1; }
 @media (prefers-reduced-motion: reduce){
   .autopromo .ap-logos img { opacity:1; transform:none; transition:none; }
@@ -4069,17 +4102,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="how-steps">
       <div class="how-step appear d1" style="--c:#59a0f6">
-        <div class="how-step-num">01</div>
+        <div class="how-step-num" style="color:#FFEBBC">01</div>
         <h3>We build your store</h3>
         <p>Sign up free and we set up your store with 100+ products, professional design, and payments. Your Turbo Pack activates instantly.</p>
       </div>
       <div class="how-step appear d2" style="--c:#95c90d">
-        <div class="how-step-num">02</div>
+        <div class="how-step-num" style="color:#FFE1B8">02</div>
         <h3>Your promotion starts</h3>
         <p>Use your $40 ad credit, post AI influencer videos, and let your Google Promo articles bring organic traffic. Multiple channels working at once.</p>
       </div>
       <div class="how-step appear d3" style="--c:#fe9da7">
-        <div class="how-step-num">03</div>
+        <div class="how-step-num" style="color:#FFC58C">03</div>
         <h3>You earn from every sale</h3>
         <p>Customers buy your products, they deliver instantly, and you keep 50-70% of every sale as profit. Your manager helps you optimize and grow.</p>
       </div>
@@ -4530,13 +4563,11 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
   requestAnimationFrame(frame);
 })();
 
-// ── HERO SPEEDOMETER CARD (Option 1: 270° gauge + 5-stage list; scoped to .spdo, scaled to its column) ──
+// ── HERO TURBO LIST (5-stage Turbo Pack; rows ignite in sequence with a fiery turbo flash) ──
 ;(function(){
   var root = document.querySelector('.spdo'); if (!root) return;
-  var CX=200, CY=200, R=150, START=135, SWEEP=270;
-  var STOPS=['#59a0f6','#9691ff','#fe9da7','#f5a623','#95c90d'];
-  var MONEY=[0,1000,5000,10000,25000,50000];
-  var MLABELS=['$0','$1K','$5K','$10K','$25K','$50K'];
+  var lw = root.querySelector('.sp-list'); if (!lw) return;
+  var STOPS=['#ffc23a','#ff9d10','#ff7e00','#ff5e00','#ff3b00'];   // fiery ramp, reversed
   var STAGES=[
     {n:'1', t:'Turnkey Online Store'},
     {n:'2', t:'$40 Ad Credit'},
@@ -4544,38 +4575,9 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
     {n:'4', t:'7 AI Influencers'},
     {n:'5', t:'Personal Manager'}
   ];
-  var PERIOD=5200;
-  function polar(r,deg){ var a=deg*Math.PI/180; return [CX+r*Math.cos(a), CY+r*Math.sin(a)]; }
-  function arc(r,s,e){ var p1=polar(r,s), p2=polar(r,e); var large=(e-s)<=180?0:1; return 'M '+p1[0].toFixed(2)+' '+p1[1].toFixed(2)+' A '+r+' '+r+' 0 '+large+' 1 '+p2[0].toFixed(2)+' '+p2[1].toFixed(2); }
-  function h2(h){ h=h.replace('#',''); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; }
-  function lerp(a,b,t){ var pa=h2(a), pb=h2(b); var c=pa.map(function(v,i){return Math.round(v+(pb[i]-v)*t);}); return '#'+c.map(function(v){return v.toString(16).padStart(2,'0');}).join(''); }
-  function ramp(f){ var s=STOPS; var x=Math.max(0,Math.min(1,f))*(s.length-1); var i=Math.floor(x); if(i>=s.length-1) return s[s.length-1]; return lerp(s[i],s[i+1],x-i); }
-  function moneyAt(v){ var n=MONEY.length-1; var seg=Math.min(n-1,Math.floor(v*n)); var t=v*n-seg; return MONEY[seg]+(MONEY[seg+1]-MONEY[seg])*t; }
-  function fmt(v){ var s = v>=1000 ? Math.round(v/1000)+'K' : ''+(Math.round(v/100)*100); return '$'+s; }
-  var SVGNS='http://www.w3.org/2000/svg';
-  root.querySelector('.sp-gtrack').setAttribute('d', arc(R,START,START+SWEEP));
-  var N=50, tg=root.querySelector('.sp-ticks');
-  for(var i=0;i<=N;i++){
-    var ang=START+i/N*SWEEP, major=i%10===0;
-    var po=polar(R+4,ang), pi=polar(major?120:134,ang);
-    var ln=document.createElementNS(SVGNS,'line');
-    ln.setAttribute('x1',po[0].toFixed(2)); ln.setAttribute('y1',po[1].toFixed(2));
-    ln.setAttribute('x2',pi[0].toFixed(2)); ln.setAttribute('y2',pi[1].toFixed(2));
-    ln.setAttribute('stroke-width', major?3.4:1.8); ln.setAttribute('stroke-linecap','round');
-    tg.appendChild(ln);
-  }
-  var ticks=tg.children;
-  var SC=440/400, lg=root.querySelector('.sp-labels');
-  for(var k=0;k<=N;k+=10){
-    var a2=START+k/N*SWEEP, p=polar(105,a2);
-    var sp=document.createElement('span');
-    sp.style.left=(p[0]*SC).toFixed(1)+'px'; sp.style.top=(p[1]*SC).toFixed(1)+'px';
-    sp.textContent=MLABELS[k/10]; lg.appendChild(sp);
-  }
-  var lw=root.querySelector('.sp-list');
+  var PERIOD=6200;
   STAGES.forEach(function(st,idx){
-    var color=STOPS[idx];
-    var row=document.createElement('div'); row.className='sp-row'; row.dataset.color=color;
+    var row=document.createElement('div'); row.className='sp-row'; row.style.setProperty('--c', STOPS[idx]);
     var badge=document.createElement('div'); badge.className='sp-badge'; badge.textContent=st.n;
     var mid=document.createElement('div'); mid.style.flex='1'; mid.style.minWidth='0';
     var txt=document.createElement('div'); txt.className='sp-txt'; txt.textContent=st.t;
@@ -4584,72 +4586,43 @@ document.querySelectorAll('.faq-sec .faq-q').forEach(function(btn){
     bar.appendChild(fill); mid.appendChild(txt); mid.appendChild(bar);
     row.appendChild(badge); row.appendChild(mid); lw.appendChild(row);
   });
-  var rows=lw.children;
-  function applyRow(el,on){
-    var color=el.dataset.color;
-    var badge=el.querySelector('.sp-badge'), fill=el.querySelector('.sp-fill'), txt=el.querySelector('.sp-txt');
-    if(on){
-      el.style.background='rgba(255,255,255,0.05)'; el.style.borderColor=color;
-      el.style.boxShadow='0 0 28px -4px '+color+', 0 0 9px -1px '+color; el.style.transform='translateX(5px)';
-      badge.style.background=color; badge.style.color='#0a0710'; badge.style.boxShadow='0 0 18px '+color;
-      fill.style.width='100%'; fill.style.background=color; fill.style.boxShadow='0 0 12px '+color;
-      txt.style.color='#fff';
-    } else {
-      el.style.background='rgba(255,255,255,0.02)'; el.style.borderColor='rgba(255,255,255,0.07)';
-      el.style.boxShadow='none'; el.style.transform='translateX(0)';
-      badge.style.background='rgba(255,255,255,0.06)'; badge.style.color='rgba(255,255,255,0.45)'; badge.style.boxShadow='none';
-      fill.style.width='0%'; txt.style.color='rgba(255,255,255,0.6)';
-    }
+  var rows=lw.children, N=rows.length;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    for(var r=0;r<N;r++) rows[r].classList.add('sp-lit');
+    return;
   }
-  var needle=root.querySelector('.sp-needle'), progress=root.querySelector('.sp-progress'), num=root.querySelector('.sp-num');
-  var cometG=root.querySelector('.sp-comet'), cometTail=root.querySelector('.sp-comet-tail'), cometHead=root.querySelector('.sp-comet-head'), tailGrad=root.querySelector('#spTailGrad');
-  var pglow=root.querySelector('.sp-pglow'), numCenter=root.querySelector('.sp-center');
-  var CR=168, CTAIL=80, CSTART=54;   // comet 18px outside the dial; tail up to 80°; first appears at $1k (0.2×270=54°)
-  var activeIdx=-1, t0=performance.now();
+  // phase 1: rows light up one by one and accumulate; phase 2: bars load + rows vibrate; then reset
+  var LIGHT_END=0.36, LOAD_START=0.40, RESET=0.94;
+  var t0=performance.now();
   function loop(now){
     var t=((now-t0)%PERIOD)/PERIOD;
-    // smooth envelope: the fade-out overlaps the END of the fill, so the needle keeps moving as it dims
-    // (no visible "needle stops, pause, then fades" moment)
-    var fade = t<0.05 ? t/0.05 : (t<0.64 ? 1 : (t<0.88 ? 1-(t-0.64)/0.24 : 0));
-    var v = Math.min(1, t/0.85);            // fill still advancing through the fade-out
-    var ang = START + v*SWEEP;
-    var money = moneyAt(v);
-
-    needle.setAttribute('transform','rotate('+ang.toFixed(2)+' 200 200)');
-    needle.style.opacity = fade.toFixed(3);
-
-    progress.setAttribute('d', arc(R,START,Math.max(ang,START+0.002)));
-    pglow.style.opacity = fade.toFixed(3);
-    numCenter.style.opacity = fade.toFixed(3);
-    num.textContent = fmt(money);
-
-    // comet: appears once the fill passes $1k; elongated head + long fading tail; fades out with the envelope
-    if(money>=1000 && fade>0.01){
-      cometG.style.opacity = fade.toFixed(3);
-      var ts = Math.max(START+CSTART, ang-CTAIL);
-      cometTail.setAttribute('d', arc(CR, ts, ang));
-      var hh=polar(CR,ang), tt=polar(CR,ts);
-      tailGrad.setAttribute('x1', tt[0].toFixed(1)); tailGrad.setAttribute('y1', tt[1].toFixed(1));
-      tailGrad.setAttribute('x2', hh[0].toFixed(1)); tailGrad.setAttribute('y2', hh[1].toFixed(1));
-      cometHead.setAttribute('transform','translate('+hh[0].toFixed(2)+','+hh[1].toFixed(2)+') rotate('+(ang+90).toFixed(1)+')');
-    } else { cometG.style.opacity='0'; }
-
-    for(var j=0;j<ticks.length;j++){
-      var frac=j/(ticks.length-1), maj=j%10===0, lit=frac<=v;
-      if(lit){ ticks[j].style.stroke=ramp(frac); ticks[j].style.opacity=fade.toFixed(3); }
-      else { ticks[j].style.stroke=maj?'rgba(255,210,170,0.45)':'rgba(255,255,255,0.15)'; ticks[j].style.opacity=(0.8*fade).toFixed(3); }
+    for(var i=0;i<N;i++){
+      var litAt=(i/N)*LIGHT_END;
+      rows[i].classList.toggle('sp-lit', t>=litAt && t<RESET);
+      rows[i].classList.toggle('sp-load', t>=LOAD_START && t<RESET);
     }
-
-    var ai=Math.min(4,Math.floor(v*4.999));
-    if(ai!==activeIdx){ activeIdx=ai; for(var r=0;r<rows.length;r++) applyRow(rows[r], r===ai); }
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
-  // scale the fixed 440px dial to its square left column
-  var gauge=root.querySelector('.sp-gauge'), gside=root.querySelector('.sp-gside');
-  function fit(){ var w=gside.clientWidth; if(w) gauge.style.transform='translate(-50%,-50%) scale('+(w/440)+')'; }
-  if('ResizeObserver' in window){ new ResizeObserver(fit).observe(gside); }
-  window.addEventListener('resize', fit); fit();
+})();
+
+// ── HERO EMBERS (single campfire/turbo sparks drifting up, randomised) ──
+;(function(){
+  var hero=document.querySelector('.hero.is-split'); if(!hero) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var box=document.createElement('div'); box.className='hero-sparks'; box.setAttribute('aria-hidden','true');
+  var N=14, R=Math.random;
+  for(var i=0;i<N;i++){
+    var s=document.createElement('div'); s.className='hero-spark';
+    s.style.left=(R()*100).toFixed(1)+'%';
+    s.style.setProperty('--s', (2+R()*2.8).toFixed(1)+'px');
+    s.style.setProperty('--dx', Math.round(-80+R()*220)+'px');
+    s.style.setProperty('--dy', Math.round(-(300+R()*400))+'px');
+    s.style.setProperty('--dur', (4.5+R()*5.5).toFixed(1)+'s');
+    s.style.setProperty('--delay', (-(R()*10)).toFixed(1)+'s');
+    box.appendChild(s);
+  }
+  hero.insertBefore(box, hero.firstChild);
 })();
 
 // ── LIVE SOCIAL PROOF (hero glass card + FAQ – same number on both) ──
