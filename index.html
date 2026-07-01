@@ -901,6 +901,10 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   text-shadow:0 2px 24px rgba(0,0,0,0.62), 0 1px 5px rgba(0,0,0,0.45);
 }
 .hero.is-split .hero-h1 em{ color:var(--c-amber); }
+/* 320–900: hero title matches the final-sec title size (.final-h2) */
+@media (max-width: 900px) {
+  .hero.is-split .hero-h1 { font-size: clamp(44px, 7vw, 80px); }
+}
 .hero.is-split .hero-sub{
   color:rgba(255,255,255,.82); text-align:center; font-size:20px;
   max-width:520px; margin:0 auto 34px;
@@ -915,15 +919,15 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
 /* CTA: solid brand-yellow fill + the multicolour cycling glow around it */
 @property --btnA{ syntax:'<angle>'; initial-value:0deg; inherits:false; }
 /* CTA: a light flash sweeps inside L→R, then a comet runs clockwise round the outside; glow swells like the 4th list plate */
-.hero.is-split .btn-filled{
+.hero.is-split .btn-filled, .final-sec .btn-filled{
   position:relative; overflow:visible;
   background: var(--c-amber); color:#000;
   box-shadow: 0 0 32px -2px #ff7e00, 0 0 14px -1px #ff7e00, inset 0 0 22px -11px #ff7e00;
   animation: btnFire 4.6s ease-in-out infinite;
 }
-.hero.is-split .btn-filled:hover{ transform:scale(1.02); }
+.hero.is-split .btn-filled:hover, .final-sec .btn-filled:hover{ transform:scale(1.02); }
 /* inside flash — soft light appears at the left and flies right */
-.hero.is-split .btn-filled::before{
+.hero.is-split .btn-filled::before, .final-sec .btn-filled::before{
   content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
   background:linear-gradient(100deg, transparent 0%, rgba(255,248,224,0) 32%, rgba(255,248,224,0.95) 50%, rgba(255,248,224,0) 68%, transparent 100%);
   background-size:55% 100%; background-repeat:no-repeat; mix-blend-mode:screen;
@@ -936,7 +940,7 @@ button { cursor: pointer; font-family: var(--font); outline: none; border: none;
   21%,100%{ opacity:0; background-position:130% 0; }
 }
 /* perimeter orbit — light continues outside, clockwise round the border (the conic gradient rotates, not the box) */
-.hero.is-split .btn-filled::after{
+.hero.is-split .btn-filled::after, .final-sec .btn-filled::after{
   content:""; position:absolute; inset:-3px; border-radius:inherit; pointer-events:none;
   background:conic-gradient(from var(--btnA), transparent 0deg 46deg, rgba(255,180,80,0.5) 64deg, #fff7e0 90deg, rgba(255,180,80,0.5) 116deg, transparent 134deg 360deg);
   padding:3px;
@@ -1347,11 +1351,28 @@ section { padding: 120px 24px; }
 
 /* ════ SECTION 4: WHAT DO I GET (features) ════ */
 .get-sec {
-  background:
-    radial-gradient(75% 55% at 50% 50%, #37347E 0%, rgba(55,52,126,0.6) 22%, rgba(55,52,126,0.28) 45%, rgba(55,52,126,0.08) 65%, rgba(11,10,22,0) 82%),
-    #0b0a16;
+  background: #0b0a16;
   position: relative;
   overflow: hidden;
+}
+/* fiery background glow – centred on the card grid (between the two rows); breathes (max = current level) */
+.get-list::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 2000px; height: 1300px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(1000px 620px at 50% 50%, rgba(255,59,0,0.5) 0%, rgba(255,59,0,0.3) 22%, rgba(255,59,0,0.14) 45%, rgba(255,59,0,0.045) 65%, rgba(11,10,22,0) 82%);
+  animation: getGlowPulse 7s ease-in-out infinite;
+}
+@keyframes getGlowPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .get-sec::before { animation: none; }
 }
 .get-sec .sec-in { position: relative; z-index: 2; }
 .get-sec .sec-title-xl { color: #fff; }
@@ -1397,28 +1418,28 @@ section { padding: 120px 24px; }
   transition: border-color 0.35s, transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s;
 }
 .get-tile:hover {
-  border-color: rgba(150,145,255,0.4);
+  border-color: rgba(255,59,0,0.4);
   transform: translateY(-4px);
-  box-shadow: 0 20px 45px -25px rgba(150,145,255,0.45);
+  box-shadow: 0 20px 45px -25px rgba(255,59,0,0.45);
 }
 .get-tile-icon {
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: rgba(150, 145, 255, 0.12);
+  background: rgba(255, 59, 0, 0.12);
   margin-bottom: 24px;
   pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #9691ff;
+  color: #ff3b00;
   overflow: visible;
 }
 .get-tile-icon svg {
   display: block;
   width: 26px;
   height: 26px;
-  filter: drop-shadow(0 0 5px rgba(150,145,255,0.9)) drop-shadow(0 0 11px rgba(150,145,255,0.55));
+  filter: drop-shadow(0 0 5px rgba(255,59,0,0.9)) drop-shadow(0 0 11px rgba(255,59,0,0.55));
 }
 .get-tile h3 {
   font-size: 20px;
@@ -1608,58 +1629,37 @@ section { padding: 120px 24px; }
 
 /* ════ FINAL CTA ════ */
 .final-sec {
-  background: #fff;
+  background: #0b0a16;
   padding: 120px 24px clamp(70px, 9vw, 130px);
   text-align: center;
   position: relative;
   overflow: hidden;
 }
-/* Five brand-colour blobs spaced on a ring (distinct, only lightly touching –
-   no muddy pile-up). The whole ring slowly orbits the centre so the colours
-   float in a circle around the text, while a pure-white oval sits on top of the
-   middle so the heading/sub always rest on clean white. */
-.final-aurora {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-  -webkit-mask-image: radial-gradient(135% 130% at 50% 50%, #000 58%, transparent 92%);
-          mask-image: radial-gradient(135% 130% at 50% 50%, #000 58%, transparent 92%);
-}
-/* the colour ring – one blob per brand colour, evenly spaced; the layer rotates */
-.final-aurora::before {
-  content: "";
-  position: absolute; inset: -30%;
-  background:
-    radial-gradient(circle at 50%   26%,   rgba(255,200,98,0.82), transparent 15%),   /* yellow – top     */
-    radial-gradient(circle at 72.8% 42.6%, rgba(89,160,246,0.74), transparent 15%),   /* blue   – right   */
-    radial-gradient(circle at 64.1% 69.4%, rgba(150,145,255,0.76), transparent 15%),  /* purple – b-right */
-    radial-gradient(circle at 35.9% 69.4%, rgba(149,201,13,0.64), transparent 15%),   /* green  – b-left  */
-    radial-gradient(circle at 27.2% 42.6%, rgba(254,157,167,0.74), transparent 15%);  /* pink   – left    */
-  filter: blur(44px);
-  will-change: transform;
-  animation: meshOrbit 46s linear infinite;
-}
-/* pure-white oval in the centre – text never lands on a coloured/muddy mix */
-.final-aurora::after {
-  content: "";
+/* Dark field of comets streaming toward the centre from every side (canvas,
+   driven by JS). An orange edge-vignette frames it while the middle stays clean
+   dark so the heading/sub always rest on a calm background. */
+.final-comets {
   position: absolute; inset: 0;
-  background: radial-gradient(44% 49% at 50% 50%, #fff 0%, #fff 34%, rgba(255,255,255,0.64) 56%, rgba(255,255,255,0.3) 74%, rgba(255,255,255,0.1) 87%, rgba(255,255,255,0) 97%);
+  z-index: 0;
+  display: block;
+  width: 100%; height: 100%;
+  pointer-events: none;
 }
-@keyframes meshOrbit {
-  0%   { transform: rotate(0deg)   scale(1);    }
-  50%  { transform: rotate(180deg) scale(1.07); }
-  100% { transform: rotate(360deg) scale(1);    }
+.final-vignette {
+  position: absolute; inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 84% at 50% 50%,
+      transparent 34%,
+      rgba(255,59,0,0.16) 62%,
+      rgba(255,94,0,0.34) 84%,
+      rgba(255,140,30,0.56) 100%);
 }
-@media (prefers-reduced-motion: reduce) {
-  .final-aurora::before { animation: none; }
-}
-.final-in { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+.final-in { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; }
 .final-h2 {
   font-size: clamp(44px, 7vw, 80px);
   font-weight: 700;
-  color: #1d1d1f;
+  color: #fff;
   letter-spacing: -0.04em;
   line-height: 1.02;
   margin-bottom: 20px;
@@ -1667,19 +1667,20 @@ section { padding: 120px 24px; }
 .final-h2 em { font-style: normal; color: var(--c-amber); }
 .final-sub {
   font-size: clamp(19px, 2.5vw, 24px);
-  color: #424245;
+  color: rgba(255,255,255,0.62);
   line-height: 1.5;
   margin-bottom: 44px;
   letter-spacing: -0.01em;
 }
 .final-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.final-sec .hero-link-cta { color: #1d1d1f; }
+.final-sec .hero-link-cta { color: #fff; }
+.final-sec .hero-fine { color: rgba(255,255,255,0.5); }
 @media(max-width:480px) { .final-sec { padding: 56px 16px clamp(56px, 13vw, 92px); } }
 
 /* ════ FOOTER ════ */
 .site-footer {
-  background: #fff;
-  border-top: 1px solid var(--c-gray4);
+  background: #0b0a16;
+  border-top: 1px solid rgba(255,255,255,0.08);
   padding: 32px 24px;
   text-align: center;
 }
@@ -1687,19 +1688,19 @@ section { padding: 120px 24px; }
   font-family: var(--font);
   font-size: 13px;
   font-weight: 400;
-  color: var(--c-gray3);
+  color: rgba(255,255,255,0.5);
   line-height: 1.7;
   letter-spacing: -0.01em;
   max-width: var(--max);
   margin: 0 auto;
 }
 .site-footer a {
-  color: var(--c-gray3);
+  color: rgba(255,255,255,0.5);
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.2s;
 }
-.site-footer a:hover { color: var(--c-near); }
+.site-footer a:hover { color: #fff; }
 
 /* ════ STICKY CTA (all screens) ════ */
 .sticky-cta {
@@ -1877,7 +1878,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   100% { transform: translateX(0); }
 }
 @media(max-width:600px) {
-  .topbar { justify-content: flex-start; text-align: left; }
+  .topbar { justify-content: center; text-align: center; }
 }
 * {
     -webkit-tap-highlight-color: transparent;
@@ -4255,7 +4256,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ═══ FINAL CTA ═══ -->
 <section class="final-sec">
-  <div class="final-aurora" aria-hidden="true"></div>
+  <canvas class="final-comets" aria-hidden="true"></canvas>
+  <div class="final-vignette" aria-hidden="true"></div>
   <div class="final-in">
     <h2 class="final-h2 appear">Free store + Turbo Sales Bundle.<br><em>Our gift to you.</em></h2>
     <p class="final-sub appear d1">Everything to start earning fast – ads, traffic, social media, and a personal guide. All free with your store.</p>
@@ -4835,6 +4837,94 @@ document.addEventListener('DOMContentLoaded', function() {
       : href + '?' + paramsString;
   });
 });
+</script>
+
+<!-- ═══ FINAL SECTION: comets converging on the centre ═══ -->
+<script>
+;(function(){
+  var canvas = document.querySelector('.final-comets');
+  if(!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+  var section = canvas.closest('.final-sec');
+  if(!section) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var W=0, H=0, halfDiag=1, centerR=1, N=0, comets=[], raf=0, visible=false, DPR=1;
+
+  // colour spectrum #ff3b00 -> #ffc23a
+  function mix(t){ return 'rgb(255,'+Math.round(59+135*t)+','+Math.round(58*t)+')'; }
+
+  function reset(c, stagger){
+    var ang = Math.random()*6.2831853;
+    var R = halfDiag*(1.02 + Math.random()*0.16);
+    var p = stagger ? Math.random() : 1;         // spread along the path on first build
+    c.a = ang; c.R0 = R;
+    c.x = W/2 + Math.cos(ang)*R*p;
+    c.y = H/2 + Math.sin(ang)*R*p;
+    var sp = 0.9 + Math.random()*2.6;            // px per frame, toward centre
+    c.vx = -Math.cos(ang)*sp;
+    c.vy = -Math.sin(ang)*sp;
+    c.s  = 0.8 + Math.random()*1.7;              // half-size
+    c.b  = 0.45 + Math.random()*0.55;            // brightness
+    c.col = mix(Math.random());
+  }
+
+  function resize(){
+    var r = section.getBoundingClientRect();
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    halfDiag = 0.5*Math.sqrt(W*W + H*H);
+    centerR  = Math.max(W,H)*0.0585 + 300;   /* clean empty dark centre */
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    N = Math.max(300, Math.min(1500, Math.round(W*H/750)));   // ~thousands, capped for perf
+    comets = [];
+    for(var i=0;i<N;i++){ var c={}; reset(c, true); comets.push(c); }
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='#0b0a16'; ctx.fillRect(0,0,W,H);
+    draw();   // one static frame (also visible where rAF is throttled)
+  }
+
+  function draw(){
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='rgba(11,10,22,0.16)';          // fade prior frame -> comet tails
+    ctx.fillRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    var cx=W/2, cy=H/2, i, c, dx, dy, dist, nd, edgePx, a, cf;
+    var rx = centerR + 60;            // horizontal semi-axis of the empty oval (wider by 60px)
+    var ry = centerR / 1.7;           // vertical semi-axis -> horizontal oval
+    var irx2 = 1/(rx*rx), iry2 = 1/(ry*ry);
+    var FEATHER = 200;                // blurred oval-edge width in px (uniform feather)
+    for(i=0;i<comets.length;i++){
+      c=comets[i];
+      c.x+=c.vx; c.y+=c.vy;
+      dx=c.x-cx; dy=c.y-cy;
+      dist = Math.sqrt(dx*dx + dy*dy);                 // circular – outer section-edge fade
+      nd   = Math.sqrt(dx*dx*irx2 + dy*dy*iry2);       // 0 at centre, 1 at the oval edge
+      if(nd < 1){ reset(c, false); continue; }         // inside the oval -> clean empty
+      a  = (halfDiag - dist)/(halfDiag*0.5); if(a>1)a=1; if(a<0)a=0;   // fade in from the section edge
+      edgePx = dist*(1 - 1/nd);                        // ~pixel distance outside the oval edge
+      cf = edgePx/FEATHER; if(cf>1)cf=1;               // blurred oval edge...
+      cf = cf*cf*(3 - 2*cf);                           // ...smoothstep for a soft feather
+      ctx.globalAlpha = a*cf*c.b;
+      ctx.fillStyle = c.col;
+      ctx.fillRect(c.x - c.s, c.y - c.s, c.s*2, c.s*2);
+    }
+    ctx.globalAlpha=1;
+  }
+
+  function loop(){ if(!visible || reduce) return; draw(); raf=requestAnimationFrame(loop); }
+  function go(){ if(reduce) return; cancelAnimationFrame(raf); raf=requestAnimationFrame(loop); }
+
+  resize();
+  var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(resize, 200); });
+
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ visible=e.isIntersecting; if(visible) go(); else cancelAnimationFrame(raf); });
+    }, {threshold:0.02}).observe(section);
+  } else { visible=true; go(); }
+})();
 </script>
 </body>
 </html>
