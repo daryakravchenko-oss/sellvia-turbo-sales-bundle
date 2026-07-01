@@ -3556,7 +3556,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .autopromo .bonus-heading em { font-style:normal; color:#f5a623; }
 .autopromo .bonus-sub { color:rgba(255,255,255,0.72); line-height:1.54; }
 .autopromo .bonus-pill { background:rgba(255,255,255,0.10); color:#fff; border:1px solid rgba(255,255,255,0.18); margin-bottom:24px; gap:6px; }
-.autopromo .ap-bolt { width:10px; height:13px; color:#ff5e00; filter:drop-shadow(0 0 4px rgba(255,94,0,0.95)) drop-shadow(0 0 9px rgba(255,94,0,0.6)); }
+.autopromo .ap-bolt { width:10px; height:13px; color:#ff7a1e; filter:drop-shadow(0 0 5px rgba(255,150,50,1)) drop-shadow(0 0 12px rgba(255,110,10,0.9)) drop-shadow(0 0 22px rgba(255,94,0,0.55)); }
 .autopromo .ap-fine { font-size:15px; color:rgba(255,255,255,0.5); line-height:1.6; margin-top:4px; max-width:48ch; }
 .autopromo .ap-logos { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-top:34px; }
 .autopromo .ap-logos img { width:51px; height:51px; border-radius:50%; box-shadow:0 4px 14px rgba(0,0,0,0.3); opacity:0; transform:translateY(10px) scale(.55); transition:opacity .5s ease, transform .55s cubic-bezier(.34,1.56,.64,1); }
@@ -3573,17 +3573,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .autopromo .ap-row { display:flex; align-items:center; cursor:ew-resize; touch-action:pan-y; user-select:none; -webkit-user-select:none; }
 .autopromo .ap-plat { flex-shrink:0; width:78px; color:rgba(255,255,255,0.86); font-size:15px; font-weight:500; }
 .autopromo .ap-bar { flex:1; height:11px; margin:0 23px 0 14px; border-radius:6px; background:rgba(255,255,255,0.10); }
-.autopromo .ap-bar-fill { position:relative; display:block; width:0; height:100%; border-radius:6px; background:linear-gradient(90deg,#ff3b00,#ff5e00); }
+.autopromo .ap-bar-fill { position:relative; display:block; width:0; height:100%; border-radius:6px; background:linear-gradient(90deg,#ff2d00 0%,#ff5e00 30%,#ffbf2e 70%,#ffe98c 88%,#ffffff 100%); }
 .autopromo .ap-bar-fill::after { content:''; position:absolute; right:0; top:50%; width:16px; height:16px; border-radius:50%; background:#fff; transform:translate(50%,-50%); box-shadow:0 1px 4px rgba(0,0,0,0.4), 0 0 0 3px rgba(255,94,0,0.25); }
 .autopromo .ap-active { flex-shrink:0; display:inline-flex; align-items:center; gap:7px; color:rgba(255,255,255,0.38); font-size:13px; font-weight:600; transition:color .25s ease; }
 .autopromo .ap-active::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; box-shadow:0 0 8px currentColor; }
-.autopromo .ap-active.on { color:#ff5e00; }
+.autopromo .ap-active.on { color:#fff; text-shadow:0 0 9px rgba(255,255,255,0.85), 0 0 18px rgba(255,255,255,0.5); }
+.autopromo .ap-active.on::before { box-shadow:0 0 10px #fff, 0 0 20px rgba(255,255,255,0.6); }
 .autopromo .ap-graph { margin-top:auto; padding-top:26px; }
 .autopromo .ap-graph-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; }
 .autopromo .ap-graph-label { color:rgba(255,255,255,0.5); font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
 .autopromo .ap-graph-val { color:#fff; font-size:22px; font-weight:700; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
 .autopromo .ap-bars { display:flex; align-items:flex-end; gap:5px; height:84px; }
-.autopromo .ap-col { flex:1; height:0; border-radius:3px 3px 0 0; background:linear-gradient(to top,#ff5e00,#ffc23a); background-size:100% 84px; background-position:bottom; transition:height .18s ease-out; }
+.autopromo .ap-col { flex:1; height:0; border-radius:3px 3px 0 0; background:linear-gradient(to top,#ff2d00 0%,#ff5e00 30%,#ffbf2e 70%,#ffe98c 88%,#ffffff 100%); background-size:100% 84px; background-position:bottom; transition:height .18s ease-out; }
 .autopromo .ap-hint { position:absolute; left:0; top:0; width:46px; height:46px; margin:-23px 0 0 -23px; border-radius:50%; pointer-events:none; opacity:0; background:radial-gradient(circle, rgba(255,94,0,0.30), rgba(255,94,0,0.05) 70%); border:1.5px solid rgba(255,94,0,0.6); box-shadow:0 0 18px rgba(255,94,0,0.45); transition:opacity .2s ease; z-index:5; }
 .autopromo .ap-hint.show { opacity:1; }
 @media (prefers-reduced-motion: reduce){
